@@ -1,0 +1,25 @@
+From 06aabcfaccc754c6b75e011be757b53ab6f437e8 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Thu, 18 Sep 2025 15:02:32 +0800
+Subject: [PATCH 1/3] remove vendor/google package
+
+Change-Id: Ifa1140e88851f3d38786b19fc0b0444e5d02005c
+---
+ firebase-testing/BUILD | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/firebase-testing/BUILD b/firebase-testing/BUILD
+index b8f75b18..1d844646 100644
+--- a/firebase-testing/BUILD
++++ b/firebase-testing/BUILD
+@@ -46,7 +46,6 @@ iml_module(
+         "//tools/adt/idea/.idea/libraries:cloudresourcemanager",
+         "//tools/adt/idea/analytics",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+-        "//tools/vendor/google/firebase",
+         "//tools/adt/idea/.idea/libraries:mockito-kotlin[test]",
+     ],
+ )
+-- 
+2.34.1
+

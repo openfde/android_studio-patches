@@ -1,0 +1,176 @@
+From 4780e50f5db150354852d2acbb6538dddcfd613d Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Wed, 17 Sep 2025 10:03:00 +0800
+Subject: [PATCH 2/3] remove vendor/google package
+
+Change-Id: Ib10508119a96cd149f9b97e0cdce66f65108738d
+---
+ android-plugin/BUILD |  1 -
+ android/BUILD        | 18 -----------------
+ studio/BUILD         | 48 +-------------------------------------------
+ 3 files changed, 1 insertion(+), 66 deletions(-)
+
+diff --git a/android-plugin/BUILD b/android-plugin/BUILD
+index 0ab867bf3ff..b3d224ce2b0 100644
+--- a/android-plugin/BUILD
++++ b/android-plugin/BUILD
+@@ -72,7 +72,6 @@ iml_module(
+         "//tools/adt/idea/gradle-dsl-declarative:intellij.android.gradle.dsl.declarative",
+         "//tools/adt/idea/avd:intellij.android.avd",
+         "//tools/studio/google/cloud/testing/test-recorder/gradle:test-recorder.gradle",
+-        "//tools/vendor/google/url-assistant/gradle:url-assistant.gradle",
+         "//tools/adt/idea/databinding/gradle:intellij.android.databinding.gradle",
+         "//tools/adt/idea/android/editing/documentation:intellij.android.core.editing.documentation",
+         "//tools/adt/idea/android/editing/metrics:intellij.android.core.editing.metrics",
+diff --git a/android/BUILD b/android/BUILD
+index f22500b8b2a..17125443a8d 100644
+--- a/android/BUILD
++++ b/android/BUILD
+@@ -363,7 +363,6 @@ filegroup(
+         "//tools/base/third_party/kotlin:kotlin-m2repository",
+         "//tools/base/threading-agent:threading_agent.jar",
+         "//tools/base/tracer:trace_agent",
+-        "//tools/vendor/google/ml/aiplugin/ij-platform/atlas:atlas_artifacts",
+     ] + select({
+         "@platforms//os:windows": [],
+         "//conditions:default": [
+@@ -435,23 +434,6 @@ filegroup(
+         "//tools/base/sdklib:schema-generated",
+         "//tools/data-binding:compilerCommon.antlr.shaded",
+         "//tools/data-binding:compilerCommon.antlr_runtime.shaded",
+-        "//tools/vendor/google/alt-lang/soong/plugin:libblueprint-lexer-parser",
+-        "//tools/vendor/google/asfp/base:studio-intellijext",
+-        "//tools/vendor/google/directaccess-client:directaccess_client_proto",
+-        "//tools/vendor/google/firebase/integration:libtitan_java_proto",
+-        "//tools/vendor/google/firebase:libfirebase_java_proto",
+-        "//tools/vendor/google/firebase:libgemini_java_proto",
+-        "//tools/vendor/google/firebase:libtitan_java_proto",
+-        "//tools/vendor/google/game-tools/main:game-tools-protos",
+-        "//tools/vendor/google/game-tools/packaging:game-tools-protos",
+-        "//tools/vendor/google/ml/aiplugin/android-plugin/integration:aida_grpc",
+-        "//tools/vendor/google/ml/aiplugin/android-plugin/integration:aida_proto",
+-        "//tools/vendor/google/ml/aiplugin/android-plugin/integration:aida_protobuf",
+-        "//tools/vendor/google/ml/aiplugin/core:aida_grpc",
+-        "//tools/vendor/google/ml/aiplugin/core:aida_proto",
+-        "//tools/vendor/google/ml/aiplugin/core:aida_protobuf",
+-        "//tools/vendor/google/ml/aiplugin/core:gemini_plugin_proto",
+-        "//tools/vendor/google/url-assistant:urlassistant_proto",
+     ],
+     visibility = ["//visibility:public"],
+ )
+diff --git a/studio/BUILD b/studio/BUILD
+index 99cec1fa10b..02d2a3920e6 100644
+--- a/studio/BUILD
++++ b/studio/BUILD
+@@ -114,7 +114,6 @@ studio_plugin(
+         "//tools/base/sdklib:schema-generated",
+         "//tools/adt/idea/debuggers:libjava_sites",
+         "//tools/base/deploy/deployer:libjava_version",
+-        "//tools/vendor/google/game-tools/main:game-tools-protos",
+         "//tools/data-binding:compilerCommon.antlr_runtime.shaded",
+         "//tools/data-binding:compilerCommon.antlr.shaded",
+         "//tools/adt/idea/build-attribution:build-analysis-results-proto",
+@@ -296,9 +295,6 @@ studio_plugin(
+             "//tools/data-binding:studio.compiler",
+             "//tools/data-binding:studio.compilerCommon",
+         ],
+-        "game-tools.jar": [
+-            "//tools/vendor/google/game-tools/main:android.game-tools.main",
+-        ],
+         "inspectors-common.jar": [
+             "//tools/adt/idea/inspectors-common/api:intellij.android.inspectors-common.api",
+             "//tools/adt/idea/inspectors-common/api-ide:intellij.android.inspectors-common.api-ide",
+@@ -567,40 +563,13 @@ studio_plugin(
+     ],
+ )
+ 
+-studio_plugin(
+-    name = "com.google.gct.directaccess",
+-    directory = "directaccess",
+-    libs = [
+-        "//tools/base/adb-proxy:adb_proxy_proto",
+-        "//tools/vendor/google/directaccess-client:directaccess_client_proto",
+-        "//prebuilts/tools/common/m2:google-api-services",
+-    ],
+-    modules = {
+-        "directaccess.jar": [
+-            "//tools/base/adb-proxy:studio.adb-proxy",
+-            "//tools/studio/google/cloud/testing/directaccess:directaccess",
+-            "//tools/vendor/google/directaccess-client:directaccess-client",
+-        ],
+-    },
+-    resources = {
+-        "resources": ["//tools/base/adb-proxy/reverse-daemon:daemon"],
+-    },
+-    visibility = ["//visibility:public"],
+-    deps = [
+-        ":com.google.services.firebase",
+-        ":org.jetbrains.android",
+-        "@intellij//:com.intellij.java",
+-        "@intellij//:intellij.libraries.grpc",
+-        "@intellij//:intellij.libraries.grpc.netty.shaded",
+-    ],
+-)
+-
+ studio_plugin(
+     name = "com.google.gct.testing",
+     directory = "firebase-testing",
+     libs = [
+         "//prebuilts/tools/common/m2:JSch",
+         "//prebuilts/tools/common/m2:google_api_services_testing",
++        "//tools/adt/idea/.idea/libraries:cloudresourcemanager",
+     ],
+     modules = {
+         "firebase-testing.jar": ["//tools/studio/google/cloud/testing/firebase-testing:firebase-testing"],
+@@ -608,7 +577,6 @@ studio_plugin(
+     },
+     visibility = ["//visibility:public"],
+     deps = [
+-        ":com.google.services.firebase",
+         ":org.jetbrains.android",
+         "@intellij//:com.intellij.java",
+         "@intellij//:org.intellij.groovy",
+@@ -812,20 +780,12 @@ android_studio(
+     platform = "@intellij//:intellij-sdk",
+     plugins = [
+         ":org.jetbrains.android",
+-        ":com.android.tools.apk",
+-        ":com.android.tools.ndk",
+         ":com.android.tools.design",
+         ":androidx.compose.plugins.idea",
+-        ":com.google.services.git4insights",
+-        ":com.google.services.firebase",
+-        ":com.google.tools.ij.aiplugin",
+-        ":com.google.gct.directaccess",
+         ":com.google.gct.testing",
+         ":com.google.gct",
+         ":com.android.tools.idea.smali",
+         ":com.google.gct.test.recorder",
+-        ":com.google.urlassistant",
+-        ":com.google.targetsdkversionassistant",
+         ":com.android.tools.gradle.dcl",
+     ],
+     selector = "AndroidStudio",
+@@ -1059,19 +1019,13 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "//tools/adt/idea/android-plugin:intellij.android.plugin",
+-        "//tools/vendor/google/android-apk",
+         "//tools/adt/idea/compose-ide-plugin:intellij.android.compose-ide-plugin",
+         "//tools/adt/idea/design-plugin:intellij.android.design-plugin",
+-        "//tools/vendor/google/android-ndk",
+-        "//tools/vendor/google/git4insights",
+         "//tools/studio/google/cloud/tools/android-studio-plugin:google-cloud-tools-as",
+-        "//tools/vendor/google/firebase",
+-        "//tools/studio/google/cloud/testing/directaccess",
+         "//tools/studio/google/cloud/testing/firebase-testing",
+         "//tools/studio/google/cloud/tools/google-login-plugin:google-login-as",
+         "//tools/adt/idea/smali:intellij.android.smali",
+         "//tools/studio/google/cloud/testing/test-recorder",
+-        "//tools/vendor/google/url-assistant",
+         "//tools/vendor/google/targetsdkversion-upgrade-assistant",
+         "//tools/adt/idea/gmd-code-completion:intellij.android.gmd-code-completion",
+         "//tools/vendor/google/ml/aiplugin/android-plugin:aiplugin.android-plugin",
+-- 
+2.25.1
+

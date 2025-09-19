@@ -1,0 +1,38 @@
+From a46399870bfb202c2684ff2a3f6459143f537ca9 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Mon, 15 Sep 2025 09:30:17 +0800
+Subject: [PATCH 1/2] fix bazel path for linux arm64
+
+Change-Id: I2c74bf18073454a63d687af72c7585c98c9e1f0a
+---
+ bazel/bazel | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/bazel/bazel b/bazel/bazel
+index 38550661fb..2ae92e900e 100755
+--- a/bazel/bazel
++++ b/bazel/bazel
+@@ -13,7 +13,10 @@ def main():
+   if not workspace:
+     sys.exit('Must run %s within a workspace.' % os.path.basename(sys.argv[0]))
+   if sys.platform.startswith('linux'):
+-    platform = 'linux-x86_64'
++    if plat.machine() == 'aarch64':
++      platform = 'linux-arm64'
++    else:
++      platform = 'linux-x86_64'
+   elif sys.platform == 'darwin':
+     platform = 'darwin-arm64' if plat.machine() == 'arm64' else 'darwin-x86_64'
+   elif sys.platform == 'win32':
+@@ -30,7 +33,7 @@ def main():
+   ]
+   # On linux bazel can sometimes hang due to RBE. So we kill it after
+   # BAZEL_INVOCATION_TIMEOUT if set.
+-  if platform == 'linux-x86_64' and os.environ.get('BAZEL_INVOCATION_TIMEOUT'):
++  if platform.startswith('linux') and os.environ.get('BAZEL_INVOCATION_TIMEOUT'):
+     bazel = [
+         'timeout',
+         '-k',
+-- 
+2.25.1
+

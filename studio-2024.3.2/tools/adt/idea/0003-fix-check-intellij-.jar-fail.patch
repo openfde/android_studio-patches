@@ -1,0 +1,213 @@
+From d96f6f16cc27efeb6cad99cb77e05ff5fde89cdb Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Wed, 17 Sep 2025 14:40:36 +0800
+Subject: [PATCH 3/3] fix check intellij:*.jar fail
+
+Change-Id: Ia8b3c4f44c3dd9eb94b325c64f1abad9a05d6150
+---
+ studio/studio.bzl | 66 ++++++++++-------------------------------------
+ 1 file changed, 14 insertions(+), 52 deletions(-)
+
+diff --git a/studio/studio.bzl b/studio/studio.bzl
+index 58eea97cab1..8d19a4888d5 100644
+--- a/studio/studio.bzl
++++ b/studio/studio.bzl
+@@ -39,9 +39,6 @@ _StudioDataInfo = provider(
+     doc = "Holds IDE distribution files split by platform",
+     fields = {
+         "linux": "Linux files",
+-        "mac": "Mac x86-64 files",
+-        "mac_arm": "Mac aarch64 files",
+-        "win": "Windows files",
+         "mappings": "A map from files to destination paths",
+     },
+ )
+@@ -262,9 +259,6 @@ def _studio_plugin_impl(ctx):
+         verify_deps = ctx.attr.deps,
+     )
+     plugin_files_linux = _studio_plugin_os(ctx, LINUX, plugin_jars, plugin_dir)
+-    plugin_files_mac = _studio_plugin_os(ctx, MAC, plugin_jars, plugin_dir)
+-    plugin_files_mac_arm = _studio_plugin_os(ctx, MAC_ARM, plugin_jars, plugin_dir)
+-    plugin_files_win = _studio_plugin_os(ctx, WIN, plugin_jars, plugin_dir)
+ 
+     for lib in ctx.attr.libs:
+         if PluginInfo in lib:
+@@ -291,9 +285,6 @@ def _studio_plugin_impl(ctx):
+             directory = ctx.attr.directory,
+             plugin_files = struct(
+                 linux = plugin_files_linux,
+-                mac = plugin_files_mac,
+-                mac_arm = plugin_files_mac_arm,
+-                win = plugin_files_win,
+             ),
+             plugin_metadata = ctx.outputs.plugin_metadata,
+             modules = depset(ctx.attr.modules),
+@@ -443,9 +434,6 @@ def _studio_data_impl(ctx):
+         if _StudioDataInfo in dep:
+             dep_data = dep[_StudioDataInfo]
+             linux.append(dep_data.linux)
+-            mac.append(dep_data.mac)
+-            mac_arm.append(dep_data.mac_arm)
+-            win.append(dep_data.win)
+             mappings.update(dep_data.mappings)
+         else:
+             files += dep[DefaultInfo].files.to_list()
+@@ -456,16 +444,10 @@ def _studio_data_impl(ctx):
+                 mappings[src] = destination + src.short_path[len(prefix):]
+ 
+     dlinux = depset(files + ctx.files.files_linux, order = "preorder", transitive = linux)
+-    dmac = depset(files + ctx.files.files_mac, order = "preorder", transitive = mac)
+-    dmac_arm = depset(files + ctx.files.files_mac_arm, order = "preorder", transitive = mac_arm)
+-    dwin = depset(files + ctx.files.files_win, order = "preorder", transitive = win)
+ 
+     return [
+         _StudioDataInfo(
+             linux = dlinux,
+-            mac = dmac,
+-            mac_arm = dmac_arm,
+-            win = dwin,
+             mappings = mappings,
+         ),
+         DefaultInfo(files = depset(files)),
+@@ -938,9 +920,6 @@ def _android_studio_impl(ctx):
+ 
+     outputs = {
+         LINUX: ctx.outputs.linux,
+-        MAC: ctx.outputs.mac,
+-        MAC_ARM: ctx.outputs.mac_arm,
+-        WIN: ctx.outputs.win,
+     }
+     all_files = {}
+     for (platform, output) in outputs.items():
+@@ -973,7 +952,7 @@ def _android_studio_impl(ctx):
+         ctx.actions.write(script, script_content, is_executable = True)
+         runfiles = ctx.runfiles(files = [outputs[host_platform]])
+ 
+-        default_files = depset([ctx.outputs.linux, ctx.outputs.mac, ctx.outputs.mac_arm, ctx.outputs.win, ctx.outputs.manifest, ctx.outputs.update_message])
++        default_files = depset([ctx.outputs.linux, ctx.outputs.manifest, ctx.outputs.update_message])
+         default_runfiles = runfiles
+ 
+     # Leave everything that is not the main zips as implicit outputs
+@@ -1046,11 +1025,6 @@ _android_studio = rule(
+             cfg = "exec",
+             executable = True,
+         ),
+-        "_patch_exe": attr.label(
+-            default = Label("//tools/vendor/google/windows-exe-patcher:patch-exe"),
+-            cfg = "exec",
+-            executable = True,
+-        ),
+         "_update_resources_jar": attr.label(
+             default = Label("//tools/adt/idea/studio/rules:update_resources_jar"),
+             cfg = "exec",
+@@ -1063,9 +1037,6 @@ _android_studio = rule(
+     },
+     outputs = {
+         "linux": "%{name}.linux.zip",
+-        "mac": "%{name}.mac.zip",
+-        "mac_arm": "%{name}.mac_arm.zip",
+-        "win": "%{name}.win.zip",
+         "plugins": "%{name}.plugin.lst",
+         "manifest": "%{name}_build_manifest.textproto",
+         "update_message": "%{name}_update_message.html",
+@@ -1146,9 +1117,6 @@ def _intellij_plugin_import_impl(ctx):
+             relpath = f.short_path[len(ctx.attr.strip_prefix):]
+             files[plugin_dir + "/" + relpath] = f
+     plugin_files_linux = _studio_plugin_os(ctx, LINUX, [], plugin_dir) | files
+-    plugin_files_mac = _studio_plugin_os(ctx, MAC, [], plugin_dir) | files
+-    plugin_files_mac_arm = _studio_plugin_os(ctx, MAC_ARM, [], plugin_dir) | files
+-    plugin_files_win = _studio_plugin_os(ctx, WIN, [], plugin_dir) | files
+ 
+     # buildifier: disable=native-java-common (@rules_java is not usable in this file yet)
+     # buildifier: disable=native-java-info (@rules_java is not usable in this file yet)
+@@ -1170,9 +1138,6 @@ def _intellij_plugin_import_impl(ctx):
+             license_files = depset(),
+             plugin_files = struct(
+                 linux = plugin_files_linux,
+-                mac = plugin_files_mac,
+-                mac_arm = plugin_files_mac_arm,
+-                win = plugin_files_win,
+             ),
+             overwrite_plugin_version = ctx.attr.overwrite_plugin_version,
+         ),
+@@ -1253,9 +1218,6 @@ def _intellij_platform_impl_os(ctx, platform, data, zip_out):
+ def _intellij_platform_impl(ctx):
+     studio_data = ctx.attr.studio_data[_StudioDataInfo]
+     base_files_linux, plugin_files_linux = _intellij_platform_impl_os(ctx, LINUX, studio_data, ctx.outputs.linux_zip)
+-    base_files_win, plugin_files_win = _intellij_platform_impl_os(ctx, WIN, studio_data, ctx.outputs.win_zip)
+-    base_files_mac, plugin_files_mac = _intellij_platform_impl_os(ctx, MAC, studio_data, ctx.outputs.mac_zip)
+-    base_files_mac_arm, plugin_files_mac_arm = _intellij_platform_impl_os(ctx, MAC_ARM, studio_data, ctx.outputs.mac_arm_zip)
+ 
+     runfiles = ctx.runfiles(files = ctx.files.data)
+     return [
+@@ -1268,15 +1230,9 @@ def _intellij_platform_impl(ctx):
+             minor_version = ctx.attr.minor_version,
+             base = struct(
+                 linux = base_files_linux,
+-                mac = base_files_mac,
+-                mac_arm = base_files_mac_arm,
+-                win = base_files_win,
+             ),
+             plugins = struct(
+                 linux = plugin_files_linux,
+-                mac = plugin_files_mac,
+-                mac_arm = plugin_files_mac_arm,
+-                win = plugin_files_win,
+             ),
+             mac_bundle_name = ctx.attr.mac_bundle_name,
+         ),
+@@ -1300,9 +1256,6 @@ _intellij_platform = rule(
+     },
+     outputs = {
+         "linux_zip": "%{name}.linux.zip",
+-        "win_zip": "%{name}.win.zip",
+-        "mac_zip": "%{name}.mac.zip",
+-        "mac_arm_zip": "%{name}.mac_arm.zip",
+     },
+     # buildifier: disable=native-java-info (@rules_java is not usable in this file yet)
+     provides = [DefaultInfo, JavaInfo, IntellijInfo],
+@@ -1333,6 +1286,16 @@ def intellij_platform_import(name, spec):
+         name = name + ".data",
+     )
+ 
++    native.filegroup(
++        name = name + "-vm-options",
++        srcs = select({
++            "@platforms//os:windows": ["bin/win/idea64.exe.vmoptions"],
++            "@platforms//os:macos": ["bin/mac/idea64.vmoptions"],
++            "//conditions:default": ["bin/linux/idea64.vmoptions"],
++        }),
++        visibility = ["//visibility:public"],
++    )
++
+     native.filegroup(
+         name = name + "-product-info",
+         srcs = ["product-info.json"],
+@@ -1561,21 +1524,20 @@ def intellij_platform(
+ 
+ def _gen_plugin_jars_import_target(name, src, spec, plugin, jars):
+     """Generates a jvm_import target for the specified plugin."""
++    """
+     add_windows = spec.plugin_jars_windows[plugin] if plugin in spec.plugin_jars_windows else []
+     jars_windows = [src + "/windows/android-studio/" + jar for jar in jars + add_windows]
+     add_darwin = spec.plugin_jars_darwin[plugin] if plugin in spec.plugin_jars_darwin else []
+     jars_darwin = [src + "/darwin/android-studio/Contents/" + jar for jar in jars + add_darwin]
+     add_darwin_aarch64 = spec.plugin_jars_darwin_aarch64[plugin] if plugin in spec.plugin_jars_darwin_aarch64 else []
+     jars_darwin_aarch64 = [src + "/darwin_aarch64/android-studio/Contents/" + jar for jar in jars + add_darwin_aarch64]
++    """
+     add_linux = spec.plugin_jars_linux[plugin] if plugin in spec.plugin_jars_linux else []
+-    jars_linux = [src + "/linux/android-studio/" + jar for jar in jars + add_linux]
++    jars_linux = [src + "/linux/android-studio/" + add_linux]
+ 
+     jvm_import(
+         name = name,
+         jars = select({
+-            "@platforms//os:windows": jars_windows,
+-            "//tools/base/bazel/platforms:macos-x86_64": jars_darwin,
+-            "//tools/base/bazel/platforms:macos-arm64": jars_darwin_aarch64,
+             "//conditions:default": jars_linux,
+         }),
+     )
+-- 
+2.25.1
+

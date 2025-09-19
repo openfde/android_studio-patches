@@ -1,0 +1,201 @@
+From b918263d32f3e98f5b18d3e0952565ccf6f31e95 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Mon, 15 Sep 2025 16:58:36 +0800
+Subject: [PATCH] fix gcc/clang path
+
+Change-Id: I68cbba40c3f0266e78a52cacea74e7333ba963df
+---
+ toolchains/cc/linux_clang/BUILD.bazel   | 12 +++++------
+ toolchains/cc/linux_clang/clang.BUILD   | 16 +++++++--------
+ toolchains/cc/linux_clang/gcc_lib.BUILD | 27 ++++++++++++-------------
+ 3 files changed, 27 insertions(+), 28 deletions(-)
+
+diff --git a/toolchains/cc/linux_clang/BUILD.bazel b/toolchains/cc/linux_clang/BUILD.bazel
+index 34db015f..0099fd2c 100644
+--- a/toolchains/cc/linux_clang/BUILD.bazel
++++ b/toolchains/cc/linux_clang/BUILD.bazel
+@@ -29,10 +29,10 @@ cc_features(
+     name = "x64_features",
+     b_prefix = select({
+         ":host_stdlibs": None,
+-        "//conditions:default": "@gcc_lib//:lib/gcc/x86_64-linux/4.8.3",
++        "//conditions:default": "@gcc_lib//:lib/gcc/aarch64-linux-gnu/9",
+     }),
+     compile_flags = [
+-        "--target=x86_64-unknown-linux-gnu",
++        "--target=aarch64-unknown-linux-gnu",
+         "-no-canonical-prefixes",
+         "-Wno-builtin-macro-redefined",
+         "-D__DATE__=\"redacted\"",
+@@ -48,7 +48,7 @@ cc_features(
+         "-nostdinc++",
+     ],
+     link_flags = [
+-        "--target=x86_64-unknown-linux-gnu",
++        "--target=aarch64-unknown-linux-gnu",
+         "-fuse-ld=lld",
+         "-rtlib=compiler-rt",
+         "-Wno-unused-command-line-argument",
+@@ -74,7 +74,7 @@ cc_toolchain_config(
+     legacy_builtin_include_directories = select({
+         ":host_stdlibs": [
+             "/usr/include",
+-            "/usr/include/x86_64-linux-gnu",
++            "/usr/include/aarch64-linux-gnu",
+         ],
+         "//conditions:default": [],
+     }),
+@@ -115,12 +115,12 @@ cc_toolchain(
+ toolchain(
+     name = "x64_toolchain",
+     exec_compatible_with = [
+-        "@platforms//cpu:x86_64",
++        "@platforms//cpu:aarch64",
+         "@platforms//os:linux",
+         "@bazel_tools//tools/cpp:clang",
+     ],
+     target_compatible_with = [
+-        "@platforms//cpu:x86_64",
++        "@platforms//cpu:aarch64",
+         "@platforms//os:linux",
+     ],
+     toolchain = ":x64",
+diff --git a/toolchains/cc/linux_clang/clang.BUILD b/toolchains/cc/linux_clang/clang.BUILD
+index 2bce8f4b..bb89f8a7 100644
+--- a/toolchains/cc/linux_clang/clang.BUILD
++++ b/toolchains/cc/linux_clang/clang.BUILD
+@@ -63,15 +63,15 @@ cc_tool(
+ cc_toolchain_import(
+     name = "libcxx",
+     dynamic_mode_libs = [
+-        ":lib/x86_64-unknown-linux-gnu/libc++.so",
+-        ":lib/x86_64-unknown-linux-gnu/libc++abi.so",
++        ":lib/aarch64-unknown-linux-gnu/libc++.so",
++        ":lib/aarch64-unknown-linux-gnu/libc++abi.so",
+     ],
+     include_paths = [
+         ":include/c++/v1",
+     ],
+     static_mode_libs = [
+-        ":lib/x86_64-unknown-linux-gnu/libc++.a",
+-        ":lib/x86_64-unknown-linux-gnu/libc++abi.a",
++        ":lib/aarch64-unknown-linux-gnu/libc++.a",
++        ":lib/aarch64-unknown-linux-gnu/libc++abi.a",
+     ],
+     support_files = glob(
+         [
+@@ -90,14 +90,14 @@ cc_toolchain_import(
+     ),
+     lib_search_paths = glob(
+         [
+-            "lib/clang/*/lib/x86_64-unknown-linux-gnu",
++            "lib/clang/*/lib/aarch64-unknown-linux-gnu",
+         ],
+         exclude_directories = 0,
+     ),
+     support_files = glob(
+         [
+             "lib/clang/*/include/**",
+-            "lib/clang/*/lib/x86_64-unknown-linux-gnu/*",
++            "lib/clang/*/lib/aarch64-unknown-linux-gnu/*",
+         ],
+     ),
+ )
+@@ -105,9 +105,9 @@ cc_toolchain_import(
+ cc_toolchain_import(
+     name = "libunwind",
+     lib_search_paths = [
+-        ":lib/x86_64-unknown-linux-gnu",
++        ":lib/aarch64-unknown-linux-gnu",
+     ],
+     support_files = [
+-        ":lib/x86_64-unknown-linux-gnu/libunwind.a",
++        ":lib/aarch64-unknown-linux-gnu/libunwind.a",
+     ],
+ )
+diff --git a/toolchains/cc/linux_clang/gcc_lib.BUILD b/toolchains/cc/linux_clang/gcc_lib.BUILD
+index 43619c0e..78367eeb 100644
+--- a/toolchains/cc/linux_clang/gcc_lib.BUILD
++++ b/toolchains/cc/linux_clang/gcc_lib.BUILD
+@@ -17,7 +17,7 @@ cc_toolchain_import(
+ cc_toolchain_import(
+     name = "linker",
+     support_files = [
+-        ":sysroot/usr/lib/ld-linux-x86-64.so.2",
++        ":sysroot/usr/lib/ld-linux-aarch64.so.1",
+     ],
+ )
+ 
+@@ -25,36 +25,35 @@ cc_toolchain_import(
+     name = "libs",
+     include_paths = [
+         ":sysroot/usr/include",
+-        ":sysroot/usr/include/x86_64-linux-gnu",
++        ":sysroot/usr/include/aarch64-linux-gnu",
+     ],
+     support_files = glob([
+         "sysroot/usr/include/*.h",
+         "sysroot/usr/include/**/*.h",
+-        "sysroot/usr/include/x86_64-linux-gnu/**",
++        "sysroot/usr/include/aarch64-linux-gnu/**",
+     ]) + [
+         # keep sorted
+         ":sysroot/usr/lib/libc.so",
+         ":sysroot/usr/lib/libc.so.6",
+-        ":sysroot/usr/lib/libc-2.17.so",
++        ":sysroot/usr/lib/libc-2.31.so",
+         ":sysroot/usr/lib/libc_nonshared.a",
+         ":sysroot/usr/lib/libdl.so",
+         ":sysroot/usr/lib/libdl.so.2",
+-        ":sysroot/usr/lib/libdl-2.17.so",
++        ":sysroot/usr/lib/libdl-2.31.so",
+         ":sysroot/usr/lib/libm.so",
+         ":sysroot/usr/lib/libm.so.6",
+-        ":sysroot/usr/lib/libm-2.17.so",
++        ":sysroot/usr/lib/libm-2.31.so",
+         ":sysroot/usr/lib/libpthread.so",
+         ":sysroot/usr/lib/libpthread.so.0",
+-        ":sysroot/usr/lib/libpthread-2.17.so",
+-        ":sysroot/usr/lib/libpthread_nonshared.a",
++        ":sysroot/usr/lib/libpthread-2.31.so",
+         ":sysroot/usr/lib/libresolv.so",
+         ":sysroot/usr/lib/libresolv.so.2",
+-        ":sysroot/usr/lib/libresolv-2.17.so",
++        ":sysroot/usr/lib/libresolv-2.31.so",
+         ":sysroot/usr/lib/librt.so",
+         ":sysroot/usr/lib/librt.so.1",
+-        ":sysroot/usr/lib/librt-2.17.so",
++        ":sysroot/usr/lib/librt-2.31.so",
+         ":sysroot/usr/lib/libutil.so",
+-        ":sysroot/usr/lib/libutil-2.17.so",
++        ":sysroot/usr/lib/libutil-2.31.so",
+     ],
+     deps = [":linker"],
+ )
+@@ -62,14 +61,14 @@ cc_toolchain_import(
+ cc_import(
+     name = "libpulse",
+     interface_library = ":sysroot/usr/lib/libpulse.so",
+-    shared_library = ":sysroot/usr/lib/libpulse.so.0.15.3",
++    shared_library = ":sysroot/usr/lib/libpulse.so.0.21.2",
+     visibility = ["//visibility:public"],
+ )
+ 
+ cc_import(
+     name = "libutil",
+     interface_library = ":sysroot/usr/lib/libutil.so",
+-    shared_library = ":sysroot/usr/lib/libutil-2.17.so",
++    shared_library = ":sysroot/usr/lib/libutil-2.31.so",
+     visibility = ["//visibility:public"],
+ )
+ 
+@@ -79,5 +78,5 @@ sysroot(
+ )
+ 
+ exports_files(
+-    srcs = ["lib/gcc/x86_64-linux/4.8.3"],
++    srcs = ["lib/gcc/aarch64-linux-gnu/9"],
+ )
+-- 
+2.25.1
+
