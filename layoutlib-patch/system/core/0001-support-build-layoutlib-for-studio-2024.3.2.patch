@@ -1,0 +1,26 @@
+From 3cb0cd383cc94fb81e05d57b9401b3702de52a30 Mon Sep 17 00:00:00 2001
+From: pengcui <pngcui1224@163.com>
+Date: Mon, 1 Sep 2025 13:53:53 +0800
+Subject: [PATCH] support build layoutlib for studio-2024.3.2
+
+---
+ libcutils/include/cutils/properties.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/libcutils/include/cutils/properties.h b/libcutils/include/cutils/properties.h
+index 78d8bc654..944252116 100644
+--- a/libcutils/include/cutils/properties.h
++++ b/libcutils/include/cutils/properties.h
+@@ -35,6 +35,9 @@ extern "C" {
+ //
+ // See <android-base/properties.h> for better API.
+ //
++#ifndef __ANDROID__
++#define PROP_NAME_MAX   32
++#endif
+ 
+ #define PROPERTY_KEY_MAX PROP_NAME_MAX
+ #define PROPERTY_VALUE_MAX PROP_VALUE_MAX
+-- 
+2.34.1
+

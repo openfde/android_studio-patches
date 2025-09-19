@@ -1,0 +1,26 @@
+From a49c81ba9eaea6014b9c62f1cfc1c1a0572a5b05 Mon Sep 17 00:00:00 2001
+From: pengcui <pngcui1224@163.com>
+Date: Mon, 1 Sep 2025 11:49:51 +0800
+Subject: [PATCH] support build layoutlib for studio-2024.3.2
+
+---
+ include/android/performance_hint.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/android/performance_hint.h b/include/android/performance_hint.h
+index 3c82d888b5..5d23f12ea7 100644
+--- a/include/android/performance_hint.h
++++ b/include/android/performance_hint.h
+@@ -52,7 +52,9 @@
+  *   - DO NOT CHANGE THE LAYOUT OR SIZE OF STRUCTURES
+  */
+ 
++ #ifdef __ANDROID__
+ #include <android/api-level.h>
++#endif
+ #include <stdint.h>
+ #include <unistd.h>
+ 
+-- 
+2.34.1
+

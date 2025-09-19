@@ -1,0 +1,41 @@
+From 2d681827dbd1fe901c4914255190c9c3e942fc1f Mon Sep 17 00:00:00 2001
+From: pengcui <pngcui1224@163.com>
+Date: Mon, 1 Sep 2025 14:08:19 +0800
+Subject: [PATCH] support build layoutlib for studio-2024.3.2
+
+Change-Id: I8b41eebdb8a316112f126a13519db46e108d8893
+---
+ Android.bp | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/Android.bp b/Android.bp
+index 4eb6643..e6267a8 100644
+--- a/Android.bp
++++ b/Android.bp
+@@ -67,6 +67,23 @@ cc_library_headers {
+     min_sdk_version: "29",
+ }
+ 
++cc_library_headers {
++    name: "libnativehelper_include_only",
++    host_supported: true,
++    export_include_dirs: [
++        "include",
++    ],
++    header_libs: ["jni_headers"],
++    export_header_lib_headers: ["jni_headers"],
++    // As part of mainline modules(APEX), it should support at least 29(Q)
++    min_sdk_version: "29",
++    sdk_version: "minimum",
++    apex_available: [
++        "//apex_available:platform",
++        "//apex_available:anyapex",
++    ],
++}
++
+ cc_library_headers {
+     name: "libnativehelper_header_only",
+     host_supported: true,
+-- 
+2.34.1
+

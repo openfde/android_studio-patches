@@ -1,0 +1,121 @@
+//
+// Copyright (C) 2008 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+//
+// Define rules to build temp_layoutlib.jar, which contains a subset of
+// the classes in framework.jar.  The layoutlib_create tool is used to
+// transform the framework jar into the temp_layoutlib jar.
+//
+
+package {
+    // See: http://go/android-license-faq
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+java_genrule_host {
+    name: "temp_layoutlib",
+    tools: ["layoutlib_create"],
+    out: ["temp_layoutlib.jar"],
+    srcs: [
+        ":atf-prebuilt-557133692{.jar}",
+        ":core-icu4j-for-host{.jar}",
+        ":core-libart-for-host{.jar}",
+        ":framework-all{.jar}",
+        ":ext{.jar}",
+        ":iconloader_base{.jar}",
+        ":icu4j-icudata-jarjar{.jar}", // HOST
+        ":icu4j-icutzdata-jarjar{.jar}", // HOST
+        ":monet{.jar}",
+    ],
+    cmd: "rm -f $(out) && $(location layoutlib_create) --create-stub $(out) $(in)",
+}
+
+java_library_host {
+    name: "layoutlib-framework",
+    static_libs: ["temp_layoutlib"],
+    jarjar_rules: "jarjar-rules.txt",
+}
+
+java_device_for_host {
+    name: "layoutlib_create-classpath",
+    libs: [
+        "conscrypt-for-host",
+        "core-icu4j-for-host",
+        "core-libart-for-host",
+        "ext",
+        "framework-all",
+        "iconloader_base",
+        "icu4j-icudata-jarjar",
+        "icu4j-icutzdata-jarjar",
+        "monet",
+    ],
+}
+
+
+cc_library_host_shared {
+    name: "layoutlib_jni",
+    srcs: [
+        "jni/LayoutlibLoader.cpp",
+    ],
+    cflags: [
+        "-Wno-unused-parameter",
+    ],
+    header_libs: [
+        "libbinder_headers",
+        "jni_headers",
+        "libnativehelper_header_only",
+        "libnativehelper_include_only",
+        "libbase_headers",
+        "libnativebase_headers",
+        "libnativedisplay_headers",
+        "libnativewindow_headers",
+        "libhostgraphics_headers",
+        "libmath_headers",
+        "android_graphics_apex_headers",
+    ],
+    shared_libs: [
+        "liblog",
+        "libbase",
+        "libutils",
+        "libcutils",
+        "libnativehelper",
+        "server_configurable_flags",
+        "libandroid_runtime",
+    ],
+    static_libs: [
+        "libhostgraphics",
+        "libhwui",
+    ],
+    stl: "libc++_static",
+    target: {
+        linux: {
+            version_script: "jni/linux/layoutlib_jni.map.txt",
+        },
+        darwin: {
+            ldflags: ["-Wl,-exported_symbols_list,frameworks/layoutlib/jni/darwin/layoutlib_jni_export.exp"],
+            dist: {
+                targets: ["layoutlib_jni"],
+                dir: "layoutlib_native/darwin",
+            },
+        },
+        linux_glibc_x86_64: {
+            dist: {
+                targets: ["layoutlib"],
+                dir: "layoutlib_native/linux",
+            },
+        },
+    },
+}
