@@ -1,0 +1,2136 @@
+From d376e8338f0dec73f3221afeb58340a9b95bae4c Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Thu, 18 Sep 2025 16:58:54 +0800
+Subject: [PATCH 4/5] add build after mod
+
+Change-Id: I8088220d914d59f7e50a582f446ee56a543b56aa
+---
+ .idea/libraries/studio_plugin_Coverage.xml    | 13 ---
+ .idea/libraries/studio_plugin_DevKit.xml      | 13 ---
+ .idea/libraries/studio_plugin_Git4Idea.xml    | 12 ---
+ .idea/libraries/studio_plugin_HtmlTools.xml   | 11 ---
+ .idea/libraries/studio_plugin_JUnit.xml       | 13 ---
+ .idea/libraries/studio_plugin_Subversion.xml  | 11 ---
+ .idea/libraries/studio_plugin_TestNG_J.xml    | 12 ---
+ .../studio_plugin_com.intellij.cidr.base.xml  | 11 ---
+ ...udio_plugin_com.intellij.cidr.debugger.xml | 11 ---
+ ...o_plugin_com.intellij.cidr.lang.clangd.xml | 11 ---
+ ...in_com.intellij.cidr.lang.clangdBridge.xml | 11 ---
+ .../studio_plugin_com.intellij.cidr.lang.xml  | 11 ---
+ ...gin_com.intellij.completion.ml.ranking.xml | 11 ---
+ ...lugin_com.intellij.configurationScript.xml | 11 ---
+ .../studio_plugin_com.intellij.copyright.xml  | 11 ---
+ .../studio_plugin_com.intellij.dev.xml        | 11 ---
+ .../studio_plugin_com.intellij.gradle.xml     | 14 ---
+ .../studio_plugin_com.intellij.java.ide.xml   | 11 ---
+ .../studio_plugin_com.intellij.java.xml       | 28 ------
+ .../studio_plugin_com.intellij.java_i18n.xml  | 11 ---
+ ...tudio_plugin_com.intellij.modules.json.xml | 12 ---
+ ...io_plugin_com.intellij.platform.images.xml | 11 ---
+ ...gin_com.intellij.plugins.eclipsekeymap.xml | 11 ---
+ ...in_com.intellij.plugins.netbeanskeymap.xml | 11 ---
+ ...om.intellij.plugins.visualstudiokeymap.xml | 11 ---
+ .../studio_plugin_com.intellij.properties.xml | 11 ---
+ .../studio_plugin_com.intellij.tasks.xml      | 11 ---
+ ...udio_plugin_com.intellij.turboComplete.xml | 11 ---
+ ...plugin_com.jetbrains.performancePlugin.xml | 11 ---
+ .../studio_plugin_com.jetbrains.sh.xml        | 11 ---
+ .idea/libraries/studio_plugin_hg4idea.xml     | 11 ---
+ ...o_plugin_intellij.java.featuresTrainer.xml | 11 ---
+ ..._plugin_intellij.java.structuralSearch.xml | 11 ---
+ ...studio_plugin_intellij.java.unscramble.xml | 11 ---
+ .../studio_plugin_intellij.java.vcs.xml       | 11 ---
+ ...udio_plugin_intellij.jvm.analysis.impl.xml | 11 ---
+ ...gin_intellij.libraries.compose.desktop.xml | 11 ---
+ ...n_intellij.libraries.grpc.netty.shaded.xml | 11 ---
+ .../studio_plugin_intellij.libraries.grpc.xml | 11 ---
+ ...gin_intellij.libraries.ktor.client.cio.xml | 11 ---
+ ..._plugin_intellij.libraries.ktor.client.xml | 11 ---
+ ...udio_plugin_intellij.libraries.microba.xml | 11 ---
+ ...studio_plugin_intellij.libraries.skiko.xml | 11 ---
+ ...ugin_intellij.markdown.compose.preview.xml | 11 ---
+ ...studio_plugin_intellij.platform.clouds.xml | 11 ---
+ ...n_intellij.platform.collaborationTools.xml | 11 ---
+ ...tudio_plugin_intellij.platform.compose.xml | 11 ---
+ ...lugin_intellij.platform.coverage.agent.xml | 11 ---
+ ...udio_plugin_intellij.platform.coverage.xml | 11 ---
+ ...ntellij.platform.debugger.impl.backend.xml | 11 ---
+ ...tellij.platform.debugger.impl.frontend.xml | 11 ---
+ ...lij.platform.diagnostic.freezeAnalyzer.xml | 11 ---
+ ...n_intellij.platform.diagnostic.freezes.xml | 11 ---
+ ..._intellij.platform.execution.dashboard.xml | 11 ---
+ ...ntellij.platform.execution.serviceView.xml | 11 ---
+ ...udio_plugin_intellij.platform.frontend.xml | 11 ---
+ ...n_intellij.platform.images.backend.svg.xml | 11 ---
+ ...gin_intellij.platform.images.copyright.xml | 11 ---
+ ...in_intellij.platform.inline.completion.xml | 11 ---
+ ...lugin_intellij.platform.kernel.backend.xml | 11 ---
+ ...dio_plugin_intellij.platform.lvcs.impl.xml | 11 ---
+ ...lugin_intellij.platform.navbar.backend.xml | 11 ---
+ ...ugin_intellij.platform.navbar.frontend.xml | 11 ---
+ ...ugin_intellij.platform.navbar.monolith.xml | 11 ---
+ ...studio_plugin_intellij.platform.navbar.xml | 11 ---
+ ...gin_intellij.platform.progress.backend.xml | 11 ---
+ ...ugin_intellij.platform.project.backend.xml | 11 ---
+ ...o_plugin_intellij.platform.rpc.backend.xml | 11 ---
+ ...lugin_intellij.platform.settings.local.xml | 11 ---
+ ..._plugin_intellij.platform.smRunner.vcs.xml | 11 ---
+ ...plugin_intellij.platform.vcs.dvcs.impl.xml | 11 ---
+ ...udio_plugin_intellij.platform.vcs.impl.xml | 11 ---
+ ..._plugin_intellij.platform.vcs.log.impl.xml | 11 ---
+ .../studio_plugin_intellij.rml.dfa.impl.xml   | 11 ---
+ ...udio_plugin_intellij.settingsSync.core.xml | 11 ---
+ .../studio_plugin_intellij.smart.update.xml   | 11 ---
+ ...ntellij.turboComplete.languages.kotlin.xml | 11 ---
+ .../libraries/studio_plugin_intellij.webp.xml | 11 ---
+ ...org.editorconfig.editorconfigjetbrains.xml | 11 ---
+ .../studio_plugin_org.intellij.groovy.xml     | 16 ---
+ ...studio_plugin_org.intellij.intelliLang.xml | 12 ---
+ ...o_plugin_org.intellij.plugins.markdown.xml | 11 ---
+ ..._plugin_org.jetbrains.debugger.streams.xml | 11 ---
+ ..._plugin_org.jetbrains.idea.maven.model.xml | 11 ---
+ ...in_org.jetbrains.idea.maven.server.api.xml | 11 ---
+ ...o_plugin_org.jetbrains.idea.reposearch.xml | 11 ---
+ ...o_plugin_org.jetbrains.java.decompiler.xml | 11 ---
+ .../studio_plugin_org.jetbrains.kotlin.xml    | 29 ------
+ ...ugin_org.jetbrains.plugins.clangConfig.xml | 11 ---
+ ...ugin_org.jetbrains.plugins.clangFormat.xml | 11 ---
+ ...ugin_org.jetbrains.plugins.emojipicker.xml | 11 ---
+ ...io_plugin_org.jetbrains.plugins.github.xml | 11 ---
+ ...io_plugin_org.jetbrains.plugins.gitlab.xml | 11 ---
+ ...io_plugin_org.jetbrains.plugins.gradle.xml | 12 ---
+ ..._plugin_org.jetbrains.plugins.terminal.xml | 11 ---
+ ..._plugin_org.jetbrains.plugins.textmate.xml | 11 ---
+ ...udio_plugin_org.jetbrains.plugins.yaml.xml | 12 ---
+ .../libraries/studio_plugin_org.toml.lang.xml | 11 ---
+ studio/studio-sdk-all-plugins.iml             | 97 -------------------
+ 99 files changed, 1230 deletions(-)
+ delete mode 100644 .idea/libraries/studio_plugin_Coverage.xml
+ delete mode 100644 .idea/libraries/studio_plugin_DevKit.xml
+ delete mode 100644 .idea/libraries/studio_plugin_Git4Idea.xml
+ delete mode 100644 .idea/libraries/studio_plugin_HtmlTools.xml
+ delete mode 100644 .idea/libraries/studio_plugin_JUnit.xml
+ delete mode 100644 .idea/libraries/studio_plugin_Subversion.xml
+ delete mode 100644 .idea/libraries/studio_plugin_TestNG_J.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.cidr.base.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.cidr.debugger.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.cidr.lang.clangd.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.cidr.lang.clangdBridge.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.cidr.lang.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.completion.ml.ranking.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.configurationScript.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.copyright.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.dev.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.gradle.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.java.ide.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.java.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.java_i18n.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.modules.json.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.platform.images.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.plugins.eclipsekeymap.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.plugins.netbeanskeymap.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.plugins.visualstudiokeymap.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.properties.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.tasks.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.intellij.turboComplete.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.jetbrains.performancePlugin.xml
+ delete mode 100644 .idea/libraries/studio_plugin_com.jetbrains.sh.xml
+ delete mode 100644 .idea/libraries/studio_plugin_hg4idea.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.java.featuresTrainer.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.java.structuralSearch.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.java.unscramble.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.java.vcs.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.jvm.analysis.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.compose.desktop.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.grpc.netty.shaded.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.grpc.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.ktor.client.cio.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.ktor.client.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.microba.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.libraries.skiko.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.markdown.compose.preview.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.clouds.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.collaborationTools.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.compose.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.coverage.agent.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.coverage.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.debugger.impl.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.debugger.impl.frontend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.diagnostic.freezeAnalyzer.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.diagnostic.freezes.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.execution.dashboard.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.execution.serviceView.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.frontend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.images.backend.svg.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.images.copyright.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.inline.completion.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.kernel.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.lvcs.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.navbar.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.navbar.frontend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.navbar.monolith.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.navbar.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.progress.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.project.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.rpc.backend.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.settings.local.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.smRunner.vcs.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.vcs.dvcs.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.vcs.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.platform.vcs.log.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.rml.dfa.impl.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.settingsSync.core.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.smart.update.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.turboComplete.languages.kotlin.xml
+ delete mode 100644 .idea/libraries/studio_plugin_intellij.webp.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.editorconfig.editorconfigjetbrains.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.intellij.groovy.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.intellij.intelliLang.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.intellij.plugins.markdown.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.debugger.streams.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.idea.maven.model.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.idea.maven.server.api.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.idea.reposearch.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.java.decompiler.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.kotlin.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.clangConfig.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.clangFormat.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.emojipicker.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.github.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.gitlab.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.gradle.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.terminal.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.textmate.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.jetbrains.plugins.yaml.xml
+ delete mode 100644 .idea/libraries/studio_plugin_org.toml.lang.xml
+
+diff --git a/.idea/libraries/studio_plugin_Coverage.xml b/.idea/libraries/studio_plugin_Coverage.xml
+deleted file mode 100644
+index 70b5e659282..00000000000
+--- a/.idea/libraries/studio_plugin_Coverage.xml
++++ /dev/null
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-Coverage">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-coverage/lib/jacoco.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-coverage/lib/java-coverage-rt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-coverage/lib/java-coverage.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_DevKit.xml b/.idea/libraries/studio_plugin_DevKit.xml
+deleted file mode 100644
+index e4e1fbb58c0..00000000000
+--- a/.idea/libraries/studio_plugin_DevKit.xml
++++ /dev/null
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-DevKit">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/devkit/lib/devkit-jps.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/devkit/lib/devkit-runtimeModuleRepository-jps.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/devkit/lib/devkit.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_Git4Idea.xml b/.idea/libraries/studio_plugin_Git4Idea.xml
+deleted file mode 100644
+index 00c25874b0e..00000000000
+--- a/.idea/libraries/studio_plugin_Git4Idea.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-Git4Idea">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-git/lib/git4idea-rt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-git/lib/vcs-git.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_HtmlTools.xml b/.idea/libraries/studio_plugin_HtmlTools.xml
+deleted file mode 100644
+index 5e34667a623..00000000000
+--- a/.idea/libraries/studio_plugin_HtmlTools.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-HtmlTools">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/html-tools/lib/html-tools.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_JUnit.xml b/.idea/libraries/studio_plugin_JUnit.xml
+deleted file mode 100644
+index 3ddbe7f3bbc..00000000000
+--- a/.idea/libraries/studio_plugin_JUnit.xml
++++ /dev/null
+@@ -1,13 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-JUnit">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/junit/lib/junit-rt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/junit/lib/junit.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/junit/lib/junit5-rt.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_Subversion.xml b/.idea/libraries/studio_plugin_Subversion.xml
+deleted file mode 100644
+index 167cdae950d..00000000000
+--- a/.idea/libraries/studio_plugin_Subversion.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-Subversion">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-svn/lib/vcs-svn.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_TestNG_J.xml b/.idea/libraries/studio_plugin_TestNG_J.xml
+deleted file mode 100644
+index 55d7a122dfb..00000000000
+--- a/.idea/libraries/studio_plugin_TestNG_J.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-TestNG-J">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/testng/lib/testng-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/testng/lib/testng-rt.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.cidr.base.xml b/.idea/libraries/studio_plugin_com.intellij.cidr.base.xml
+deleted file mode 100644
+index 6bf78a17b5c..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.cidr.base.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.cidr.base">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/cidr-base-plugin/lib/cidr-base-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.cidr.debugger.xml b/.idea/libraries/studio_plugin_com.intellij.cidr.debugger.xml
+deleted file mode 100644
+index 26997863288..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.cidr.debugger.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.cidr.debugger">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/cidr-debugger-plugin/lib/cidr-debugger-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangd.xml b/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangd.xml
+deleted file mode 100644
+index 57350e11655..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangd.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.cidr.lang.clangd">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/c-clangd-plugin/lib/c-clangd-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangdBridge.xml b/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangdBridge.xml
+deleted file mode 100644
+index 8fafc50ba96..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.clangdBridge.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.cidr.lang.clangdBridge">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/c-clangdBridge-plugin/lib/c-clangdBridge-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.xml b/.idea/libraries/studio_plugin_com.intellij.cidr.lang.xml
+deleted file mode 100644
+index 4f6ad5252b4..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.cidr.lang.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.cidr.lang">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/c-plugin/lib/c-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.completion.ml.ranking.xml b/.idea/libraries/studio_plugin_com.intellij.completion.ml.ranking.xml
+deleted file mode 100644
+index dad35f1ee88..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.completion.ml.ranking.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.completion.ml.ranking">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/completionMlRanking/lib/completionMlRanking.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.configurationScript.xml b/.idea/libraries/studio_plugin_com.intellij.configurationScript.xml
+deleted file mode 100644
+index f24222ba49e..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.configurationScript.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.configurationScript">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/configurationScript/lib/configurationScript.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.copyright.xml b/.idea/libraries/studio_plugin_com.intellij.copyright.xml
+deleted file mode 100644
+index 07ecc81f817..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.copyright.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.copyright">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/copyright/lib/copyright.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.dev.xml b/.idea/libraries/studio_plugin_com.intellij.dev.xml
+deleted file mode 100644
+index fa70bf76e55..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.dev.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.dev">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/dev/lib/dev.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.gradle.xml b/.idea/libraries/studio_plugin_com.intellij.gradle.xml
+deleted file mode 100644
+index 5bd54c9a164..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.gradle.xml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.gradle">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle/lib/gradle-api-8.12.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle/lib/gradle-tooling-extension-api.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle/lib/gradle-tooling-extension-impl.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle/lib/gradle.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.java.ide.xml b/.idea/libraries/studio_plugin_com.intellij.java.ide.xml
+deleted file mode 100644
+index cd404f7d9a1..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.java.ide.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.java.ide">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-ide-customization/lib/java-ide-customization.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.java.xml b/.idea/libraries/studio_plugin_com.intellij.java.xml
+deleted file mode 100644
+index 5e351e800b0..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.java.xml
++++ /dev/null
+@@ -1,28 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.java">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/aether-dependency-resolver.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/debugger-memory-agent.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/java-frontback.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/java-impl.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/javac2.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jb-jdi.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jetbrains.kotlinx.metadata.jvm.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jgoodies-common.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jps-builders-6.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jps-builders.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jps-javac-extension.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jps-launcher.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jshell-frontend.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/jshell-protocol.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/maven-resolver-connector-basic.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/maven-resolver-transport-file.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/maven-resolver-transport-http.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/sa-jdwp.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.java_i18n.xml b/.idea/libraries/studio_plugin_com.intellij.java_i18n.xml
+deleted file mode 100644
+index 987e3af387c..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.java_i18n.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.java-i18n">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-i18n/lib/java-i18n.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.modules.json.xml b/.idea/libraries/studio_plugin_com.intellij.modules.json.xml
+deleted file mode 100644
+index 1a313ea0b93..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.modules.json.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.modules.json">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/json/lib/json-split.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/json/lib/json.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.platform.images.xml b/.idea/libraries/studio_plugin_com.intellij.platform.images.xml
+deleted file mode 100644
+index 6613bdabf6b..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.platform.images.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.platform.images">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/platform-images/lib/platform-images.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.plugins.eclipsekeymap.xml b/.idea/libraries/studio_plugin_com.intellij.plugins.eclipsekeymap.xml
+deleted file mode 100644
+index ec1b88f7159..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.plugins.eclipsekeymap.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.plugins.eclipsekeymap">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/keymap-eclipse/lib/keymap-eclipse.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.plugins.netbeanskeymap.xml b/.idea/libraries/studio_plugin_com.intellij.plugins.netbeanskeymap.xml
+deleted file mode 100644
+index c6d9c4933af..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.plugins.netbeanskeymap.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.plugins.netbeanskeymap">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/keymap-netbeans/lib/keymap-netbeans.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.plugins.visualstudiokeymap.xml b/.idea/libraries/studio_plugin_com.intellij.plugins.visualstudiokeymap.xml
+deleted file mode 100644
+index 1c01cebb707..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.plugins.visualstudiokeymap.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.plugins.visualstudiokeymap">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/keymap-visualStudio/lib/keymap-visualStudio.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.properties.xml b/.idea/libraries/studio_plugin_com.intellij.properties.xml
+deleted file mode 100644
+index 89a650a8b7a..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.properties.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.properties">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/properties/lib/properties.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.tasks.xml b/.idea/libraries/studio_plugin_com.intellij.tasks.xml
+deleted file mode 100644
+index f0d2bf868dc..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.tasks.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.tasks">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/tasks/lib/tasks-core.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.intellij.turboComplete.xml b/.idea/libraries/studio_plugin_com.intellij.turboComplete.xml
+deleted file mode 100644
+index be8670f1a27..00000000000
+--- a/.idea/libraries/studio_plugin_com.intellij.turboComplete.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.intellij.turboComplete">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/turboComplete/lib/turboComplete.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.jetbrains.performancePlugin.xml b/.idea/libraries/studio_plugin_com.jetbrains.performancePlugin.xml
+deleted file mode 100644
+index 49671c5cc92..00000000000
+--- a/.idea/libraries/studio_plugin_com.jetbrains.performancePlugin.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.jetbrains.performancePlugin">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/performanceTesting/lib/performanceTesting.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_com.jetbrains.sh.xml b/.idea/libraries/studio_plugin_com.jetbrains.sh.xml
+deleted file mode 100644
+index f96d8f73386..00000000000
+--- a/.idea/libraries/studio_plugin_com.jetbrains.sh.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-com.jetbrains.sh">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/sh/lib/sh.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_hg4idea.xml b/.idea/libraries/studio_plugin_hg4idea.xml
+deleted file mode 100644
+index 70ec0e7c9e2..00000000000
+--- a/.idea/libraries/studio_plugin_hg4idea.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-hg4idea">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-hg/lib/vcs-hg.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.java.featuresTrainer.xml b/.idea/libraries/studio_plugin_intellij.java.featuresTrainer.xml
+deleted file mode 100644
+index 89fca93ffe8..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.java.featuresTrainer.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.java.featuresTrainer">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/modules/intellij.java.featuresTrainer.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.java.structuralSearch.xml b/.idea/libraries/studio_plugin_intellij.java.structuralSearch.xml
+deleted file mode 100644
+index 5c9c5762b11..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.java.structuralSearch.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.java.structuralSearch">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/modules/intellij.java.structuralSearch.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.java.unscramble.xml b/.idea/libraries/studio_plugin_intellij.java.unscramble.xml
+deleted file mode 100644
+index c28e9db42c0..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.java.unscramble.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.java.unscramble">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/modules/intellij.java.unscramble.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.java.vcs.xml b/.idea/libraries/studio_plugin_intellij.java.vcs.xml
+deleted file mode 100644
+index 0906b57f45f..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.java.vcs.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.java.vcs">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/modules/intellij.java.vcs.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.jvm.analysis.impl.xml b/.idea/libraries/studio_plugin_intellij.jvm.analysis.impl.xml
+deleted file mode 100644
+index 86228b87552..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.jvm.analysis.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.jvm.analysis.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java/lib/modules/intellij.jvm.analysis.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.compose.desktop.xml b/.idea/libraries/studio_plugin_intellij.libraries.compose.desktop.xml
+deleted file mode 100644
+index d1ebf456c44..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.compose.desktop.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.compose.desktop">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.compose.desktop.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.grpc.netty.shaded.xml b/.idea/libraries/studio_plugin_intellij.libraries.grpc.netty.shaded.xml
+deleted file mode 100644
+index 685205c56e7..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.grpc.netty.shaded.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.grpc.netty.shaded">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.grpc.netty.shaded.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.grpc.xml b/.idea/libraries/studio_plugin_intellij.libraries.grpc.xml
+deleted file mode 100644
+index 3f3771633d8..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.grpc.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.grpc">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.grpc.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.cio.xml b/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.cio.xml
+deleted file mode 100644
+index 3221afb7729..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.cio.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.ktor.client.cio">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.ktor.client.cio.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.xml b/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.xml
+deleted file mode 100644
+index f43f7a227b9..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.ktor.client.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.ktor.client">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.ktor.client.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.microba.xml b/.idea/libraries/studio_plugin_intellij.libraries.microba.xml
+deleted file mode 100644
+index 6ae8648c375..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.microba.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.microba">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.microba.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.libraries.skiko.xml b/.idea/libraries/studio_plugin_intellij.libraries.skiko.xml
+deleted file mode 100644
+index 754716b3a60..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.libraries.skiko.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.libraries.skiko">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.libraries.skiko.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.markdown.compose.preview.xml b/.idea/libraries/studio_plugin_intellij.markdown.compose.preview.xml
+deleted file mode 100644
+index 297eba95526..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.markdown.compose.preview.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.markdown.compose.preview">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/markdown/lib/modules/intellij.markdown.compose.preview.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.clouds.xml b/.idea/libraries/studio_plugin_intellij.platform.clouds.xml
+deleted file mode 100644
+index 6523cbaace0..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.clouds.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.clouds">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.clouds.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.collaborationTools.xml b/.idea/libraries/studio_plugin_intellij.platform.collaborationTools.xml
+deleted file mode 100644
+index 61749ce48d8..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.collaborationTools.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.collaborationTools">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.collaborationTools.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.compose.xml b/.idea/libraries/studio_plugin_intellij.platform.compose.xml
+deleted file mode 100644
+index b95ef79edd2..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.compose.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.compose">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.compose.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.coverage.agent.xml b/.idea/libraries/studio_plugin_intellij.platform.coverage.agent.xml
+deleted file mode 100644
+index 6d220b72181..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.coverage.agent.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.coverage.agent">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.coverage.agent.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.coverage.xml b/.idea/libraries/studio_plugin_intellij.platform.coverage.xml
+deleted file mode 100644
+index 0b111c959e3..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.coverage.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.coverage">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.coverage.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.backend.xml
+deleted file mode 100644
+index ed732e6cb80..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.debugger.impl.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.debugger.impl.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.frontend.xml b/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.frontend.xml
+deleted file mode 100644
+index e05698e17bb..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.debugger.impl.frontend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.debugger.impl.frontend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.debugger.impl.frontend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezeAnalyzer.xml b/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezeAnalyzer.xml
+deleted file mode 100644
+index c1c059fddc0..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezeAnalyzer.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.diagnostic.freezeAnalyzer">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.diagnostic.freezeAnalyzer.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezes.xml b/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezes.xml
+deleted file mode 100644
+index 03bf7f7ed58..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.diagnostic.freezes.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.diagnostic.freezes">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.diagnostic.freezes.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.execution.dashboard.xml b/.idea/libraries/studio_plugin_intellij.platform.execution.dashboard.xml
+deleted file mode 100644
+index e0a22c06437..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.execution.dashboard.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.execution.dashboard">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.execution.dashboard.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.execution.serviceView.xml b/.idea/libraries/studio_plugin_intellij.platform.execution.serviceView.xml
+deleted file mode 100644
+index f0fcc51b709..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.execution.serviceView.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.execution.serviceView">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.execution.serviceView.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.frontend.xml b/.idea/libraries/studio_plugin_intellij.platform.frontend.xml
+deleted file mode 100644
+index a41ca64acc6..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.frontend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.frontend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.frontend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.images.backend.svg.xml b/.idea/libraries/studio_plugin_intellij.platform.images.backend.svg.xml
+deleted file mode 100644
+index a8f400f2489..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.images.backend.svg.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.images.backend.svg">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.images.backend.svg.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.images.copyright.xml b/.idea/libraries/studio_plugin_intellij.platform.images.copyright.xml
+deleted file mode 100644
+index 2c9c88d7b52..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.images.copyright.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.images.copyright">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.images.copyright.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.inline.completion.xml b/.idea/libraries/studio_plugin_intellij.platform.inline.completion.xml
+deleted file mode 100644
+index a0d4357afc1..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.inline.completion.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.inline.completion">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.inline.completion.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.kernel.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.kernel.backend.xml
+deleted file mode 100644
+index ed6ba5dcafa..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.kernel.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.kernel.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.kernel.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.lvcs.impl.xml b/.idea/libraries/studio_plugin_intellij.platform.lvcs.impl.xml
+deleted file mode 100644
+index 7de857dd42f..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.lvcs.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.lvcs.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.lvcs.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.navbar.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.navbar.backend.xml
+deleted file mode 100644
+index 1bdff4db883..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.navbar.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.navbar.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.navbar.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.navbar.frontend.xml b/.idea/libraries/studio_plugin_intellij.platform.navbar.frontend.xml
+deleted file mode 100644
+index 0717693dc23..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.navbar.frontend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.navbar.frontend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.navbar.frontend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.navbar.monolith.xml b/.idea/libraries/studio_plugin_intellij.platform.navbar.monolith.xml
+deleted file mode 100644
+index 2ad2d7716bb..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.navbar.monolith.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.navbar.monolith">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.navbar.monolith.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.navbar.xml b/.idea/libraries/studio_plugin_intellij.platform.navbar.xml
+deleted file mode 100644
+index 5e802e1a6d3..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.navbar.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.navbar">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.navbar.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.progress.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.progress.backend.xml
+deleted file mode 100644
+index 37cea452e21..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.progress.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.progress.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.progress.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.project.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.project.backend.xml
+deleted file mode 100644
+index 405e27b7b39..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.project.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.project.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.project.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.rpc.backend.xml b/.idea/libraries/studio_plugin_intellij.platform.rpc.backend.xml
+deleted file mode 100644
+index d46c17d4a82..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.rpc.backend.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.rpc.backend">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.rpc.backend.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.settings.local.xml b/.idea/libraries/studio_plugin_intellij.platform.settings.local.xml
+deleted file mode 100644
+index 3d4ea615716..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.settings.local.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.settings.local">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.settings.local.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.smRunner.vcs.xml b/.idea/libraries/studio_plugin_intellij.platform.smRunner.vcs.xml
+deleted file mode 100644
+index 4b60f938392..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.smRunner.vcs.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.smRunner.vcs">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.smRunner.vcs.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.vcs.dvcs.impl.xml b/.idea/libraries/studio_plugin_intellij.platform.vcs.dvcs.impl.xml
+deleted file mode 100644
+index bc93dbfd08c..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.vcs.dvcs.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.vcs.dvcs.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.vcs.dvcs.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.vcs.impl.xml b/.idea/libraries/studio_plugin_intellij.platform.vcs.impl.xml
+deleted file mode 100644
+index b54aaa4bf85..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.vcs.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.vcs.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.vcs.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.platform.vcs.log.impl.xml b/.idea/libraries/studio_plugin_intellij.platform.vcs.log.impl.xml
+deleted file mode 100644
+index dcdb9383417..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.platform.vcs.log.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.platform.vcs.log.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.platform.vcs.log.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.rml.dfa.impl.xml b/.idea/libraries/studio_plugin_intellij.rml.dfa.impl.xml
+deleted file mode 100644
+index 3576999822a..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.rml.dfa.impl.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.rml.dfa.impl">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.rml.dfa.impl.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.settingsSync.core.xml b/.idea/libraries/studio_plugin_intellij.settingsSync.core.xml
+deleted file mode 100644
+index 44b8f67d66f..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.settingsSync.core.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.settingsSync.core">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.settingsSync.core.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.smart.update.xml b/.idea/libraries/studio_plugin_intellij.smart.update.xml
+deleted file mode 100644
+index beeba4271c5..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.smart.update.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.smart.update">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/lib/modules/intellij.smart.update.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.turboComplete.languages.kotlin.xml b/.idea/libraries/studio_plugin_intellij.turboComplete.languages.kotlin.xml
+deleted file mode 100644
+index c2a73854ba7..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.turboComplete.languages.kotlin.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.turboComplete.languages.kotlin">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/turboComplete/lib/modules/intellij.turboComplete.languages.kotlin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_intellij.webp.xml b/.idea/libraries/studio_plugin_intellij.webp.xml
+deleted file mode 100644
+index d1423caafee..00000000000
+--- a/.idea/libraries/studio_plugin_intellij.webp.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-intellij.webp">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/webp/lib/webp.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.editorconfig.editorconfigjetbrains.xml b/.idea/libraries/studio_plugin_org.editorconfig.editorconfigjetbrains.xml
+deleted file mode 100644
+index d18ff3cca15..00000000000
+--- a/.idea/libraries/studio_plugin_org.editorconfig.editorconfigjetbrains.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.editorconfig.editorconfigjetbrains">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/editorconfig/lib/editorconfig.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.intellij.groovy.xml b/.idea/libraries/studio_plugin_org.intellij.groovy.xml
+deleted file mode 100644
+index 4c22c0d0c27..00000000000
+--- a/.idea/libraries/studio_plugin_org.intellij.groovy.xml
++++ /dev/null
+@@ -1,16 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.intellij.groovy">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/Groovy.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/groovy-constants-rt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/groovy-jps.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/groovy-rt-class-loader.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/groovy-rt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Groovy/lib/groovy-spock-rt.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.intellij.intelliLang.xml b/.idea/libraries/studio_plugin_org.intellij.intelliLang.xml
+deleted file mode 100644
+index 4167ea4fe78..00000000000
+--- a/.idea/libraries/studio_plugin_org.intellij.intelliLang.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.intellij.intelliLang">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/platform-langInjection/lib/java-langInjection-jps.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/platform-langInjection/lib/platform-langInjection.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.intellij.plugins.markdown.xml b/.idea/libraries/studio_plugin_org.intellij.plugins.markdown.xml
+deleted file mode 100644
+index 3d30515bb26..00000000000
+--- a/.idea/libraries/studio_plugin_org.intellij.plugins.markdown.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.intellij.plugins.markdown">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/markdown/lib/markdown.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.debugger.streams.xml b/.idea/libraries/studio_plugin_org.jetbrains.debugger.streams.xml
+deleted file mode 100644
+index cd6daf97845..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.debugger.streams.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.debugger.streams">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-debugger-streams/lib/java-debugger-streams.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.model.xml b/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.model.xml
+deleted file mode 100644
+index 5d9a3c8d493..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.model.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.idea.maven.model">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/maven-model/lib/maven-model.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.server.api.xml b/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.server.api.xml
+deleted file mode 100644
+index 2593cab3c7d..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.idea.maven.server.api.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.idea.maven.server.api">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/maven-server/lib/maven-server.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.idea.reposearch.xml b/.idea/libraries/studio_plugin_org.jetbrains.idea.reposearch.xml
+deleted file mode 100644
+index a4cbdd9eada..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.idea.reposearch.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.idea.reposearch">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/repository-search/lib/repository-search.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.java.decompiler.xml b/.idea/libraries/studio_plugin_org.jetbrains.java.decompiler.xml
+deleted file mode 100644
+index fc0681b1a9a..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.java.decompiler.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.java.decompiler">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/java-decompiler/lib/java-decompiler.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.kotlin.xml b/.idea/libraries/studio_plugin_org.jetbrains.kotlin.xml
+deleted file mode 100644
+index bca96a457ff..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.kotlin.xml
++++ /dev/null
+@@ -1,29 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.kotlin">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlin-base-jps.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlin-gradle-tooling.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlin-plugin-shared.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlin-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.allopen-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.android-extensions-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.assignment-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.compose-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.js-plain-objects-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.kotlin-compiler-common.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.kotlin-compiler-fe10.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.kotlin-compiler-ir.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.kotlin-jps-common.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.kotlinx-serialization-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.lombok-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.noarg-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.parcelize-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.sam-with-receiver-compiler-plugin.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/Kotlin/lib/kotlinc.scripting-compiler-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangConfig.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangConfig.xml
+deleted file mode 100644
+index b71cefe8e93..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangConfig.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.clangConfig">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/cidr-clangConfig-plugin/lib/cidr-clangConfig-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangFormat.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangFormat.xml
+deleted file mode 100644
+index 315ab3601fc..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.clangFormat.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.clangFormat">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/cidr-clangFormat-plugin/lib/cidr-clangFormat-plugin.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.emojipicker.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.emojipicker.xml
+deleted file mode 100644
+index 07d751cdcbd..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.emojipicker.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.emojipicker">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/emojipicker/lib/emojipicker.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.github.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.github.xml
+deleted file mode 100644
+index 6505ba1be8c..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.github.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.github">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-github-community/lib/vcs-github.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.gitlab.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.gitlab.xml
+deleted file mode 100644
+index 7e00e0b2587..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.gitlab.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.gitlab">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/vcs-gitlab/lib/vcs-gitlab.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.gradle.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.gradle.xml
+deleted file mode 100644
+index a2c27cc935f..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.gradle.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.gradle">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle-java/lib/gradle-java.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/gradle-java/lib/gradle-jps.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.terminal.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.terminal.xml
+deleted file mode 100644
+index 6c55448b039..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.terminal.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.terminal">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/terminal/lib/terminal.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.textmate.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.textmate.xml
+deleted file mode 100644
+index 14bde95241b..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.textmate.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.textmate">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/textmate/lib/textmate.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.jetbrains.plugins.yaml.xml b/.idea/libraries/studio_plugin_org.jetbrains.plugins.yaml.xml
+deleted file mode 100644
+index 5194a6b21fe..00000000000
+--- a/.idea/libraries/studio_plugin_org.jetbrains.plugins.yaml.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.jetbrains.plugins.yaml">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/yaml/lib/yaml-editing.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/yaml/lib/yaml.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/.idea/libraries/studio_plugin_org.toml.lang.xml b/.idea/libraries/studio_plugin_org.toml.lang.xml
+deleted file mode 100644
+index c14fbcb08c1..00000000000
+--- a/.idea/libraries/studio_plugin_org.toml.lang.xml
++++ /dev/null
+@@ -1,11 +0,0 @@
+-<component name="libraryTable">
+-  <library name="studio-plugin-org.toml.lang">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/$SDK_PLATFORM$/plugins/toml/lib/toml.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../../prebuilts/studio/intellij-sdk/AI/android-studio-sources.zip!/" />
+-    </SOURCES>
+-  </library>
+-</component>
+\ No newline at end of file
+diff --git a/studio/studio-sdk-all-plugins.iml b/studio/studio-sdk-all-plugins.iml
+index dfea226ea5f..1a7d0c7b1f9 100644
+--- a/studio/studio-sdk-all-plugins.iml
++++ b/studio/studio-sdk-all-plugins.iml
+@@ -4,102 +4,5 @@
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+     <orderEntry type="library" scope="RUNTIME" name="studio-sdk" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-Coverage" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-DevKit" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-Git4Idea" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-HtmlTools" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-JUnit" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-Subversion" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-TestNG-J" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.cidr.base" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.cidr.debugger" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.cidr.lang" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.cidr.lang.clangd" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.cidr.lang.clangdBridge" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.completion.ml.ranking" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.configurationScript" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.copyright" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.dev" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.gradle" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.java" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.java-i18n" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.java.ide" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.modules.json" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.platform.images" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.plugins.eclipsekeymap" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.plugins.netbeanskeymap" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.plugins.visualstudiokeymap" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.properties" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.tasks" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.intellij.turboComplete" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.jetbrains.performancePlugin" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-com.jetbrains.sh" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-hg4idea" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.java.featuresTrainer" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.java.structuralSearch" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.java.unscramble" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.java.vcs" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.jvm.analysis.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.compose.desktop" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.grpc" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.grpc.netty.shaded" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.ktor.client" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.ktor.client.cio" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.microba" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.libraries.skiko" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.markdown.compose.preview" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.clouds" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.collaborationTools" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.compose" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.coverage" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.coverage.agent" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.debugger.impl.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.debugger.impl.frontend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.diagnostic.freezeAnalyzer" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.diagnostic.freezes" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.execution.dashboard" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.execution.serviceView" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.frontend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.images.backend.svg" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.images.copyright" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.inline.completion" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.kernel.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.lvcs.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.navbar" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.navbar.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.navbar.frontend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.navbar.monolith" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.progress.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.project.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.rpc.backend" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.settings.local" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.smRunner.vcs" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.vcs.dvcs.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.vcs.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.platform.vcs.log.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.rml.dfa.impl" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.settingsSync.core" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.smart.update" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.turboComplete.languages.kotlin" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-intellij.webp" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.editorconfig.editorconfigjetbrains" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.intellij.groovy" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.intellij.intelliLang" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.intellij.plugins.markdown" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.debugger.streams" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.idea.maven.model" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.idea.maven.server.api" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.idea.reposearch" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.java.decompiler" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.kotlin" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.clangConfig" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.clangFormat" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.github" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.gitlab" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.gradle" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.terminal" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.textmate" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.jetbrains.plugins.yaml" level="project" />
+-    <orderEntry type="library" scope="RUNTIME" name="studio-plugin-org.toml.lang" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+-- 
+2.25.1
+

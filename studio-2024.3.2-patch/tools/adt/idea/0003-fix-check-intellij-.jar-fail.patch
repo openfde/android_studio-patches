@@ -1,7 +1,7 @@
 From d96f6f16cc27efeb6cad99cb77e05ff5fde89cdb Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Wed, 17 Sep 2025 14:40:36 +0800
-Subject: [PATCH 3/3] fix check intellij:*.jar fail
+Subject: [PATCH 3/5] fix check intellij:*.jar fail
 
 Change-Id: Ia8b3c4f44c3dd9eb94b325c64f1abad9a05d6150
 ---

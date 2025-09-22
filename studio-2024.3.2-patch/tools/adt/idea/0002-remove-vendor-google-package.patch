@@ -1,7 +1,7 @@
 From 4780e50f5db150354852d2acbb6538dddcfd613d Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Wed, 17 Sep 2025 10:03:00 +0800
-Subject: [PATCH 2/3] remove vendor/google package
+Subject: [PATCH 2/5] remove vendor/google package
 
 Change-Id: Ib10508119a96cd149f9b97e0cdce66f65108738d
 ---

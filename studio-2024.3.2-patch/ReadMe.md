@@ -1,5 +1,6 @@
 
 ## studio-2024.3.2/tools/studio/google/cloud/testing
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/tools/studio/google/cloud/testing$ git log
 commit 3f2e5baefff6cf8a9e1b069b42cb192c1e3f3fa9 (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Fri Sep 19 10:49:17 2025 +0800
@@ -17,15 +18,8 @@ Date:   Thu Sep 18 15:02:32 2025 +0800
     Change-Id: Ifa1140e88851f3d38786b19fc0b0444e5d02005c
 
 ## studio-2024.3.2/tools/adt/idea
-commit 318596ad22de984a8da6520bb81d377d058e4aa2 (HEAD -> studio-2024.3.2)
-Author: pngcui <pngcui1224@163.com>
-Date:   Fri Sep 19 10:46:10 2025 +0800
-
-    update BUILD
-
-    Change-Id: Ic9c4df3abd51dda30f92eaddd2a4d6a98d2b1d97
-
-commit d376e8338f0dec73f3221afeb58340a9b95bae4c
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/tools/adt/idea$ git log
+commit d376e8338f0dec73f3221afeb58340a9b95bae4c (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Thu Sep 18 16:58:54 2025 +0800
 
@@ -59,16 +53,8 @@ Date:   Mon Sep 15 09:36:13 2025 +0800
 
 
 ## studio-2024.3.2/tools/base
-pengc@phytium:/aosp2/pengcui/studio-2024.3.2/tools/base$ git log
-commit e842bc41083d5d835f680888194bc5cfe3f15b93 (HEAD -> studio-2024.3.2)
-Author: pngcui <pngcui1224@163.com>
-Date:   Fri Sep 19 10:47:38 2025 +0800
-
-    update BUILD
-
-    Change-Id: Ie61dd1eadbffacc4af04e30d447aa711b9036c9c
-
-commit 491f27a6e19e1a23548d618beb63592e98a5e2d8
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/tools/base$ git log
+commit 491f27a6e19e1a23548d618beb63592e98a5e2d8 (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Wed Sep 17 14:37:53 2025 +0800
 
@@ -85,16 +71,8 @@ Date:   Mon Sep 15 09:30:17 2025 +0800
     Change-Id: I2c74bf18073454a63d687af72c7585c98c9e1f0a
 
 ## studio-2024.3.2/tools/idea
-pengc@phytium:/aosp2/pengcui/studio-2024.3.2/tools/idea$ git log
-commit f9fcb2b50b852eaf83de3f4f473ac94d9f5fa0bf (HEAD -> studio-2024.3.2)
-Author: pngcui <pngcui1224@163.com>
-Date:   Thu Sep 18 16:59:22 2025 +0800
-
-    add build after mod
-
-    Change-Id: Idb164db5d2a07784eb80c957b10e5f4ff875e7c1
-
-commit 53c0cc5fe0f108b5a17f6238418f6e596a96b4dd
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/tools/idea$ git log
+commit 53c0cc5fe0f108b5a17f6238418f6e596a96b4dd (HEAD -> studio-2024.3.2)
 Author: pengcui <pngcui1224@163.com>
 Date:   Tue Sep 9 14:08:34 2025 +0800
 
@@ -120,7 +98,7 @@ Date:   Tue Sep 9 14:03:49 2025 +0800
 
 
 ## studio-2024.3.2/build/bazel
-studio-2024.3.2/build/bazel$ git log
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/build/bazel$ git log
 commit b918263d32f3e98f5b18d3e0952565ccf6f31e95 (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Mon Sep 15 16:58:36 2025 +0800
@@ -131,7 +109,7 @@ Date:   Mon Sep 15 16:58:36 2025 +0800
 
 
 ## studio-2024.3.2/external/jetbrains/kotlin
-studio-2024.3.2/external/jetbrains/kotlin$ git log
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/external/jetbrains/kotlin$ git log
 commit d14af62f913fd41c8baf96c8995fa14ceae1f272 (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Mon Sep 15 09:28:23 2025 +0800
@@ -148,42 +126,8 @@ Date:   Tue Sep 9 14:10:40 2025 +0800
 
     Change-Id: I9e4ec0d29a655f5be49b6e196ed7660682f986f0
 
-
-## studio-2024.3.2/prebuilts/clang/host/linux-x86
-studio-2024.3.2/prebuilts/clang/host/linux-x86$ git log
-commit 036cc7c37cb361a2c4dbeeb5c912d65108d9353b (HEAD -> studio-2024.3.2)
-Author: pengcui <pngcui1224@163.com>
-Date:   Thu Sep 4 11:37:47 2025 +0800
-
-    support clang-r536225 for aarch64
-
-    Change-Id: Ib5eb142931f5f81475a7d5698efa3cd623c5924a
-
-
-## studio-2024.3.2/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8
-studio-2024.3.2/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8$ git log
-commit 4c47386c3ef8e4861119dc09dd62c8aede69ea2b (HEAD -> studio-2024.3.2)
-Author: pngcui <pngcui1224@163.com>
-Date:   Wed Sep 17 09:11:57 2025 +0800
-
-    support aarch64 gcc lib
-
-    Change-Id: I19e52c9370028a44fe9f98711123ebf9877cd05e
-
-
-## studio-2024.3.2/prebuilts/studio/jdk
-studio-2024.3.2/prebuilts/studio/jdk$ git log
-commit f7932e5c8dba03681fca3df3361324421fe86c74 (HEAD -> studio-2024.3.2)
-Author: pengcui <pngcui1224@163.com>
-Date:   Thu Sep 4 13:50:37 2025 +0800
-
-    add jdk17 for aarch64
-
-    Change-Id: I158227dfc740e9d71be69a42164692c1155360ee
-
-
 ## studio-2024.3.2/prebuilts/tools
-studio-2024.3.2/prebuilts/tools$ git log
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/prebuilts/tools$ git log
 commit 28b0e3a31d1d7c2fa9f50112e2b7ef46d1a9710d (HEAD -> studio-2024.3.2)
 Author: pngcui <pngcui1224@163.com>
 Date:   Thu Sep 18 16:56:32 2025 +0800
@@ -199,4 +143,37 @@ Date:   Mon Sep 15 09:29:29 2025 +0800
     add bazelisk for linux arm64
 
     Change-Id: I9e79d810487e20dfb5108ea001cd81c167156e65
+
+## studio-2024.3.2/prebuilts/clang/host/linux-x86
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/prebuilts/clang/host/linux-x86$ git log
+commit 036cc7c37cb361a2c4dbeeb5c912d65108d9353b (HEAD -> studio-2024.3.2)
+Author: pengcui <pngcui1224@163.com>
+Date:   Thu Sep 4 11:37:47 2025 +0800
+
+    support clang-r536225 for aarch64
+
+    Change-Id: Ib5eb142931f5f81475a7d5698efa3cd623c5924a
+
+
+## studio-2024.3.2/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8$ git log
+commit 4c47386c3ef8e4861119dc09dd62c8aede69ea2b (HEAD -> studio-2024.3.2)
+Author: pngcui <pngcui1224@163.com>
+Date:   Wed Sep 17 09:11:57 2025 +0800
+
+    support aarch64 gcc lib
+
+    Change-Id: I19e52c9370028a44fe9f98711123ebf9877cd05e
+
+
+## studio-2024.3.2/prebuilts/studio/jdk
+openfde@08f59ccd4795:/openfde/studio-2024.3.2/prebuilts/studio/jdk$ git log
+commit f7932e5c8dba03681fca3df3361324421fe86c74 (HEAD -> studio-2024.3.2)
+Author: pengcui <pngcui1224@163.com>
+Date:   Thu Sep 4 13:50:37 2025 +0800
+
+    add jdk17 for aarch64
+
+    Change-Id: I158227dfc740e9d71be69a42164692c1155360ee
+
 
