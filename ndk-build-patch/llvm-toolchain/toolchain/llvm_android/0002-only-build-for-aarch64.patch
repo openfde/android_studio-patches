@@ -1,0 +1,200 @@
+From 60abecfdf84ce65eac1d83473c6284edf684a55f Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Mon, 22 Sep 2025 11:38:41 +0800
+Subject: [PATCH 2/2] only build for aarch64
+
+Change-Id: I0656b81b81ed80ffa02867de4364a67c66b09872
+---
+ base_builders.py | 14 +++++++-------
+ builders.py      | 32 ++++++++++++++++----------------
+ configs.py       | 19 ++++++++-----------
+ constants.py     |  2 +-
+ paths.py         |  2 +-
+ 5 files changed, 33 insertions(+), 36 deletions(-)
+
+diff --git a/base_builders.py b/base_builders.py
+index 5f835e0..eb0c382 100755
+--- a/base_builders.py
++++ b/base_builders.py
+@@ -736,11 +736,11 @@ class LLVMBuilder(LLVMBaseBuilder):
+ 
+         if self._config.target_os.is_linux:
+             runtime_configs = [self._config]
+-            if self.build_32bit_runtimes:
+-                if self._config.is_musl:
+-                    runtime_configs.append(configs.LinuxMuslHostConfig(hosts.Arch.I386))
+-                else:
+-                    runtime_configs.append(configs.LinuxConfig(is_32_bit=True))
++            # if self.build_32bit_runtimes:
++            #     if self._config.is_musl:
++            #         runtime_configs.append(configs.LinuxMuslHostConfig(hosts.Arch.I386))
++            #     else:
++            #         runtime_configs.append(configs.LinuxConfig(is_32_bit=True))
+ 
+             self.runtimes_triples = list(_config.llvm_triple for _config in runtime_configs)
+             triples = ';'.join(self.runtimes_triples)
+@@ -750,8 +750,8 @@ class LLVMBuilder(LLVMBaseBuilder):
+             # With per-target runtime dirs, clang no longer links the builtins
+             # for the glibc triple when targetting musl.  In the glibc
+             # configuration, build the musl builtins as well.
+-            if self.build_32bit_runtimes and not self._config.is_musl:
+-                defines['LLVM_BUILTIN_TARGETS'] = triples + ';x86_64-unknown-linux-musl;i686-unknown-linux-musl'
++            # if self.build_32bit_runtimes and not self._config.is_musl:
++            #     defines['LLVM_BUILTIN_TARGETS'] = triples + ';x86_64-unknown-linux-musl;i686-unknown-linux-musl'
+ 
+             # We need to explicitly propagate some CMake flags to the runtimes
+             # CMake invocation that builds compiler-rt, libcxx, and other
+diff --git a/builders.py b/builders.py
+index 761cdc3..30e228e 100755
+--- a/builders.py
++++ b/builders.py
+@@ -283,19 +283,19 @@ class BuiltinsBuilder(base_builders.LLVMRuntimeBuilder):
+     def config_list(self) -> List[configs.Config]:
+         result = configs.android_configs(platform=False)
+         # There is no NDK for riscv64, use the platform config instead.
+-        riscv64 = configs.AndroidRiscv64Config()
+-        riscv64.platform = True
+-        result.append(riscv64)
++        # riscv64 = configs.AndroidRiscv64Config()
++        # riscv64.platform = True
++        # result.append(riscv64)
+         result.append(configs.BaremetalAArch64Config())
+         # For arm32 and x86, build a special version of the builtins library
+         # where the symbols are exported, not hidden. This version is needed
+         # to continue exporting builtins from libc.so and libm.so.
+-        for arch in [configs.AndroidARMConfig(), configs.AndroidI386Config()]:
+-            arch.platform = False
+-            arch.extra_config = {'is_exported': True}
+-            result.append(arch)
++        # for arch in [configs.AndroidARMConfig(), configs.AndroidI386Config()]:
++        #     arch.platform = False
++        #     arch.extra_config = {'is_exported': True}
++        #     result.append(arch)
+         result.append(configs.LinuxMuslConfig(hosts.Arch.AARCH64))
+-        result.append(configs.LinuxMuslConfig(hosts.Arch.ARM))
++        # result.append(configs.LinuxMuslConfig(hosts.Arch.ARM))
+         return result
+ 
+     @property
+@@ -530,11 +530,11 @@ class LibUnwindBuilder(base_builders.LLVMRuntimeBuilder):
+         # riscv64 needs a copy with hidden symbols for use while building
+         # the runtimes, but doesn't have an NDK sysroot.  Make a copy
+         # targeting the platform with hidden symbols.
+-        riscv64 = configs.AndroidRiscv64Config()
+-        riscv64.platform = True
+-        riscv64.extra_config = {'is_exported': False}
++        # riscv64 = configs.AndroidRiscv64Config()
++        # riscv64.platform = True
++        # riscv64.extra_config = {'is_exported': False}
+ 
+-        result.append(riscv64)
++        # result.append(riscv64)
+ 
+         return result
+ 
+@@ -923,10 +923,10 @@ class DeviceSysrootsBuilder(base_builders.Builder):
+             if arch != hosts.Arch.RISCV64:
+                 # Remove the STL headers.
+                 shutil.rmtree(sysroot / 'usr' / 'include' / 'c++')
+-        else:
+-            # Add the android_support headers from usr/local/include.
+-            shutil.copytree(src_sysroot / 'usr' / 'local' / 'include',
+-                            sysroot / 'usr' / 'local' / 'include', symlinks=True)
++        # else:
++        #     # Add the android_support headers from usr/local/include.
++        #     shutil.copytree(src_sysroot / 'usr' / 'local' / 'include',
++        #                     sysroot / 'usr' / 'local' / 'include', symlinks=True)
+ 
+         # Copy over usr/lib/$TRIPLE.
+         src_lib = src_sysroot / 'usr' / 'lib' / config.ndk_sysroot_triple
+diff --git a/configs.py b/configs.py
+index 37c9045..fe914b0 100755
+--- a/configs.py
++++ b/configs.py
+@@ -219,7 +219,7 @@ class LinuxConfig(_GccConfig):
+ 
+     @property
+     def llvm_triple(self) -> str:
+-        return 'i386-unknown-linux-gnu' if self.is_32_bit else 'arm64-unknown-linux-gnu'
++        return 'arm64-unknown-linux-gnu'
+ 
+     @property
+     def cflagsS(self) -> List[str]:
+@@ -482,11 +482,7 @@ class AndroidConfig(_BaseConfig):
+     def ndk_arch(self) -> str:
+         """Converts to ndk arch."""
+         return {
+-            hosts.Arch.ARM: 'arm',
+             hosts.Arch.AARCH64: 'arm64',
+-            hosts.Arch.I386: 'x86',
+-            hosts.Arch.RISCV64: 'riscv64',
+-            hosts.Arch.X86_64: 'x86_64',
+         }[self.target_arch]
+ 
+     @property
+@@ -599,6 +595,11 @@ class AndroidAArch64Config(AndroidConfig):
+     def cflags(self) -> List[str]:
+         cflags = super().cflags
+         cflags.append('-mbranch-protection=standard')
++        cflags.append('--sysroot=/openfde/build-tools/ndk-build/llvm-toolchain/out/sysroots/ndk/arm64')
++        cflags.append('-isystem=/openfde/build-tools/ndk-build/llvm-toolchain/out/sysroots/ndk/arm64/usr/include')
++        cflags.append('-I/openfde/build-tools/ndk-build/llvm-toolchain/out/sysroots/ndk/arm64/usr/include/c++/v1/')
++        cflags.append('-I/openfde/build-tools/ndk-build/llvm-toolchain/out/sysroots/ndk/arm64/usr/include/aarch64-linux-android')
++        cflags.append('-L/openfde/build-tools/ndk-build/llvm-toolchain/out/sysroots/ndk/arm64/usr/lib')
+         return cflags
+ 
+ 
+@@ -658,14 +659,11 @@ def android_configs(platform: bool=True,
+                     extra_config=None) -> List[Config]:
+     """Returns a list of configs for android builds."""
+     configs = [
+-        AndroidARMConfig(),
+         AndroidAArch64Config(),
+-        AndroidI386Config(),
+-        AndroidX64Config(),
+     ]
+     # There is no NDK for riscv64, only include it in platform configs.
+-    if platform:
+-        configs.append(AndroidRiscv64Config())
++    # if platform:
++    #     configs.append(AndroidRiscv64Config())
+     for config in configs:
+         config.static = static
+         config.platform = platform
+@@ -679,7 +677,6 @@ def android_ndk_tsan_configs() -> List[Config]:
+     """Returns a list of configs for android builds."""
+     configs = [
+         AndroidAArch64Config(),
+-        AndroidX64Config(),
+     ]
+     for config in configs:
+         config.override_api_level = 24
+diff --git a/constants.py b/constants.py
+index a424533..19dd4d1 100755
+--- a/constants.py
++++ b/constants.py
+@@ -24,7 +24,7 @@ MAC_MIN_VERSION: str = '10.14'
+ CLANG_PREBUILT_VERSION: str = 'clang-r487747'
+ 
+ # This is the ndk version used to build runtimes.
+-NDK_VERSION: str = 'r25'
++NDK_VERSION: str = 'r27'
+ 
+ # Targets for host.
+ HOST_TARGETS: Set[str] = set(['X86'])
+diff --git a/paths.py b/paths.py
+index 76afa60..9d415d3 100755
+--- a/paths.py
++++ b/paths.py
+@@ -60,7 +60,7 @@ SWIG_SRC_DIR: Path = EXTERNAL_DIR / 'swig'
+ XZ_SRC_DIR: Path = TOOLCHAIN_DIR / 'xz'
+ ZSTD_SRC_DIR: Path = EXTERNAL_DIR / 'zstd'
+ 
+-NDK_BASE: Path = TOOLCHAIN_DIR / 'prebuilts' /'ndk' / constants.NDK_VERSION
++NDK_BASE: Path = TOOLCHAIN_DIR / 'prebuilts' /'ndk' / 'releases' / constants.NDK_VERSION
+ NDK_LIBCXX_HEADERS: Path = NDK_BASE / 'sources' / 'cxx-stl' / 'llvm-libc++'/ 'include'
+ NDK_LIBCXXABI_HEADERS: Path = NDK_BASE / 'sources' / 'cxx-stl' / 'llvm-libc++abi' / 'include'
+ NDK_SUPPORT_HEADERS: Path = NDK_BASE / 'sources' / 'android' / 'support' / 'include'
+-- 
+2.25.1
+
