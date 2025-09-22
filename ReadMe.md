@@ -8,3 +8,5 @@
 3.ndk-build-patch为编译ndk工具时修改的补丁
 
 4.layoutlib-patch为android14上编译layoutlib.jar的补丁
+
+5.platform-tools-patch为编译platform-tools-34.0.0版本修改的补丁
