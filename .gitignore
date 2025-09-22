@@ -1,6 +1,6 @@
 
 home/yourname/.gradle
 home/yourname/.m2
-studio-2024.3.2/prebuilts/clang/host/linux-x86/clang-r536225
-studio-2024.3.2/prebuilts/studio/jdk/jdk17
-studio-2024.3.2/prebuilts/studio/jdk/jdk8
+studio-2024.3.2-patch/prebuilts/clang/host/linux-x86/clang-r536225
+studio-2024.3.2-patch/prebuilts/studio/jdk/jdk17
+studio-2024.3.2-patch/prebuilts/studio/jdk/jdk8
