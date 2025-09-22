@@ -1,0 +1,70 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f21cf45..4faa00b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -193,6 +193,10 @@ endif ()
+ 
+ add_library(fmt ${FMT_SOURCES} ${FMT_HEADERS} README.rst ChangeLog.rst)
+ add_library(fmt::fmt ALIAS fmt)
++target_compile_options(fmt PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ if (HAVE_STRTOD_L)
+   target_compile_definitions(fmt PUBLIC FMT_LOCALE)
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 7ae5659..129d55f 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -10,26 +10,7 @@ add_library(gmock STATIC
+ target_compile_definitions(gmock PUBLIC GTEST_HAS_STD_WSTRING=1)
+ target_include_directories(gmock SYSTEM PUBLIC . gmock gtest)
+ 
+-find_package(Threads)
+-if (Threads_FOUND)
+-  target_link_libraries(gmock ${CMAKE_THREAD_LIBS_INIT})
+-else ()
+-  target_compile_definitions(gmock PUBLIC GTEST_HAS_PTHREAD=0)
+-endif ()
+-
+-target_compile_definitions(gmock PUBLIC GTEST_LANG_CXX11=0)
+ 
+-if (MSVC)
+-  # Workaround a bug in implementation of variadic templates in MSVC11.
+-  target_compile_definitions(gmock PUBLIC _VARIADIC_MAX=10)
+-  
+-  # Disable MSVC warnings of _CRT_INSECURE_DEPRECATE functions.
+-  target_compile_definitions(gmock PRIVATE _CRT_SECURE_NO_WARNINGS)
+-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+-    # Disable MSVC warnings of POSIX functions.
+-    target_compile_options(gmock PUBLIC -Wno-deprecated-declarations)
+-  endif ()
+-endif ()
+ 
+ # GTest doesn't detect <tuple> with clang.
+ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+@@ -117,23 +98,6 @@ if (NOT DEFINED MSVC_STATIC_RUNTIME AND MSVC)
+   endforeach()
+ endif()
+ 
+-if (NOT MSVC_STATIC_RUNTIME)
+-  add_fmt_executable(posix-mock-test
+-    posix-mock-test.cc ../src/format.cc ${TEST_MAIN_SRC})
+-  target_include_directories(
+-    posix-mock-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+-  target_link_libraries(posix-mock-test gmock)
+-  target_include_directories(posix-mock-test SYSTEM PUBLIC gtest gmock)
+-  if (FMT_PEDANTIC)
+-    target_compile_options(posix-mock-test PRIVATE ${PEDANTIC_COMPILE_FLAGS})
+-  endif ()
+-  if (HAVE_STRTOD_L)
+-    target_compile_definitions(posix-mock-test PRIVATE FMT_LOCALE)
+-  endif ()
+-  add_test(NAME posix-mock-test COMMAND posix-mock-test)
+-  add_fmt_test(os-test)
+-endif ()
+-
+ add_fmt_executable(header-only-test
+   header-only-test.cc header-only-test2.cc test-main.cc)
+ target_link_libraries(header-only-test gmock)

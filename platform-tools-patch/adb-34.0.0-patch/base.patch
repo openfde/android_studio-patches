@@ -1,0 +1,120 @@
+diff --git a/libs/androidfw/AssetManager2.cpp b/libs/androidfw/AssetManager2.cpp
+index 400829e1..28db78a8 100644
+--- a/libs/androidfw/AssetManager2.cpp
++++ b/libs/androidfw/AssetManager2.cpp
+@@ -1411,12 +1411,12 @@ Theme::Theme(AssetManager2* asset_manager) : asset_manager_(asset_manager) {
+ 
+ Theme::~Theme() = default;
+ 
+-struct Theme::Entry {
+-  uint32_t attr_res_id;
+-  ApkAssetsCookie cookie;
+-  uint32_t type_spec_flags;
+-  Res_value value;
+-};
++// struct Theme::Entry {
++//   uint32_t attr_res_id;
++//   ApkAssetsCookie cookie;
++//   uint32_t type_spec_flags;
++//   Res_value value;
++// };
+ 
+ namespace {
+ struct ThemeEntryKeyComparer {
+diff --git a/libs/androidfw/LoadedArsc.cpp b/libs/androidfw/LoadedArsc.cpp
+index 35b6170f..066fa603 100644
+--- a/libs/androidfw/LoadedArsc.cpp
++++ b/libs/androidfw/LoadedArsc.cpp
+@@ -21,6 +21,7 @@
+ #include <algorithm>
+ #include <cstddef>
+ #include <limits>
++#include <optional>
+ 
+ #include "android-base/logging.h"
+ #include "android-base/stringprintf.h"
+diff --git a/libs/androidfw/include/androidfw/AssetManager2.h b/libs/androidfw/include/androidfw/AssetManager2.h
+index 1bde792d..7a049408 100644
+--- a/libs/androidfw/include/androidfw/AssetManager2.h
++++ b/libs/androidfw/include/androidfw/AssetManager2.h
+@@ -563,7 +563,13 @@ class Theme {
+ 
+   void Dump() const;
+ 
+-  struct Entry;
++  // struct Entry;
++  struct Entry {
++    uint32_t attr_res_id;
++    ApkAssetsCookie cookie;
++    uint32_t type_spec_flags;
++    Res_value value;
++  };
+  private:
+   DISALLOW_COPY_AND_ASSIGN(Theme);
+ 
+diff --git a/libs/androidfw/include/androidfw/LoadedArsc.h b/libs/androidfw/include/androidfw/LoadedArsc.h
+index b3d6a4dc..76e3e7f8 100644
+--- a/libs/androidfw/include/androidfw/LoadedArsc.h
++++ b/libs/androidfw/include/androidfw/LoadedArsc.h
+@@ -295,7 +295,7 @@ class LoadedPackage {
+   std::unordered_map<uint8_t, TypeSpec> type_specs_;
+   ByteBucketArray<uint32_t> resource_ids_;
+   std::vector<DynamicPackageEntry> dynamic_package_map_;
+-  std::vector<const std::pair<OverlayableInfo, std::unordered_set<uint32_t>>> overlayable_infos_;
++  std::vector<std::pair<OverlayableInfo, std::unordered_set<uint32_t>>> overlayable_infos_;
+   std::map<uint32_t, uint32_t> alias_id_map_;
+ 
+   // A map of overlayable name to actor
+diff --git a/tools/aapt/Command.cpp b/tools/aapt/Command.cpp
+index d02fd83d..ff8dd81e 100644
+--- a/tools/aapt/Command.cpp
++++ b/tools/aapt/Command.cpp
+@@ -2446,6 +2446,7 @@ bail:
+     if (asset) {
+         delete asset;
+     }
++
+     return (result != NO_ERROR);
+ }
+ 
+diff --git a/tools/aapt2/Resources.proto b/tools/aapt2/Resources.proto
+index 95b79496..be363bc1 100644
+--- a/tools/aapt2/Resources.proto
++++ b/tools/aapt2/Resources.proto
+@@ -16,7 +16,7 @@
+ 
+ syntax = "proto3";
+ 
+-import "frameworks/base/tools/aapt2/Configuration.proto";
++import "Configuration.proto";
+ 
+ package aapt.pb;
+ 
+diff --git a/tools/aapt2/ResourcesInternal.proto b/tools/aapt2/ResourcesInternal.proto
+index b0ed3da3..97aa5af7 100644
+--- a/tools/aapt2/ResourcesInternal.proto
++++ b/tools/aapt2/ResourcesInternal.proto
+@@ -16,8 +16,8 @@
+ 
+ syntax = "proto3";
+ 
+-import "frameworks/base/tools/aapt2/Configuration.proto";
+-import "frameworks/base/tools/aapt2/Resources.proto";
++import "Configuration.proto";
++import "Resources.proto";
+ 
+ package aapt.pb.internal;
+ 
+diff --git a/tools/aapt2/util/Files.cpp b/tools/aapt2/util/Files.cpp
+index 3285d8ba..aacbff0b 100644
+--- a/tools/aapt2/util/Files.cpp
++++ b/tools/aapt2/util/Files.cpp
+@@ -189,7 +189,7 @@ void AppendPath(std::string* base, StringPiece part) {
+   base->append(part.data(), part.size());
+ }
+ 
+-std::string BuildPath(std::vector<const StringPiece>&& args) {
++std::string BuildPath(std::vector<StringPiece>&& args) {
+   if (args.empty()) {
+     return "";
+   }

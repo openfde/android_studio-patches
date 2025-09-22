@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e3a7e9f..581357a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -125,7 +125,7 @@ option(ABSL_USE_GOOGLETEST_HEAD
+ 
+ set(ABSL_GOOGLETEST_DOWNLOAD_URL "" CACHE STRING "If set, download GoogleTest from this URL")
+ 
+-set(ABSL_LOCAL_GOOGLETEST_DIR "/usr/src/googletest" CACHE PATH
++set(ABSL_LOCAL_GOOGLETEST_DIR "${CMAKE_SOURCE_DIR}/src/googletest" CACHE PATH
+   "If ABSL_USE_GOOGLETEST_HEAD is OFF and ABSL_GOOGLETEST_URL is not set, specifies the directory of a local GoogleTest checkout."
+   )
+ 

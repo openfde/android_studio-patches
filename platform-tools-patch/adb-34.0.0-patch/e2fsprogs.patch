@@ -1,0 +1,91 @@
+diff --git a/configure.ac b/configure.ac
+index cc6f681..08e192b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1114,7 +1114,7 @@ AC_CHECK_SIZEOF(short)
+ AC_CHECK_SIZEOF(int)
+ AC_CHECK_SIZEOF(long)
+ AC_CHECK_SIZEOF(long long)
+-AC_CHECK_SIZEOF(off_t)
++#AC_CHECK_SIZEOF(off_t)
+ AC_CHECK_SIZEOF(time_t)
+ SIZEOF_SHORT=$ac_cv_sizeof_short
+ SIZEOF_INT=$ac_cv_sizeof_int
+diff --git a/contrib/android/perms.c b/contrib/android/perms.c
+index dd05644..211ee1f 100644
+--- a/contrib/android/perms.c
++++ b/contrib/android/perms.c
+@@ -79,19 +79,19 @@ static errcode_t set_selinux_xattr(ext2_filsys fs, ext2_ino_t ino,
+ 		return retval;
+ 	}
+ 
+-	retval = selabel_lookup(params->sehnd, &secontext, params->filename,
+-				inode.i_mode);
+-	if (retval < 0) {
+-		int saved_errno = errno;
+-		com_err(__func__, errno,
+-			_("searching for label \"%s\""), params->filename);
+-		return saved_errno;
+-	}
++	// retval = selabel_lookup(params->sehnd, &secontext, params->filename,
++	// 			inode.i_mode);
++	// if (retval < 0) {
++	// 	int saved_errno = errno;
++	// 	com_err(__func__, errno,
++	// 		_("searching for label \"%s\""), params->filename);
++	// 	return saved_errno;
++	// }
+ 
+ 	retval = ino_add_xattr(fs, ino,  "security." XATTR_SELINUX_SUFFIX,
+ 			       secontext, strlen(secontext) + 1);
+ 
+-	freecon(secontext);
++	// freecon(secontext);
+ 	return retval;
+ }
+ 
+@@ -337,25 +337,25 @@ errcode_t android_configure_fs(ext2_filsys fs, char *src_dir, char *target_out,
+ 	struct selabel_handle *sehnd = NULL;
+ 
+ 	/* Retrieve file contexts */
+-#if !defined(__ANDROID__)
+-	if (nopt > 0) {
+-		sehnd = selabel_open(SELABEL_CTX_FILE, seopts, nopt);
+-		if (!sehnd) {
+-			int saved_errno = errno;
+-			com_err(__func__, errno,
+-				_("while opening file contexts \"%s\""),
+-				seopts[0].value);
+-			return saved_errno;
+-		}
+-	}
+-#else
+-	sehnd = selinux_android_file_context_handle();
+-	if (!sehnd) {
+-		com_err(__func__, EINVAL,
+-			_("while opening android file_contexts"));
+-		return EINVAL;
+-	}
+-#endif
++// #if !defined(__ANDROID__)
++// 	if (nopt > 0) {
++// 		sehnd = selabel_open(SELABEL_CTX_FILE, seopts, nopt);
++// 		if (!sehnd) {
++// 			int saved_errno = errno;
++// 			com_err(__func__, errno,
++// 				_("while opening file contexts \"%s\""),
++// 				seopts[0].value);
++// 			return saved_errno;
++// 		}
++// 	}
++// #else
++// 	sehnd = selinux_android_file_context_handle();
++// 	if (!sehnd) {
++// 		com_err(__func__, EINVAL,
++// 			_("while opening android file_contexts"));
++// 		return EINVAL;
++// 	}
++// #endif
+ 
+ 	/* Load the FS config */
+ 	if (fs_config_file) {

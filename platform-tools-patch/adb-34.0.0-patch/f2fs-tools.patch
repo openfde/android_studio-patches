@@ -1,0 +1,17 @@
+diff --git a/include/android_config.h b/include/android_config.h
+index 141fe06..dbfbba2 100644
+--- a/include/android_config.h
++++ b/include/android_config.h
+@@ -39,9 +39,9 @@
+ #define HAVE_LIBLZ4 1
+ #define HAVE_LIBUUID 1
+ 
+-#ifdef WITH_SLOAD
+-#define HAVE_LIBSELINUX 1
+-#endif
++// #ifdef WITH_SLOAD
++// #define HAVE_LIBSELINUX 1
++// #endif
+ 
+ #if defined(__BIONIC__)
+ #define HAVE_LINUX_BLKZONED_H 1
