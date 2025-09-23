@@ -14,11 +14,11 @@ svn_version=536225
 
 #clang安装路径
 CV=clang-r536225
-install_path=/openfde/build-tools/$CV
+install_path=/path/to/install/$CV
 
 mkdir -p $install_path
 
-export PW=/openfde/build-tools/clang-r536225-project
+export PW=/path/to/install/clang-r536225-project
 
 #每次变更，只需要更改↑上面的值即可，↓下面的可几乎可不动。
 #----------------------------+--------------------------------------
