@@ -1,3 +1,13 @@
+From 93559bbcc64033c3e9f8267ca302c3e9546dbcd0 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:09 +0800
+Subject: [PATCH] fix build fail
+
+---
+ configure.ac            |  2 +-
+ contrib/android/perms.c | 56 ++++++++++++++++++++---------------------
+ 2 files changed, 29 insertions(+), 29 deletions(-)
+
 diff --git a/configure.ac b/configure.ac
 index cc6f681..08e192b 100644
 --- a/configure.ac
@@ -89,3 +99,6 @@ index dd05644..211ee1f 100644
  
  	/* Load the FS config */
  	if (fs_config_file) {
+-- 
+2.25.1
+

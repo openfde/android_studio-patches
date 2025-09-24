@@ -1,3 +1,30 @@
+From 69a8c8e464c97121c8e786f4908fce3131d9b5de Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:26:53 +0800
+Subject: [PATCH] fix build fail
+
+---
+ libartbase/arch/instruction_set.cc    |  1 +
+ libartbase/arch/instruction_set.h     | 37 +++++++++++++++++++++++++++
+ libartbase/base/arena_allocator.h     |  2 ++
+ libartbase/base/bit_vector.h          |  1 +
+ libartbase/base/file_magic.cc         |  1 +
+ libartbase/base/file_utils.cc         |  1 +
+ libartbase/base/hash_set.h            |  9 ++++---
+ libartbase/base/logging.cc            |  1 +
+ libartbase/base/mem_map.cc            | 14 ++++++++++
+ libartbase/base/membarrier.cc         |  1 +
+ libartbase/base/memfd.cc              |  1 +
+ libartbase/base/metrics/metrics.h     | 20 +++++++--------
+ libartbase/base/scoped_flock.cc       |  1 +
+ libartbase/base/unix_file/fd_file.cc  |  1 +
+ libdexfile/dex/art_dex_file_loader.cc |  1 +
+ libdexfile/dex/descriptors_names.cc   |  1 +
+ libdexfile/dex/dex_file.cc            | 25 ++++++++++++++++++
+ libdexfile/dex/dex_file_loader.h      |  1 +
+ libdexfile/dex/method_reference.h     |  2 ++
+ 19 files changed, 108 insertions(+), 13 deletions(-)
+
 diff --git a/libartbase/arch/instruction_set.cc b/libartbase/arch/instruction_set.cc
 index 811e723..0e2d824 100644
 --- a/libartbase/arch/instruction_set.cc
@@ -406,3 +433,6 @@ index f66ac30..ba72b2d 100644
  namespace art {
  
  // A method is uniquely located by its DexFile and the method_ids_ table index into that DexFile
+-- 
+2.25.1
+

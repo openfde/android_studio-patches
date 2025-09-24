@@ -1,0 +1,290 @@
+From 461d00e668c8d06f94974bfdfd1331199e3b0ef5 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:30:59 +0800
+Subject: [PATCH] fix build fail
+
+---
+ .gitignore                         |   1 +
+ CMakeLists.txt                     |   7 +-
+ cmake/libprotobuf-lite.cmake       |   8 +-
+ cmake/libprotobuf.cmake            |   8 +-
+ cmake/libprotoc.cmake              |   6 ++
+ src/google/protobuf/stubs/config.h | 155 +++++++++++++++++++++++++++++
+ 6 files changed, 180 insertions(+), 5 deletions(-)
+ create mode 100755 src/google/protobuf/stubs/config.h
+
+diff --git a/.gitignore b/.gitignore
+index 62de6f1..e4aebd7 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -9,6 +9,7 @@ depcomp
+ install-sh
+ ltmain.sh
+ missing
++build
+ 
+ aclocal.m4
+ m4/libtool.m4
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 04cb330..ab00478 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -36,7 +36,7 @@ endif()
+ if (CYGWIN)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+ else()
+-  set(CMAKE_CXX_STANDARD 11)
++  set(CMAKE_CXX_STANDARD 17)
+   set(CMAKE_CXX_STANDARD_REQUIRED ON)
+   set(CMAKE_CXX_EXTENSIONS OFF)
+ endif()
+@@ -194,7 +194,7 @@ set(protobuf_LINK_LIBATOMIC false)
+ if (NOT MSVC)
+   include(CheckCXXSourceCompiles)
+   set(OLD_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+-  set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS} -std=c++11)
++  set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS} -std=c++17)
+   check_cxx_source_compiles("
+     #include <atomic>
+     int main() {
+@@ -298,7 +298,8 @@ endif (MSVC)
+ include_directories(
+   ${ZLIB_INCLUDE_DIRECTORIES}
+   ${protobuf_BINARY_DIR}
+-  ${protobuf_SOURCE_DIR}/src)
++  ${protobuf_SOURCE_DIR}/src
++  ${protobuf_SOURCE_DIR}/config)
+ 
+ if (protobuf_UNICODE)
+   add_definitions(-DUNICODE -D_UNICODE)
+diff --git a/cmake/libprotobuf-lite.cmake b/cmake/libprotobuf-lite.cmake
+index 83e9703..d3a5ad0 100644
+--- a/cmake/libprotobuf-lite.cmake
++++ b/cmake/libprotobuf-lite.cmake
+@@ -97,12 +97,18 @@ if(protobuf_HAVE_LD_VERSION_SCRIPT)
+   set_target_properties(libprotobuf-lite PROPERTIES
+     LINK_DEPENDS ${protobuf_SOURCE_DIR}/src/libprotobuf-lite.map)
+ endif()
++if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
++target_compile_options(libprotobuf-lite PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
++endif()
+ target_link_libraries(libprotobuf-lite PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+ if(protobuf_LINK_LIBATOMIC)
+   target_link_libraries(libprotobuf-lite PRIVATE atomic)
+ endif()
+ if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+-  target_link_libraries(libprotobuf-lite PRIVATE log)
++  target_include_directories(libprotobuf-lite PUBLIC ${protobuf_SOURCE_DIR}/android)
+ endif()
+ target_include_directories(libprotobuf-lite PUBLIC ${protobuf_SOURCE_DIR}/src)
+ if(protobuf_BUILD_SHARED_LIBS)
+diff --git a/cmake/libprotobuf.cmake b/cmake/libprotobuf.cmake
+index 07e4bcf..354991b 100644
+--- a/cmake/libprotobuf.cmake
++++ b/cmake/libprotobuf.cmake
+@@ -110,6 +110,12 @@ if(protobuf_HAVE_LD_VERSION_SCRIPT)
+   set_target_properties(libprotobuf PROPERTIES
+     LINK_DEPENDS ${protobuf_SOURCE_DIR}/src/libprotobuf.map)
+ endif()
++if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
++target_compile_options(libprotobuf PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
++endif()
+ target_link_libraries(libprotobuf PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+ if(protobuf_WITH_ZLIB)
+   target_link_libraries(libprotobuf PRIVATE ${ZLIB_LIBRARIES})
+@@ -118,7 +124,7 @@ if(protobuf_LINK_LIBATOMIC)
+   target_link_libraries(libprotobuf PRIVATE atomic)
+ endif()
+ if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+-  target_link_libraries(libprotobuf PRIVATE log)
++  target_include_directories(libprotobuf PRIVATE ${protobuf_SOURCE_DIR}/android)
+ endif()
+ target_include_directories(libprotobuf PUBLIC ${protobuf_SOURCE_DIR}/src)
+ if(protobuf_BUILD_SHARED_LIBS)
+diff --git a/cmake/libprotoc.cmake b/cmake/libprotoc.cmake
+index 15a47e5..392640c 100644
+--- a/cmake/libprotoc.cmake
++++ b/cmake/libprotoc.cmake
+@@ -121,6 +121,12 @@ if(protobuf_HAVE_LD_VERSION_SCRIPT)
+   set_target_properties(libprotoc PROPERTIES
+     LINK_DEPENDS ${protobuf_SOURCE_DIR}/src/libprotoc.map)
+ endif()
++if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
++target_compile_options(libprotoc PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
++endif()
+ target_link_libraries(libprotoc PRIVATE libprotobuf)
+ if(protobuf_BUILD_SHARED_LIBS)
+   target_compile_definitions(libprotoc
+diff --git a/src/google/protobuf/stubs/config.h b/src/google/protobuf/stubs/config.h
+new file mode 100755
+index 0000000..79219e4
+--- /dev/null
++++ b/src/google/protobuf/stubs/config.h
+@@ -0,0 +1,155 @@
++/* config.h.  Generated from config.h.in by configure.  */
++/* config.h.in.  Generated from configure.ac by autoheader.  */
++
++/* the name of <hash_map> */
++#define HASH_MAP_CLASS unordered_map
++
++/* the location of <unordered_map> or <hash_map> */
++#define HASH_MAP_H <unordered_map>
++
++/* the namespace of hash_map/hash_set */
++#define HASH_NAMESPACE std
++
++/* the name of <hash_set> */
++#define HASH_SET_CLASS unordered_set
++
++/* the location of <unordered_set> or <hash_set> */
++#define HASH_SET_H <unordered_set>
++
++/* define if the compiler supports basic C++11 syntax */
++#define HAVE_CXX11 1
++
++/* Define to 1 if you have the <dlfcn.h> header file. */
++#define HAVE_DLFCN_H 1
++
++/* Define to 1 if you have the <fcntl.h> header file. */
++#define HAVE_FCNTL_H 1
++
++/* Define to 1 if you have the `ftruncate' function. */
++#define HAVE_FTRUNCATE 1
++
++/* define if the compiler has hash_map */
++#define HAVE_HASH_MAP 1
++
++/* define if the compiler has hash_set */
++#define HAVE_HASH_SET 1
++
++/* Define to 1 if you have the <inttypes.h> header file. */
++#define HAVE_INTTYPES_H 1
++
++/* Define to 1 if you have the <limits.h> header file. */
++#define HAVE_LIMITS_H 1
++
++/* Define to 1 if you have the <memory.h> header file. */
++#define HAVE_MEMORY_H 1
++
++/* Define to 1 if you have the `memset' function. */
++#define HAVE_MEMSET 1
++
++/* Define to 1 if you have the `mkdir' function. */
++#define HAVE_MKDIR 1
++
++/* Define if you have POSIX threads libraries and header files. */
++#define HAVE_PTHREAD 1
++
++/* Have PTHREAD_PRIO_INHERIT. */
++#define HAVE_PTHREAD_PRIO_INHERIT 1
++
++/* Define to 1 if you have the <stdint.h> header file. */
++#define HAVE_STDINT_H 1
++
++/* Define to 1 if you have the <stdlib.h> header file. */
++#define HAVE_STDLIB_H 1
++
++/* Define to 1 if you have the `strchr' function. */
++#define HAVE_STRCHR 1
++
++/* Define to 1 if you have the `strerror' function. */
++#define HAVE_STRERROR 1
++
++/* Define to 1 if you have the <strings.h> header file. */
++#define HAVE_STRINGS_H 1
++
++/* Define to 1 if you have the <string.h> header file. */
++#define HAVE_STRING_H 1
++
++/* Define to 1 if you have the `strtol' function. */
++#define HAVE_STRTOL 1
++
++/* Define to 1 if you have the <sys/stat.h> header file. */
++#define HAVE_SYS_STAT_H 1
++
++/* Define to 1 if you have the <sys/types.h> header file. */
++#define HAVE_SYS_TYPES_H 1
++
++/* Define to 1 if you have the <unistd.h> header file. */
++#define HAVE_UNISTD_H 1
++
++/* Enable classes using zlib compression. */
++#define HAVE_ZLIB 1
++
++/* Define to the sub-directory where libtool stores uninstalled libraries. */
++#define LT_OBJDIR ".libs/"
++
++/* Name of package */
++#define PACKAGE "protobuf"
++
++/* Define to the address where bug reports for this package should be sent. */
++#define PACKAGE_BUGREPORT "protobuf@googlegroups.com"
++
++/* Define to the full name of this package. */
++#define PACKAGE_NAME "Protocol Buffers"
++
++/* Define to the full name and version of this package. */
++#define PACKAGE_STRING "Protocol Buffers 3.9.1"
++
++/* Define to the one symbol short name of this package. */
++#define PACKAGE_TARNAME "protobuf"
++
++/* Define to the home page for this package. */
++#define PACKAGE_URL ""
++
++/* Define to the version of this package. */
++#define PACKAGE_VERSION "3.9.1"
++
++/* Define to necessary symbol if this constant uses a non-standard name on
++   your system. */
++/* #undef PTHREAD_CREATE_JOINABLE */
++
++/* Define to 1 if you have the ANSI C header files. */
++#define STDC_HEADERS 1
++
++/* Enable extensions on AIX 3, Interix.  */
++#ifndef _ALL_SOURCE
++# define _ALL_SOURCE 1
++#endif
++/* Enable GNU extensions on systems that have them.  */
++#ifndef _GNU_SOURCE
++# define _GNU_SOURCE 1
++#endif
++/* Enable threading extensions on Solaris.  */
++#ifndef _POSIX_PTHREAD_SEMANTICS
++# define _POSIX_PTHREAD_SEMANTICS 1
++#endif
++/* Enable extensions on HP NonStop.  */
++#ifndef _TANDEM_SOURCE
++# define _TANDEM_SOURCE 1
++#endif
++/* Enable general extensions on Solaris.  */
++#ifndef __EXTENSIONS__
++# define __EXTENSIONS__ 1
++#endif
++
++
++/* Version number of package */
++#define VERSION "3.9.1"
++
++/* Define to 1 if on MINIX. */
++/* #undef _MINIX */
++
++/* Define to 2 if the system does not provide POSIX.1 features except with
++   this defined. */
++/* #undef _POSIX_1_SOURCE */
++
++/* Define to 1 if you need to in order for `stat' and other things to work. */
++/* #undef _POSIX_SOURCE */
+-- 
+2.25.1
+

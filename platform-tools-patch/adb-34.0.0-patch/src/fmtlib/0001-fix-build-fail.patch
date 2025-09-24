@@ -1,3 +1,13 @@
+From 083c080ea9aa861ca120abbfd2561c2e745d384d Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:21 +0800
+Subject: [PATCH] fix build fail
+
+---
+ CMakeLists.txt      |  4 ++++
+ test/CMakeLists.txt | 36 ------------------------------------
+ 2 files changed, 4 insertions(+), 36 deletions(-)
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index f21cf45..4faa00b 100644
 --- a/CMakeLists.txt
@@ -68,3 +78,6 @@ index 7ae5659..129d55f 100644
  add_fmt_executable(header-only-test
    header-only-test.cc header-only-test2.cc test-main.cc)
  target_link_libraries(header-only-test gmock)
+-- 
+2.25.1
+

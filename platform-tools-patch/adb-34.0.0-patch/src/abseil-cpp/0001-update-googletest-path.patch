@@ -1,3 +1,12 @@
+From 85cd07776120d9fc4cfde85708bc15127d4e11e8 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:23:14 +0800
+Subject: [PATCH] update googletest path
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index e3a7e9f..581357a 100644
 --- a/CMakeLists.txt
@@ -11,3 +20,6 @@ index e3a7e9f..581357a 100644
    "If ABSL_USE_GOOGLETEST_HEAD is OFF and ABSL_GOOGLETEST_URL is not set, specifies the directory of a local GoogleTest checkout."
    )
  
+-- 
+2.25.1
+

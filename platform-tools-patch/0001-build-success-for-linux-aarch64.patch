@@ -1,0 +1,1375 @@
+From a49d2a47f986b9b6ae90fa7a4a8951836db249c3 Mon Sep 17 00:00:00 2001
+From: pengcui <pngcui1224@163.com>
+Date: Thu, 11 Sep 2025 14:30:06 +0800
+Subject: [PATCH] build success for linux aarch64
+
+---
+ CMakeLists.txt                                |   4 +-
+ build-tools/CMakeLists.txt                    |   1 -
+ build-tools/aapt.cmake                        |  19 +-
+ build-tools/aapt2.cmake                       |  25 +-
+ build-tools/aidl.cmake                        |   8 +-
+ build-tools/dexdump.cmake                     |  26 +-
+ build-tools/split-select.cmake                |  10 +-
+ build-tools/zipalign.cmake                    |  42 --
+ build.py                                      |  39 +-
+ get_source.py                                 |  16 +-
+ lib/CMakeLists.txt                            |   4 +-
+ lib/libabsl.cmake                             |  11 +-
+ lib/libandroidfw.cmake                        |  24 +-
+ lib/libbase.cmake                             |   5 +-
+ lib/libbuildversion.cmake                     |   7 +-
+ lib/libcutils.cmake                           |   8 +-
+ lib/libdiagnoseusb.cmake                      |   4 +
+ lib/libincfs.cmake                            |   5 -
+ lib/liblog.cmake                              |  12 +-
+ lib/libopenscreen.cmake                       |  13 +-
+ lib/libpackagelistparser.cmake                |   4 +
+ lib/libprocessgroup.cmake                     |   4 +
+ lib/libprotoc.cmake                           |   5 +-
+ lib/libsparse.cmake                           |   4 +
+ lib/libutils.cmake                            |  16 +-
+ lib/libziparchive.cmake                       |   5 +-
+ others/veridex.cmake                          |  12 +-
+ patches/instruction_set.h.patch               |   2 +-
+ patches/libziparchive.patch                   |  42 ++
+ platform-tools/adb.cmake                      |  56 ++-
+ platform-tools/e2fsprogs.cmake                |  10 +-
+ platform-tools/etc1tool.cmake                 |   8 +-
+ platform-tools/f2fs-tools.cmake               |  16 +-
+ platform-tools/fastboot.cmake                 |  19 +-
+ platform-tools/sqlite3.cmake                  |   6 +-
+ 49 files changed, 1642 insertions(+), 153 deletions(-)
+ delete mode 100644 build-tools/zipalign.cmake
+ create mode 100644 patches/libziparchive.patch
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4f37003..bfdc1d3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -29,7 +29,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fPIC -Wno-attribute
+ 
+ # platform tools version
+ # see the patches/other/platform_tools_version.h
+-set(TOOLS_VERSION 35.0.2)
++set(TOOLS_VERSION 34.0.0)
+ set(SRC ${PROJECT_SOURCE_DIR}/src)
+ 
+ # 64-bit off_t for lseek.
+@@ -66,7 +66,7 @@ if(DEFINED PROTOC_PATH)
+ endif()
+ 
+ # thrid-party libraries
+-add_subdirectory(src/boringssl EXCLUDE_FROM_ALL)
++add_subdirectory(src/boringssl/src EXCLUDE_FROM_ALL)
+ add_subdirectory(src/fmtlib EXCLUDE_FROM_ALL)
+ add_subdirectory(src/pcre EXCLUDE_FROM_ALL)
+ add_subdirectory(src/libpng EXCLUDE_FROM_ALL)
+diff --git a/build-tools/CMakeLists.txt b/build-tools/CMakeLists.txt
+index 2f13bdc..d04d6dc 100644
+--- a/build-tools/CMakeLists.txt
++++ b/build-tools/CMakeLists.txt
+@@ -21,6 +21,5 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME})
+ include(aapt.cmake)
+ include(aapt2.cmake)
+ include(aidl.cmake)
+-include(zipalign.cmake)
+ include(split-select.cmake)
+ include(dexdump.cmake)
+\ No newline at end of file
+diff --git a/build-tools/aapt.cmake b/build-tools/aapt.cmake
+index 6c4b848..7d235a8 100644
+--- a/build-tools/aapt.cmake
++++ b/build-tools/aapt.cmake
+@@ -48,7 +48,6 @@ add_library(libaapt STATIC
+     ${SRC}/base/tools/aapt/ResourceTable.cpp
+     ${SRC}/base/tools/aapt/SourcePos.cpp
+     ${SRC}/base/tools/aapt/StringPool.cpp
+-    ${SRC}/base/tools/aapt/Utils.cpp
+     ${SRC}/base/tools/aapt/WorkQueue.cpp
+     ${SRC}/base/tools/aapt/XMLNode.cpp
+     ${SRC}/base/tools/aapt/ZipEntry.cpp
+@@ -58,11 +57,23 @@ target_compile_definitions(libaapt PRIVATE
+     -DSTATIC_ANDROIDFW_FOR_TOOLS
+     )
+ target_include_directories(libaapt PRIVATE ${INCLUDES})
++target_compile_options(libaapt PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Werror
++    -Wno-c99-designator
++    )
+ 
+ add_executable(aapt ${SRC}/base/tools/aapt/Main.cpp)
+ target_compile_definitions(aapt PRIVATE 
+     -DSTATIC_ANDROIDFW_FOR_TOOLS
+     )
++target_compile_options(aapt PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Werror
++    -Wno-c99-designator
++    )
+ target_include_directories(aapt PRIVATE ${INCLUDES} )
+ target_link_libraries(aapt
+     libaapt
+@@ -70,20 +81,20 @@ target_link_libraries(aapt
+     libincfs
+     libutils
+     libcutils
+-    libselinux
+     libsepol
+     libziparchive
+     libpackagelistparser
+-    libbase
+     libbuildversion
+     libprocessgroup
+     liblog
++    libbase
+     expat
+     crypto
+     pcre2-8
+     jsoncpp_static
+     png_static
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     dl
+     z
+     )
+diff --git a/build-tools/aapt2.cmake b/build-tools/aapt2.cmake
+index 75acfc2..7dc71f1 100644
+--- a/build-tools/aapt2.cmake
++++ b/build-tools/aapt2.cmake
+@@ -84,10 +84,11 @@ set(COMPILE_FLAGS
+     -Wno-missing-field-initializers
+     -fno-exceptions 
+     -fno-rtti
++    -std=c++17
++    -stdlib=libc++
+     )
+ 
+ set(TOOL_SOURCE
+-    ${SRC}/base/tools/aapt2/cmd/ApkInfo.cpp
+     ${SRC}/base/tools/aapt2/cmd/Command.cpp
+     ${SRC}/base/tools/aapt2/cmd/Compile.cpp
+     ${SRC}/base/tools/aapt2/cmd/Convert.cpp
+@@ -105,6 +106,10 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/compile/PseudolocaleGenerator.cpp
+     ${SRC}/base/tools/aapt2/compile/Pseudolocalizer.cpp
+     ${SRC}/base/tools/aapt2/compile/XmlIdCollector.cpp
++    ${SRC}/base/tools/aapt2/compile/PngChunkFilter.cpp
++    ${SRC}/base/tools/aapt2/compile/PngCrunch.cpp
++    ${SRC}/base/tools/aapt2/compile/NinePatch.cpp
++    ${SRC}/base/tools/aapt2/compile/Png.cpp
+     ${SRC}/base/tools/aapt2/configuration/ConfigurationParser.cpp
+     ${SRC}/base/tools/aapt2/dump/DumpManifest.cpp
+     ${SRC}/base/tools/aapt2/filter/AbiFilter.cpp
+@@ -113,7 +118,6 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/format/Container.cpp
+     ${SRC}/base/tools/aapt2/format/binary/BinaryResourceParser.cpp
+     ${SRC}/base/tools/aapt2/format/binary/ResChunkPullParser.cpp
+-    ${SRC}/base/tools/aapt2/format/binary/ResEntryWriter.cpp
+     ${SRC}/base/tools/aapt2/format/binary/TableFlattener.cpp
+     ${SRC}/base/tools/aapt2/format/binary/XmlFlattener.cpp
+     ${SRC}/base/tools/aapt2/format/proto/ProtoDeserialize.cpp
+@@ -123,8 +127,9 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/io/StringStream.cpp
+     ${SRC}/base/tools/aapt2/io/Util.cpp
+     ${SRC}/base/tools/aapt2/io/ZipArchive.cpp
++    ${SRC}/base/tools/aapt2/io/BigBufferStream.cpp
++    ${SRC}/base/tools/aapt2/io/FileStream.cpp
+     ${SRC}/base/tools/aapt2/link/AutoVersioner.cpp
+-    ${SRC}/base/tools/aapt2/link/FeatureFlagsFilter.cpp
+     ${SRC}/base/tools/aapt2/link/ManifestFixer.cpp
+     ${SRC}/base/tools/aapt2/link/NoDefaultResourceRemover.cpp
+     ${SRC}/base/tools/aapt2/link/PrivateAttributeMover.cpp
+@@ -134,12 +139,12 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/link/XmlCompatVersioner.cpp
+     ${SRC}/base/tools/aapt2/link/XmlNamespaceRemover.cpp
+     ${SRC}/base/tools/aapt2/link/XmlReferenceLinker.cpp
++    ${SRC}/base/tools/aapt2/link/ProductFilter.cpp
+     ${SRC}/base/tools/aapt2/optimize/MultiApkGenerator.cpp
+     ${SRC}/base/tools/aapt2/optimize/ResourceDeduper.cpp
+     ${SRC}/base/tools/aapt2/optimize/ResourceFilter.cpp
+-    ${SRC}/base/tools/aapt2/optimize/Obfuscator.cpp
+     ${SRC}/base/tools/aapt2/optimize/VersionCollapser.cpp
+-    ${SRC}/base/tools/aapt2/process/ProductFilter.cpp
++    ${SRC}/base/tools/aapt2/optimize/ResourcePathShortener.cpp
+     ${SRC}/base/tools/aapt2/process/SymbolTable.cpp
+     ${SRC}/base/tools/aapt2/split/TableSplitter.cpp
+     ${SRC}/base/tools/aapt2/text/Printer.cpp
+@@ -147,6 +152,7 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/text/Utf8Iterator.cpp
+     ${SRC}/base/tools/aapt2/util/Files.cpp
+     ${SRC}/base/tools/aapt2/util/Util.cpp
++    ${SRC}/base/tools/aapt2/util/BigBuffer.cpp
+     ${SRC}/base/tools/aapt2/Debug.cpp
+     ${SRC}/base/tools/aapt2/DominatorTree.cpp
+     ${SRC}/base/tools/aapt2/java/AnnotationProcessor.cpp
+@@ -166,12 +172,11 @@ add_library(libaapt2 STATIC
+     ${SRC}/base/tools/aapt2/xml/XmlDom.cpp
+     ${SRC}/base/tools/aapt2/xml/XmlPullParser.cpp
+     ${SRC}/base/tools/aapt2/xml/XmlUtil.cpp
+-    ${SRC}/base/tools/aapt2/ApkInfo.proto
+     ${SRC}/base/tools/aapt2/Configuration.proto
+     ${SRC}/base/tools/aapt2/Resources.proto
+-    ${SRC}/base/tools/aapt2/ResourceMetadata.proto
+     ${SRC}/base/tools/aapt2/ResourcesInternal.proto
+-    ${SRC}/base/tools/aapt2/ValueTransformer.cpp 
++    ${SRC}/base/tools/aapt2/ValueTransformer.cpp
++    ${SRC}/base/tools/aapt2/StringPool.cpp
+     ${AAPT2_PROTO_SRC} ${AAPT2_PROTO_HDRS}
+     )
+ target_include_directories(libaapt2 PRIVATE ${INCLUDES})
+@@ -197,7 +202,6 @@ target_link_libraries(aapt2
+     libaapt2
+     libandroidfw 
+     libincfs
+-    libselinux
+     libsepol
+     libpackagelistparser
+     libutils 
+@@ -213,6 +217,7 @@ target_link_libraries(aapt2
+     ssl
+     pcre2-8
+     png_static
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     dl
+     )
+diff --git a/build-tools/aidl.cmake b/build-tools/aidl.cmake
+index 27382ce..91f4c88 100644
+--- a/build-tools/aidl.cmake
++++ b/build-tools/aidl.cmake
+@@ -50,7 +50,6 @@ add_executable(aidl
+     ${SRC}/aidl/aidl_language_l.ll
+     ${SRC}/aidl/aidl_language_y.yy
+     ${SRC}/aidl/aidl_language.cpp
+-    ${SRC}/aidl/aidl_to_common.cpp
+     ${SRC}/aidl/aidl_to_cpp_common.cpp
+     ${SRC}/aidl/aidl_to_cpp.cpp
+     ${SRC}/aidl/aidl_to_java.cpp
+@@ -88,11 +87,16 @@ target_include_directories(aidl PRIVATE
+     ${SRC}/fmtlib/include
+     ${SRC}/googletest/googletest/include
+     )
++target_compile_options(aidl PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+     
+ target_link_libraries(aidl
+     libbase
+     liblog
+     gmock
+     fmt::fmt
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     )
+\ No newline at end of file
+diff --git a/build-tools/dexdump.cmake b/build-tools/dexdump.cmake
+index 079fcfb..afef9b4 100644
+--- a/build-tools/dexdump.cmake
++++ b/build-tools/dexdump.cmake
+@@ -23,6 +23,7 @@ set(INCLUDES
+     ${SRC}/logging/liblog/include
+     ${SRC}/libbase/include
+     ${SRC}/libziparchive/include
++    ${SRC}/extras/module_ndk_libs/libnativehelper/include_jni
+     )
+ 
+ add_library(libartbase STATIC
+@@ -44,7 +45,6 @@ add_library(libartbase STATIC
+     ${SRC}/art/libartbase/base/mem_map.cc
+     ${SRC}/art/libartbase/base/metrics/metrics_common.cc
+     ${SRC}/art/libartbase/base/os_linux.cc
+-    ${SRC}/art/libartbase/base/pointer_size.cc
+     ${SRC}/art/libartbase/base/runtime_debug.cc
+     ${SRC}/art/libartbase/base/scoped_arena_allocator.cc
+     ${SRC}/art/libartbase/base/scoped_flock.cc
+@@ -59,11 +59,20 @@ add_library(libartbase STATIC
+     )
+ target_include_directories(libartbase PRIVATE ${INCLUDES})
+ 
++target_compile_options(libartbase PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
++
+ add_library(libartpalette STATIC
+     ${SRC}/art/libartpalette/apex/palette.cc
+     ${SRC}/art/libartpalette/system/palette_fake.cc
+     )
+ target_include_directories(libartpalette PRIVATE ${INCLUDES})
++target_compile_options(libartpalette PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libdexfile STATIC
+     ${SRC}/art/libdexfile/dex/art_dex_file_loader.cc
+@@ -85,6 +94,10 @@ add_library(libdexfile STATIC
+     ${SRC}/art/libdexfile/dex/utf.cc
+     )
+ target_include_directories(libdexfile PRIVATE ${INCLUDES})
++target_compile_options(libdexfile PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_executable(dexdump
+     ${SRC}/art/dexdump/dexdump_cfg.cc
+@@ -92,14 +105,21 @@ add_executable(dexdump
+     ${SRC}/art/dexdump/dexdump.cc
+     )
+ target_include_directories(dexdump PRIVATE ${INCLUDES})
++target_compile_options(dexdump PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
++
+ target_link_libraries(dexdump 
+     libdexfile
+     libartbase
+     libartpalette
+-    libbase
+     libziparchive
++    libbase
+     liblog
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     dl
+     z
+     )
+diff --git a/build-tools/split-select.cmake b/build-tools/split-select.cmake
+index 39b19ca..9e3a1e8 100644
+--- a/build-tools/split-select.cmake
++++ b/build-tools/split-select.cmake
+@@ -38,25 +38,29 @@ target_include_directories(split-select PRIVATE
+     ${SRC}/base/tools
+     ${SRC}/incremental_delivery/incfs/util/include 
+     )
++target_compile_options(split-select PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ target_link_libraries(split-select
+     libaapt
+     libandroidfw
+-    libselinux
+     libsepol
+     libutils
+     libcutils
+     libincfs
+-    libbase
+     libziparchive
+     libpackagelistparser
+     libprocessgroup
+     liblog
++    libbase
+     expat
+     crypto
+     pcre2-8
+     jsoncpp_static
+     png_static
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     dl
+     z
+     )
+diff --git a/build-tools/zipalign.cmake b/build-tools/zipalign.cmake
+deleted file mode 100644
+index 317ab62..0000000
+--- a/build-tools/zipalign.cmake
++++ /dev/null
+@@ -1,42 +0,0 @@
+-#
+-# Copyright © 2022 Github Lzhiyong
+-#
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+-# You may obtain a copy of the License at
+-#
+-#      http://www.apache.org/licenses/LICENSE-2.0
+-#
+-# Unless required by applicable law or agreed to in writing, software
+-# distributed under the License is distributed on an "AS IS" BASIS,
+-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-# See the License for the specific language governing permissions and
+-# limitations under the License.
+-#
+-
+-add_executable(zipalign
+-    ${SRC}/build/tools/zipalign/ZipAlign.cpp
+-    ${SRC}/build/tools/zipalign/ZipEntry.cpp
+-    ${SRC}/build/tools/zipalign/ZipFile.cpp
+-    ${SRC}/build/tools/zipalign/ZipAlignMain.cpp
+-    )
+-
+-target_include_directories(zipalign PRIVATE
+-    ${SRC}/build/tools/zipalign/include
+-    ${SRC}/core/libutils/include
+-    ${SRC}/logging/liblog/include
+-    ${SRC}/zopfli/src
+-    ${SRC}/libbase/include
+-    ${SRC}/libziparchive/include
+-    )
+-
+-target_link_libraries(zipalign 
+-    libutils 
+-    libbase
+-    libziparchive
+-    libzopfli
+-    liblog
+-    c++_static
+-    dl
+-    z
+-    )
+diff --git a/build.py b/build.py
+index 1b54da5..3c91f37 100755
+--- a/build.py
++++ b/build.py
+@@ -102,18 +102,37 @@ def build(args):
+     cmake_toolchain_file = ndk / 'build/cmake/android.toolchain.cmake'
+     if not cmake_toolchain_file.exists():
+         raise ValueError('no such file or directory: {}'.format(cmake_toolchain_file))
+-        
++
+     command = ['cmake', '-GNinja', 
+         '-B {}'.format(args.build),
++        '-DCMAKE_C_COMPILER=clang',
++        '-DCMAKE_CXX_COMPILER=clang++',
++        '-DCMAKE_MAKE_PROGRAM=ninja',
++        '-DCMAKE_SYSTEM_PROCESSOR=arm64',
++        '-DCMAKE_DETERMINE_COMPILER_ABI={}'.format(args.abi),
+         '-DANDROID_NDK={}'.format(args.ndk),
+-        '-DCMAKE_TOOLCHAIN_FILE={}'.format(cmake_toolchain_file),
+-        '-DANDROID_PLATFORM=android-{}'.format(args.api),
+-        '-DCMAKE_ANDROID_ARCH_ABI={}'.format(args.abi),
+-        '-DANDROID_ABI={}'.format(args.abi),
+-        '-DCMAKE_SYSTEM_NAME=Android',
++        '-DLIB_C++_PATH={}'.format(args.libpath),
++        # '-DCMAKE_TOOLCHAIN_FILE={}'.format(cmake_toolchain_file),
++        # '-DANDROID_PLATFORM=android-{}'.format(args.api),
++        # '-DCMAKE_ANDROID_ARCH_ABI={}'.format(args.abi),
++        # '-DANDROID_ABI={}'.format(args.abi),
++        '-DCMAKE_SYSTEM_NAME=Linux',
+         '-Dprotobuf_BUILD_TESTS=OFF',
+         '-DABSL_PROPAGATE_CXX_STD=ON',
+         '-DANDROID_ARM_NEON=ON',
++        '-DHAVE_WINDOWS_H=OFF',
++        '-DHAVE_MEMFD_CREATE=OFF',
++        '-DHAVE_SECURE_GETENV=OFF',
++        '-DCFLAG_W4=OFF',
++        '-DOFF_T=OFF',
++        '-DSIZE_T=OFF',
++        '-DFMT_TEST=OFF',
++        '-DHAVE_LIBSELINUX=OFF',
++        '-DBROTLI_EMSCRIPTEN=OFF',
++        '-DINTEL_CET_ENABLED=OFF',
++        '-DCMAKE_HAVE_LIBC_PTHREAD=OFF',
++        '-DCMAKE_HAVE_PTHREAD_CREATE=OFF',
++        '-DCMAKE_HAVE_PTHREADS_CREATE=OFF',
+         '-DCMAKE_BUILD_TYPE=Release']
+     
+     if args.protoc is not None:
+@@ -144,16 +163,18 @@ def main():
+     parser.add_argument('--abi', choices=['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'], 
+       required=True, help='build for the specified architecture')
+     
++    parser.add_argument('--libpath', default='/usr/lib/llvm-10/lib', help='set libc++.a path')
++
+     parser.add_argument('--api', default=30, help='set android platform level, min api is 30')
+ 
+     parser.add_argument('--build', default='build', help='the build directory')
+ 
+     parser.add_argument('--job', default=tasks, help='run N jobs in parallel, default is {}'.format(tasks))
+-    
++
+     parser.add_argument('--target', default='all', help='build specified targets such as aapt2 adb fastboot, etc')
+-    
++
+     parser.add_argument('--protoc', help='set the host protoc path')
+-    
++
+     args = parser.parse_args()
+ 
+     build(args)
+diff --git a/get_source.py b/get_source.py
+index fd2b4c8..dbf9c5c 100755
+--- a/get_source.py
++++ b/get_source.py
+@@ -56,17 +56,17 @@ def patches():
+     shutil.copy2(Path("patches/misc/IncrementalProperties.sysprop.h"), inc)
+     shutil.copy2(Path("patches/misc/IncrementalProperties.sysprop.cpp"), inc.parent)
+ 
+-    shutil.copy2(Path("patches/misc/deployagent.inc"), Path("src/adb/fastdeploy/deployagent"))
+-    shutil.copy2(Path("patches/misc/deployagentscript.inc"), Path("src/adb/fastdeploy/deployagent"))
++    # shutil.copy2(Path("patches/misc/deployagent.inc"), Path("src/adb/fastdeploy/deployagent"))
++    # shutil.copy2(Path("patches/misc/deployagentscript.inc"), Path("src/adb/fastdeploy/deployagent"))
+ 
+     shutil.copy2(Path("patches/misc/platform_tools_version.h"), Path("src/soong/cc/libbuildversion/include"))
+     
+-    pattern = "\'s#frameworks/base/tools/aapt2/Configuration.proto#Configuration.proto#g\'"
+-    pattern2 = "\'s#frameworks/base/tools/aapt2/Resources.proto#Resources.proto#g\'"
+-    subprocess.run("sed -i {} {}".format(pattern2, Path.cwd() / "src/base/tools/aapt2/ApkInfo.proto"), shell=True)
+-    subprocess.run("sed -i {} {}".format(pattern, Path.cwd() / "src/base/tools/aapt2/Resources.proto"), shell=True)
+-    subprocess.run("sed -i {} {}".format(pattern, Path.cwd() / "src/base/tools/aapt2/ResourcesInternal.proto"), shell=True)
+-    subprocess.run("sed -i {} {}".format(pattern2, Path.cwd() / "src/base/tools/aapt2/ResourcesInternal.proto"), shell=True)
++    # pattern = "\'s#frameworks/base/tools/aapt2/Configuration.proto#Configuration.proto#g\'"
++    # pattern2 = "\'s#frameworks/base/tools/aapt2/Resources.proto#Resources.proto#g\'"
++    # subprocess.run("sed -i {} {}".format(pattern2, Path.cwd() / "src/base/tools/aapt2/ApkInfo.proto"), shell=True)
++    # subprocess.run("sed -i {} {}".format(pattern, Path.cwd() / "src/base/tools/aapt2/Resources.proto"), shell=True)
++    # subprocess.run("sed -i {} {}".format(pattern, Path.cwd() / "src/base/tools/aapt2/ResourcesInternal.proto"), shell=True)
++    # subprocess.run("sed -i {} {}".format(pattern2, Path.cwd() / "src/base/tools/aapt2/ResourcesInternal.proto"), shell=True)
+     
+     
+     pattern3 = "\'s#/usr/src/googletest#${CMAKE_SOURCE_DIR}/src/googletest#g\'"
+diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
+index ed4ccb0..8420579 100644
+--- a/lib/CMakeLists.txt
++++ b/lib/CMakeLists.txt
+@@ -20,7 +20,6 @@ include(libcutils.cmake)
+ include(libutils.cmake)
+ include(libandroidfw.cmake)
+ include(libincfs.cmake)
+-include(libselinux.cmake)
+ include(libsepol.cmake)
+ include(libsparse.cmake)
+ include(libziparchive.cmake)
+@@ -30,4 +29,5 @@ include(libprocessgroup.cmake)
+ include(libusb.cmake)
+ include(libdiagnoseusb.cmake)
+ include(libmdnssd.cmake)
+-include(libopenscreen.cmake)
+\ No newline at end of file
++include(libopenscreen.cmake)
++include(libabsl.cmake)
+\ No newline at end of file
+diff --git a/lib/libabsl.cmake b/lib/libabsl.cmake
+index 50c4912..51cf0b9 100644
+--- a/lib/libabsl.cmake
++++ b/lib/libabsl.cmake
+@@ -16,9 +16,7 @@
+ 
+ add_library(libabsl_base STATIC
+     ${SRC}/abseil-cpp/absl/base/internal/cycleclock.cc
+-    ${SRC}/abseil-cpp/absl/base/internal/exponential_biased.cc
+     ${SRC}/abseil-cpp/absl/base/internal/low_level_alloc.cc
+-    ${SRC}/abseil-cpp/absl/base/internal/periodic_sampler.cc
+     ${SRC}/abseil-cpp/absl/base/internal/raw_logging.cc
+     ${SRC}/abseil-cpp/absl/base/internal/spinlock.cc
+     ${SRC}/abseil-cpp/absl/base/internal/spinlock_wait.cc
+@@ -31,6 +29,10 @@ add_library(libabsl_base STATIC
+ target_include_directories(libabsl_base PUBLIC
+     ${SRC}/abseil-cpp
+     )
++target_compile_options(libabsl_base PRIVATE 
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libabsl_strings STATIC
+     ${SRC}/abseil-cpp/absl/strings/ascii.cc
+@@ -58,8 +60,13 @@ add_library(libabsl_strings STATIC
+     ${SRC}/abseil-cpp/absl/strings/str_split.cc
+     ${SRC}/abseil-cpp/absl/strings/string_view.cc
+     ${SRC}/abseil-cpp/absl/strings/substitute.cc
++    ${SRC}/abseil-cpp/absl/base/internal/raw_logging.cc
+     )
+ target_include_directories(libabsl_strings PUBLIC
+     ${SRC}/abseil-cpp
+     )
++target_compile_options(libabsl_strings PRIVATE 
++    -std=c++17
++    -stdlib=libc++
++    )
+     
+\ No newline at end of file
+diff --git a/lib/libandroidfw.cmake b/lib/libandroidfw.cmake
+index 01b29af..5a99751 100644
+--- a/lib/libandroidfw.cmake
++++ b/lib/libandroidfw.cmake
+@@ -16,39 +16,28 @@
+ 
+ add_library(libandroidfw STATIC
+     ${SRC}/base/libs/androidfw/ApkAssets.cpp
+-    ${SRC}/base/libs/androidfw/ApkParsing.cpp
+     ${SRC}/base/libs/androidfw/Asset.cpp
+     ${SRC}/base/libs/androidfw/AssetDir.cpp
+     ${SRC}/base/libs/androidfw/AssetManager.cpp
+     ${SRC}/base/libs/androidfw/AssetManager2.cpp
+     ${SRC}/base/libs/androidfw/AssetsProvider.cpp
+     ${SRC}/base/libs/androidfw/AttributeResolution.cpp
+-    ${SRC}/base/libs/androidfw/BigBuffer.cpp
+-    ${SRC}/base/libs/androidfw/BigBufferStream.cpp
+     ${SRC}/base/libs/androidfw/ChunkIterator.cpp
+     ${SRC}/base/libs/androidfw/ConfigDescription.cpp
+-    ${SRC}/base/libs/androidfw/FileStream.cpp
+     ${SRC}/base/libs/androidfw/Idmap.cpp
+     ${SRC}/base/libs/androidfw/LoadedArsc.cpp
+     ${SRC}/base/libs/androidfw/Locale.cpp
+     ${SRC}/base/libs/androidfw/LocaleData.cpp
+     ${SRC}/base/libs/androidfw/misc.cpp
+-    ${SRC}/base/libs/androidfw/NinePatch.cpp
+     ${SRC}/base/libs/androidfw/ObbFile.cpp
+     ${SRC}/base/libs/androidfw/PosixUtils.cpp
+-    ${SRC}/base/libs/androidfw/Png.cpp
+-    ${SRC}/base/libs/androidfw/PngChunkFilter.cpp
+-    ${SRC}/base/libs/androidfw/PngCrunch.cpp
+-    ${SRC}/base/libs/androidfw/ResourceTimer.cpp
+     ${SRC}/base/libs/androidfw/ResourceTypes.cpp
+     ${SRC}/base/libs/androidfw/ResourceUtils.cpp
+     ${SRC}/base/libs/androidfw/StreamingZipInflater.cpp
+-    ${SRC}/base/libs/androidfw/StringPool.cpp
+     ${SRC}/base/libs/androidfw/TypeWrappers.cpp
+     ${SRC}/base/libs/androidfw/Util.cpp
+     ${SRC}/base/libs/androidfw/ZipFileRO.cpp
+-    ${SRC}/base/libs/androidfw/ZipUtils.cpp  
+-    ${SRC}/base/libs/androidfw/PathUtils.cpp     
++    ${SRC}/base/libs/androidfw/ZipUtils.cpp   
+     )
+ 
+ target_compile_definitions(libandroidfw PRIVATE 
+@@ -71,5 +60,14 @@ target_include_directories(libandroidfw PUBLIC
+     ${SRC}/incremental_delivery/incfs/util/include
+     ${SRC}/incremental_delivery/incfs/kernel-headers
+     )
+-    
++
++target_compile_options(libandroidfw PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Werror
++    -Wno-c99-designator
++    -Wno-reorder-init-list
++    -Wno-deprecated-anon-enum-enum-conversion
++    )
++
+ target_link_libraries(libandroidfw PUBLIC fmt::fmt)
+diff --git a/lib/libbase.cmake b/lib/libbase.cmake
+index 57dcd64..28f5940 100644
+--- a/lib/libbase.cmake
++++ b/lib/libbase.cmake
+@@ -27,7 +27,6 @@ add_library(libbase STATIC
+     ${SRC}/libbase/posix_strerror_r.cpp
+     ${SRC}/libbase/process.cpp
+     ${SRC}/libbase/properties.cpp
+-    ${SRC}/libbase/result.cpp
+     ${SRC}/libbase/stringprintf.cpp
+     ${SRC}/libbase/strings.cpp
+     ${SRC}/libbase/threads.cpp
+@@ -41,3 +40,7 @@ target_include_directories(libbase PRIVATE
+     ${SRC}/fmtlib/include 
+     ${SRC}/logging/liblog/include
+     )
++target_compile_options(libbase PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+\ No newline at end of file
+diff --git a/lib/libbuildversion.cmake b/lib/libbuildversion.cmake
+index c888bea..6ef670a 100644
+--- a/lib/libbuildversion.cmake
++++ b/lib/libbuildversion.cmake
+@@ -21,4 +21,9 @@ add_library(libbuildversion STATIC
+ target_include_directories(libbuildversion PRIVATE
+     ${SRC}/soong/cc/libbuildversion/include
+     )
+-    
+\ No newline at end of file
++target_compile_options(libbuildversion PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Werror
++    -Wno-c99-designator
++    )
+\ No newline at end of file
+diff --git a/lib/libcutils.cmake b/lib/libcutils.cmake
+index 125e016..19643dd 100644
+--- a/lib/libcutils.cmake
++++ b/lib/libcutils.cmake
+@@ -36,17 +36,21 @@ add_library(libcutils STATIC
+     ${SRC}/core/libcutils/str_parms.cpp
+     ${SRC}/core/libcutils/strlcpy.c
+     ${SRC}/core/libcutils/android_reboot.cpp
+-    ${SRC}/core/libcutils/ashmem-dev.cpp
++    ${SRC}/core/libcutils/ashmem-host.cpp
+     ${SRC}/core/libcutils/klog.cpp
+     ${SRC}/core/libcutils/partition_utils.cpp
+     ${SRC}/core/libcutils/qtaguid.cpp
+-    ${SRC}/core/libcutils/trace-dev.cpp
++    ${SRC}/core/libcutils/trace-host.cpp
+     ${SRC}/core/libcutils/uevent.cpp
+     )
+ 
+ target_compile_definitions(libcutils PRIVATE 
+     -D_GNU_SOURCE
+     )
++target_compile_options(libcutils PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ target_include_directories(libcutils PRIVATE
+     ${SRC}/core/libutils/include
+diff --git a/lib/libdiagnoseusb.cmake b/lib/libdiagnoseusb.cmake
+index cd956f2..d4cbd21 100644
+--- a/lib/libdiagnoseusb.cmake
++++ b/lib/libdiagnoseusb.cmake
+@@ -23,3 +23,7 @@ target_include_directories(libdiagnoseusb PRIVATE
+ 	${SRC}/core/include 
+ 	${SRC}/libbase/include
+     )
++target_compile_options(libdiagnoseusb PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+diff --git a/lib/libincfs.cmake b/lib/libincfs.cmake
+index 2591b63..aa975e0 100644
+--- a/lib/libincfs.cmake
++++ b/lib/libincfs.cmake
+@@ -15,12 +15,7 @@
+ #
+ 
+ add_library(libincfs STATIC
+-    ${SRC}/incremental_delivery/incfs/incfs_ndk.c
+-    ${SRC}/incremental_delivery/incfs/incfs.cpp
+-    ${SRC}/incremental_delivery/incfs/MountRegistry.cpp
+-    ${SRC}/incremental_delivery/incfs/path.cpp
+     ${SRC}/incremental_delivery/incfs/util/map_ptr.cpp
+-    ${SRC}/incremental_delivery/sysprop/IncrementalProperties.sysprop.cpp
+     )
+     
+ target_include_directories(libincfs PRIVATE
+diff --git a/lib/liblog.cmake b/lib/liblog.cmake
+index 1236d45..ac30a81 100644
+--- a/lib/liblog.cmake
++++ b/lib/liblog.cmake
+@@ -23,11 +23,6 @@ add_library(liblog STATIC
+     ${SRC}/logging/liblog/properties.cpp
+     ${SRC}/logging/liblog/logprint.cpp
+     ${SRC}/logging/liblog/event_tag_map.cpp
+-    ${SRC}/logging/liblog/log_time.cpp
+-    ${SRC}/logging/liblog/pmsg_reader.cpp
+-    ${SRC}/logging/liblog/pmsg_writer.cpp
+-    ${SRC}/logging/liblog/logd_reader.cpp
+-    ${SRC}/logging/liblog/logd_writer.cpp
+     )
+ 
+ target_compile_definitions(liblog PRIVATE
+@@ -37,7 +32,12 @@ target_compile_definitions(liblog PRIVATE
+     -DSNET_EVENT_LOG_TAG=1397638686
+     -DANDROID_DEBUGGABLE=0
+     )
+-    
++target_compile_options(liblog PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Wno-c99-designator
++    -Wexit-time-destructors
++    )
+ target_include_directories(liblog PRIVATE
+     ${SRC}/core/include
+     ${SRC}/logging/liblog/include
+diff --git a/lib/libopenscreen.cmake b/lib/libopenscreen.cmake
+index 8d2f2ca..eafdf90 100644
+--- a/lib/libopenscreen.cmake
++++ b/lib/libopenscreen.cmake
+@@ -50,6 +50,15 @@ add_library(libopenscreen STATIC
+     ${SRC}/openscreen/platform/impl/time.cc
+     ${SRC}/openscreen/platform/impl/network_interface.cc
+     ${SRC}/openscreen/platform/impl/network_interface_linux.cc
++    ${SRC}/openscreen/platform/impl/udp_socket_posix.cc
++    ${SRC}/openscreen/platform/impl/platform_client_posix.cc
++    ${SRC}/openscreen/platform/impl/udp_socket_reader_posix.cc
++    ${SRC}/openscreen/platform/impl/socket_handle_posix.cc
++    ${SRC}/openscreen/platform/impl/socket_handle_waiter.cc
++    ${SRC}/openscreen/platform/impl/socket_handle_waiter_posix.cc
++    ${SRC}/openscreen/platform/impl/task_runner.cc
++    ${SRC}/openscreen/platform/impl/tls_data_router_posix.cc
++    ${SRC}/openscreen/platform/impl/timeval_posix.cc
+     )
+ 
+ target_compile_options(libopenscreen PRIVATE 
+@@ -58,7 +67,7 @@ target_compile_options(libopenscreen PRIVATE
+     -Wno-array-bounds
+     -Wno-pointer-sign
+     -Wno-unused
+-    -Wno-unused-but-set-variable
++    -Wno-unused-const-variable
+     -Wno-unused-parameter
+     -Wno-missing-field-initializers
+     -Werror=implicit-function-declaration
+@@ -66,6 +75,7 @@ target_compile_options(libopenscreen PRIVATE
+ 
+ target_compile_options(libopenscreen PRIVATE 
+     -std=c++17
++    -stdlib=libc++
+     -fno-exceptions 
+     -fno-unwind-tables 
+     -fno-asynchronous-unwind-tables
+@@ -74,5 +84,6 @@ target_compile_options(libopenscreen PRIVATE
+ target_include_directories(libopenscreen PRIVATE
+     ${SRC}/openscreen
+     ${SRC}/abseil-cpp
++    ${SRC}/boringssl/include
+     )
+     
+\ No newline at end of file
+diff --git a/lib/libpackagelistparser.cmake b/lib/libpackagelistparser.cmake
+index 24bcca7..0c91e99 100644
+--- a/lib/libpackagelistparser.cmake
++++ b/lib/libpackagelistparser.cmake
+@@ -21,4 +21,8 @@ add_library(libpackagelistparser STATIC
+ target_include_directories(libpackagelistparser PRIVATE
+     ${SRC}/core/libpackagelistparser/include
+     ${SRC}/logging/liblog/include
++    )
++target_compile_options(libpackagelistparser PRIVATE
++    -std=c++20
++    -stdlib=libc++
+     )
+\ No newline at end of file
+diff --git a/lib/libprocessgroup.cmake b/lib/libprocessgroup.cmake
+index 9061805..724d1ae 100644
+--- a/lib/libprocessgroup.cmake
++++ b/lib/libprocessgroup.cmake
+@@ -35,4 +35,8 @@ target_include_directories(libprocessgroup PRIVATE
+     )
+ target_include_directories(libprocessgroup PRIVATE
+     ${SRC}/core/libprocessgroup
++    )
++target_compile_options(libprocessgroup PRIVATE
++    -std=c++20
++    -stdlib=libc++
+     )
+\ No newline at end of file
+diff --git a/lib/libprotoc.cmake b/lib/libprotoc.cmake
+index 22f0e92..8793ac5 100644
+--- a/lib/libprotoc.cmake
++++ b/lib/libprotoc.cmake
+@@ -183,7 +183,10 @@ target_include_directories(libprotoc PRIVATE
+     ${SRC}/protobuf/android
+     ${SRC}/protobuf/src
+     )
+-    
++target_compile_options(libprotoc PRIVATE
++    -std=c++20
++    -stdlib=libc++
++    )
+ add_executable(protoc ${SRC}/protobuf/src/google/protobuf/compiler/main.cc)
+ target_include_directories(protoc PRIVATE 
+     ${SRC}/protobuf/android
+diff --git a/lib/libsparse.cmake b/lib/libsparse.cmake
+index 0b77086..efa7446 100644
+--- a/lib/libsparse.cmake
++++ b/lib/libsparse.cmake
+@@ -27,3 +27,7 @@ target_include_directories(libsparse PRIVATE
+     ${SRC}/core/libsparse/include 
+     ${SRC}/libbase/include
+     )
++target_compile_options(libsparse PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+diff --git a/lib/libutils.cmake b/lib/libutils.cmake
+index 4cab3a8..c03752b 100644
+--- a/lib/libutils.cmake
++++ b/lib/libutils.cmake
+@@ -15,14 +15,14 @@
+ #
+ 
+ set(LIBUTILS_BINDER_SRC
+-    ${SRC}/core/libutils/binder/Errors.cpp
+-    ${SRC}/core/libutils/binder/RefBase.cpp
+-    ${SRC}/core/libutils/binder/SharedBuffer.cpp
+-    ${SRC}/core/libutils/binder/String16.cpp
+-    ${SRC}/core/libutils/binder/String8.cpp
+-    ${SRC}/core/libutils/binder/StrongPointer.cpp
+-    ${SRC}/core/libutils/binder/Unicode.cpp
+-    ${SRC}/core/libutils/binder/VectorImpl.cpp
++    ${SRC}/core/libutils/Errors.cpp
++    ${SRC}/core/libutils/RefBase.cpp
++    ${SRC}/core/libutils/SharedBuffer.cpp
++    ${SRC}/core/libutils/String16.cpp
++    ${SRC}/core/libutils/String8.cpp
++    ${SRC}/core/libutils/StrongPointer.cpp
++    ${SRC}/core/libutils/Unicode.cpp
++    ${SRC}/core/libutils/VectorImpl.cpp
+     )
+ 
+ add_library(libutils STATIC
+diff --git a/lib/libziparchive.cmake b/lib/libziparchive.cmake
+index aa7a7ed..0223f49 100644
+--- a/lib/libziparchive.cmake
++++ b/lib/libziparchive.cmake
+@@ -28,7 +28,10 @@ target_compile_definitions(libziparchive PRIVATE
+     -D_FILE_OFFSET_BITS=64
+     -DZIPARCHIVE_DISABLE_CALLBACK_API=1
+     )
+-    
++target_compile_options(libziparchive PRIVATE
++    -std=c++20
++    -stdlib=libc++
++    )
+ target_include_directories(libziparchive PRIVATE
+     ${SRC}/libziparchive/include 
+     ${SRC}/libziparchive/incfs_support/include
+diff --git a/others/veridex.cmake b/others/veridex.cmake
+index 9313eac..1a500a1 100644
+--- a/others/veridex.cmake
++++ b/others/veridex.cmake
+@@ -30,17 +30,25 @@ target_include_directories(veridex PRIVATE
+     ${SRC}/logging/liblog/include
+     ${SRC}/libbase/include
+     ${SRC}/libziparchive/include
++    ${SRC}/extras/module_ndk_libs/libnativehelper/include_jni
++    )
++
++target_compile_options(veridex PRIVATE
++    -std=c++17
++    -stdlib=libc++
+     )
+ 
+ target_link_libraries(veridex 
+     libdexfile
+     libartbase
+     libartpalette
++    libziparchive
+     libbase
+     liblog
+-    libziparchive
+     fmt::fmt
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     dl
+     z
+     )
+diff --git a/patches/instruction_set.h.patch b/patches/instruction_set.h.patch
+index de7da9e..563be89 100644
+--- a/patches/instruction_set.h.patch
++++ b/patches/instruction_set.h.patch
+@@ -31,7 +31,7 @@
+ +
+ +#define ART_STACK_OVERFLOW_GAP_arm 16384
+ +#define ART_STACK_OVERFLOW_GAP_arm64 16384
+-+#define ART_STACK_OVERFLOW_GAP_riscv64=16384
+++#define ART_STACK_OVERFLOW_GAP_riscv64 16384
+ +#define ART_STACK_OVERFLOW_GAP_x86 16384
+ +#define ART_STACK_OVERFLOW_GAP_x86_64 20480
+ +
+diff --git a/patches/libziparchive.patch b/patches/libziparchive.patch
+new file mode 100644
+index 0000000..7e28488
+--- /dev/null
++++ b/patches/libziparchive.patch
+@@ -0,0 +1,42 @@
++diff --git a/zip_archive.cc b/zip_archive.cc
++index e392a20..9c9a847 100644
++--- a/zip_archive.cc
+++++ b/zip_archive.cc
++@@ -392,7 +392,7 @@ static ZipError MapCentralDirectory(const char* debug_file_name, ZipArchive* arc
++   });
++ 
++   if (auto result = FindCentralDirectoryInfo(debug_file_name, archive,
++-                                             file_length, scan_buffer, &cdInfo);
+++                                             file_length, std::span<uint8_t>(scan_buffer.data(), scan_buffer.size()), &cdInfo);
++       result != kSuccess) {
++     return result;
++   }
++@@ -1370,7 +1370,7 @@ bool Reader::IsZeroCopy() const {
++ }  // namespace zip_archive
++ 
++ static std::span<uint8_t> bufferToSpan(zip_archive::Writer::Buffer buf) {
++-  return {buf.first, ssize_t(buf.second)};
+++  return {buf.first, buf.second};
++ }
++ 
++ template <bool OnIncfs>
++@@ -1400,7 +1400,8 @@ static int32_t inflateImpl(const zip_archive::Reader& reader,
++   } else {
++     direct_writer = false;
++     write_buf.resize(static_cast<size_t>(std::min(min_write_buffer_size, kBufSize)));
++-    write_span = write_buf;
+++    // write_span = write_buf;
+++    write_span = std::span<uint8_t>(write_buf.data(), write_buf.size());
++   }
++ 
++   /*
++@@ -1539,7 +1540,8 @@ static int32_t CopyEntryToWriter(MappedZipFile& mapped_zip, const ZipEntry64* en
++     } else {
++       max_read_size = std::min(entry->uncompressed_length, kBufSize);
++       buf.resize((static_cast<size_t>(max_read_size)));
++-      write_span = buf;
+++      // write_span = buf;
+++      write_span = std::span<uint8_t>(buf.data(), buf.size());
++     }
++   } else {
++     max_read_size = entry->uncompressed_length;
+diff --git a/platform-tools/adb.cmake b/platform-tools/adb.cmake
+index 3cee5c9..bc207dc 100644
+--- a/platform-tools/adb.cmake
++++ b/platform-tools/adb.cmake
+@@ -137,6 +137,11 @@ target_compile_definitions(libadb PRIVATE
+     -D_GNU_SOURCE
+     -DADB_HOST=1
+     )
++target_compile_options(libadb PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Wno-invalid-constexpr
++    )
+ target_include_directories(libadb PRIVATE
+     ${SRC}/adb
+     ${SRC}/adb/proto
+@@ -181,6 +186,10 @@ target_include_directories(libadb_crypto PRIVATE
+     ${SRC}/libbase/include
+     ${SRC}/protobuf/src
+     )
++target_compile_options(libadb_crypto PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libadb_tls_connection STATIC
+     ${SRC}/adb/tls/adb_ca_list.cpp
+@@ -192,9 +201,14 @@ target_include_directories(libadb_tls_connection PRIVATE
+     ${SRC}/boringssl/include
+     ${SRC}/libbase/include
+     )
++target_compile_options(libadb_tls_connection PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+     
+ add_library(libadb_pairing_connection STATIC
+     ${SRC}/adb/pairing_connection/pairing_connection.cpp
++    ${SRC}/adb/proto/pairing.pb.cc
+     )
+ target_include_directories(libadb_pairing_connection PRIVATE
+     ${SRC}/adb/proto
+@@ -205,6 +219,10 @@ target_include_directories(libadb_pairing_connection PRIVATE
+     ${SRC}/boringssl/include
+     ${SRC}/protobuf/src
+     )
++target_compile_options(libadb_pairing_connection PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libadb_pairing_auth STATIC
+     ${SRC}/adb/pairing_auth/aes_128_gcm.cpp
+@@ -216,6 +234,10 @@ target_include_directories(libadb_pairing_auth PRIVATE
+     ${SRC}/boringssl/include
+     ${SRC}/protobuf/src
+     )
++target_compile_options(libadb_pairing_auth PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libadb_sysdeps STATIC
+     ${SRC}/adb/sysdeps/env.cpp
+@@ -224,6 +246,10 @@ target_include_directories(libadb_sysdeps PRIVATE
+     ${SRC}/libbase/include
+     ${SRC}/adb
+     )
++target_compile_options(libadb_sysdeps PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libfastdeploy STATIC
+     ${SRC}/adb/fastdeploy/deploypatchgenerator/apk_archive.cpp
+@@ -239,6 +265,11 @@ target_include_directories(libfastdeploy PRIVATE
+     ${SRC}/protobuf/src
+     ${SRC}/boringssl/include
+     )
++target_compile_options(libfastdeploy PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Wno-invalid-constexpr
++    )
+ 
+ add_library(libcrypto STATIC
+     ${SRC}/core/libcrypto_utils/android_pubkey.cpp
+@@ -247,6 +278,10 @@ target_include_directories(libcrypto PRIVATE
+     ${SRC}/core/libcrypto_utils/include 
+     ${SRC}/boringssl/include
+     )
++target_compile_options(libcrypto PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_executable(adb
+     ${SRC}/adb/client/adb_client.cpp
+@@ -282,6 +317,11 @@ target_compile_definitions(adb PRIVATE
+     -D_GNU_SOURCE
+     -DADB_HOST=1
+     )
++target_compile_options(adb PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    -Wno-invalid-constexpr
++    )
+ target_link_libraries(adb
+     libadb
+     libadb_crypto
+@@ -291,34 +331,34 @@ target_link_libraries(adb
+     libcrypto
+     libadb_sysdeps
+     libfastdeploy
+-    libselinux
+     libsepol
+-    libincfs
+     libpackagelistparser
+-    libbase
+-    libutils
+-    libcutils
+     libdiagnoseusb
+     libandroidfw
++    libincfs
+     libbuildversion
+     libziparchive
+     libmdnssd
+     libopenscreen
+     libusb
++    libbase
++    libutils
++    libcutils
+     liblog
+     pcre2-8
+     crypto
+     ssl
+     protobuf::libprotoc
+     protobuf::libprotobuf
+-    absl::base
+-    absl::strings
++    libabsl_base
++    libabsl_strings
+     brotlicommon-static
+     brotlidec-static
+     brotlienc-static
+     libzstd_static
+     lz4_static
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     dl
+     z
+     )
+diff --git a/platform-tools/e2fsprogs.cmake b/platform-tools/e2fsprogs.cmake
+index a3261e9..985ba8b 100644
+--- a/platform-tools/e2fsprogs.cmake
++++ b/platform-tools/e2fsprogs.cmake
+@@ -214,14 +214,17 @@ add_executable(mke2fs
+ target_include_directories(mke2fs PRIVATE ${INCLUDES})
+ target_link_libraries(mke2fs 
+     libext2_misc 
++    libext2_quota 
+     libext2_blkid
+     libext2fs 
+     libext2_uuid  
+     libext2_e2p 
+     libext2_com_err 
+-    libext2_quota 
+     libsparse 
+     libbase 
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     dl
+     z
+     )
+@@ -237,11 +240,11 @@ add_executable(e2fsdroid
+     ${SRC}/e2fsprogs/contrib/android/basefs_allocator.c
+     )
+ target_include_directories(e2fsdroid PRIVATE ${INCLUDES})
++
+ target_link_libraries(e2fsdroid
+     libext2_misc 
+     libext2_com_err
+     libext2fs 
+-    libselinux
+     libsepol
+     libpackagelistparser
+     libsparse
+@@ -250,5 +253,8 @@ target_link_libraries(e2fsdroid
+     liblog
+     pcre2-8
+     dl
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     z
+     )
+\ No newline at end of file
+diff --git a/platform-tools/etc1tool.cmake b/platform-tools/etc1tool.cmake
+index ab156d2..bb4ce9c 100644
+--- a/platform-tools/etc1tool.cmake
++++ b/platform-tools/etc1tool.cmake
+@@ -22,4 +22,10 @@ target_include_directories(etc1tool PRIVATE
+     ${SRC}/libpng
+     ${SRC}/native/opengl/include
+ )
+-target_link_libraries(etc1tool png_static c++_static dl z)
++target_link_libraries(etc1tool
++    png_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
++    dl
++    z)
+diff --git a/platform-tools/f2fs-tools.cmake b/platform-tools/f2fs-tools.cmake
+index c804118..a6d7f9c 100644
+--- a/platform-tools/f2fs-tools.cmake
++++ b/platform-tools/f2fs-tools.cmake
+@@ -47,9 +47,12 @@ target_compile_definitions(make_f2fs PRIVATE
+ target_include_directories(make_f2fs PRIVATE ${INCLUDES})
+ target_link_libraries(make_f2fs
+     libext2_uuid
+-    libbase
+     libsparse
++    libbase
+     dl
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     z
+     )
+     
+@@ -70,9 +73,12 @@ target_compile_definitions(make_f2fs_casefold PRIVATE
+ target_include_directories(make_f2fs_casefold PRIVATE ${INCLUDES})
+ target_link_libraries(make_f2fs_casefold
+     libext2_uuid
+-    libbase
+     libsparse
++    libbase
+     dl
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     z
+     )
+ 
+@@ -104,15 +110,17 @@ target_compile_definitions(sload_f2fs PRIVATE
+ target_include_directories(sload_f2fs PRIVATE ${INCLUDES})
+ target_link_libraries(sload_f2fs
+     libext2_uuid
+-    libselinux
+     libsepol
+     libpackagelistparser
+     libsparse
+-    libbase
+     libcutils
++    libbase
+     liblog
+     pcre2-8
+     lz4_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
++    pthread
+     dl
+     z
+     )
+diff --git a/platform-tools/fastboot.cmake b/platform-tools/fastboot.cmake
+index fddbf20..6dd5ae3 100644
+--- a/platform-tools/fastboot.cmake
++++ b/platform-tools/fastboot.cmake
+@@ -26,6 +26,10 @@ target_include_directories(libext4 PRIVATE
+     ${SRC}/extras/ext4_utils/include 
+     ${SRC}/libbase/include
+     )
++target_compile_options(libext4 PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_library(libfsmgr STATIC
+     ${SRC}/core/fs_mgr/liblp/images.cpp
+@@ -46,18 +50,19 @@ target_include_directories(libfsmgr PRIVATE
+     ${SRC}/core/libcutils/include
+     )
+ target_link_libraries(libfsmgr PUBLIC fmt::fmt)
++target_compile_options(libfsmgr PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ 
+ add_executable(fastboot
+     ${SRC}/core/fastboot/bootimg_utils.cpp
+     ${SRC}/core/fastboot/fastboot.cpp
+     ${SRC}/core/fastboot/fastboot_driver.cpp
+     ${SRC}/core/fastboot/fs.cpp
+-    ${SRC}/core/fastboot/filesystem.cpp
+     ${SRC}/core/fastboot/super_flash_helper.cpp
+     ${SRC}/core/fastboot/main.cpp
+     ${SRC}/core/fastboot/socket.cpp
+-    ${SRC}/core/fastboot/storage.cpp
+-    ${SRC}/core/fastboot/task.cpp
+     ${SRC}/core/fastboot/tcp.cpp
+     ${SRC}/core/fastboot/udp.cpp
+     ${SRC}/core/fastboot/usb_linux.cpp
+@@ -87,6 +92,10 @@ target_compile_definitions(fastboot PRIVATE
+     -D_XOPEN_SOURCE=700 
+     -DUSE_F2FS
+     )
++target_compile_options(fastboot PRIVATE
++    -std=c++17
++    -stdlib=libc++
++    )
+ target_link_libraries(fastboot
+     libdiagnoseusb
+     libsparse 
+@@ -97,12 +106,12 @@ target_link_libraries(fastboot
+     libutils
+     libbase 
+     libext4 
+-    libselinux 
+     libsepol 
+     liblog
+     crypto
+     pcre2-8 
+-    c++_static
++    ${LIB_C++_PATH}/libc++.a
++    ${LIB_C++_PATH}/libc++abi.a
+     dl
+     z
+     )
+\ No newline at end of file
+diff --git a/platform-tools/sqlite3.cmake b/platform-tools/sqlite3.cmake
+index 5f8fe18..1fc0d5d 100644
+--- a/platform-tools/sqlite3.cmake
++++ b/platform-tools/sqlite3.cmake
+@@ -15,8 +15,8 @@
+ #
+ 
+ add_executable(sqlite3 
+-    ${SRC}/sqlite/dist/sqlite-default/sqlite3.c
+-    ${SRC}/sqlite/dist/sqlite-default/shell.c
++    ${SRC}/sqlite/dist/sqlite3.c
++    ${SRC}/sqlite/dist/shell.c
+     )
+     
+ target_compile_definitions(sqlite3 PRIVATE 
+@@ -48,4 +48,4 @@ target_compile_definitions(sqlite3 PRIVATE
+     -DSQLITE_ENABLE_DBSTAT_VTAB
+     -DNO_ANDROID_FUNCS=1
+     )
+-target_link_libraries(sqlite3 dl z)
+\ No newline at end of file
++target_link_libraries(sqlite3 dl z pthread)
+\ No newline at end of file
+-- 
+2.25.1
+

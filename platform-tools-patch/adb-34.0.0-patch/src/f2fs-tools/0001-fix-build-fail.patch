@@ -1,3 +1,12 @@
+From 853fb8608852b9d6ea0ffa8bb4307d7f74f4bdbf Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:14 +0800
+Subject: [PATCH] fix build fail
+
+---
+ include/android_config.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
 diff --git a/include/android_config.h b/include/android_config.h
 index 141fe06..dbfbba2 100644
 --- a/include/android_config.h
@@ -15,3 +24,6 @@ index 141fe06..dbfbba2 100644
  
  #if defined(__BIONIC__)
  #define HAVE_LINUX_BLKZONED_H 1
+-- 
+2.25.1
+

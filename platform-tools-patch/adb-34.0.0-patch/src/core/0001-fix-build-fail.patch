@@ -1,0 +1,110 @@
+From c0e5ed59600d9f962b3825f6a1176f5f730a498f Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:01 +0800
+Subject: [PATCH] fix build fail
+
+---
+ fastboot/super_flash_helper.cpp            |  1 +
+ libpackagelistparser/packagelistparser.cpp |  6 +++++-
+ libprocessgroup/processgroup.cpp           | 12 ++++++------
+ libutils/Errors.cpp                        |  1 +
+ 4 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/fastboot/super_flash_helper.cpp b/fastboot/super_flash_helper.cpp
+index b617ce8..ffde61b 100644
+--- a/fastboot/super_flash_helper.cpp
++++ b/fastboot/super_flash_helper.cpp
+@@ -19,6 +19,7 @@
+ #include <android-base/logging.h>
+ 
+ #include "util.h"
++#include <climits>
+ 
+ using android::base::borrowed_fd;
+ using android::base::unique_fd;
+diff --git a/libpackagelistparser/packagelistparser.cpp b/libpackagelistparser/packagelistparser.cpp
+index 59c3a74..083efb8 100644
+--- a/libpackagelistparser/packagelistparser.cpp
++++ b/libpackagelistparser/packagelistparser.cpp
+@@ -22,12 +22,16 @@
+ #include <inttypes.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <sys/limits.h>
++// #include <sys/limits.h>
++#include <limits.h>
+ 
+ #include <memory>
+ 
+ #include <log/log.h>
+ 
++# define GID_MAX UINT_MAX
++# define UID_MAX UINT_MAX
++
+ static bool parse_gids(const char* path, size_t line_number, const char* gids, pkg_info* info) {
+   // Nothing to do?
+   if (!gids || !strcmp(gids, "none")) return true;
+diff --git a/libprocessgroup/processgroup.cpp b/libprocessgroup/processgroup.cpp
+index 1da69ba..6a3b53c 100644
+--- a/libprocessgroup/processgroup.cpp
++++ b/libprocessgroup/processgroup.cpp
+@@ -154,12 +154,12 @@ void DropTaskProfilesResourceCaching() {
+ 
+ bool SetProcessProfiles(uid_t uid, pid_t pid, const std::vector<std::string>& profiles) {
+     return TaskProfiles::GetInstance().SetProcessProfiles(
+-            uid, pid, std::span<const std::string>(profiles), false);
++            uid, pid, std::span<const std::string>(profiles.data(), profiles.size()), false);
+ }
+ 
+ bool SetProcessProfiles(uid_t uid, pid_t pid, std::initializer_list<std::string_view> profiles) {
+     return TaskProfiles::GetInstance().SetProcessProfiles(
+-            uid, pid, std::span<const std::string_view>(profiles), false);
++            uid, pid, std::span<const std::string_view>(profiles.begin(), profiles.end()), false);
+ }
+ 
+ bool SetProcessProfiles(uid_t uid, pid_t pid, std::span<const std::string_view> profiles) {
+@@ -168,17 +168,17 @@ bool SetProcessProfiles(uid_t uid, pid_t pid, std::span<const std::string_view>
+ 
+ bool SetProcessProfilesCached(uid_t uid, pid_t pid, const std::vector<std::string>& profiles) {
+     return TaskProfiles::GetInstance().SetProcessProfiles(
+-            uid, pid, std::span<const std::string>(profiles), true);
++            uid, pid, std::span<const std::string>(profiles.data(), profiles.size()), true);
+ }
+ 
+ bool SetTaskProfiles(int tid, const std::vector<std::string>& profiles, bool use_fd_cache) {
+-    return TaskProfiles::GetInstance().SetTaskProfiles(tid, std::span<const std::string>(profiles),
++    return TaskProfiles::GetInstance().SetTaskProfiles(tid, std::span<const std::string>(profiles.data(), profiles.size()),
+                                                        use_fd_cache);
+ }
+ 
+ bool SetTaskProfiles(int tid, std::initializer_list<std::string_view> profiles, bool use_fd_cache) {
+     return TaskProfiles::GetInstance().SetTaskProfiles(
+-            tid, std::span<const std::string_view>(profiles), use_fd_cache);
++            tid, std::span<const std::string_view>(profiles.begin(), profiles.end()), use_fd_cache);
+ }
+ 
+ bool SetTaskProfiles(int tid, std::span<const std::string_view> profiles, bool use_fd_cache) {
+@@ -197,7 +197,7 @@ extern "C" bool android_set_process_profiles(uid_t uid, pid_t pid, size_t num_pr
+     for (size_t i = 0; i < num_profiles; i++) {
+         profiles_.emplace_back(profiles[i]);
+     }
+-    return SetProcessProfiles(uid, pid, std::span<const std::string_view>(profiles_));
++    return SetProcessProfiles(uid, pid, std::span<const std::string_view>(profiles_.data(), profiles_.size()));
+ }
+ 
+ static std::string ConvertUidToPath(const char* cgroup, uid_t uid) {
+diff --git a/libutils/Errors.cpp b/libutils/Errors.cpp
+index 74f3bef..5198121 100644
+--- a/libutils/Errors.cpp
++++ b/libutils/Errors.cpp
+@@ -14,6 +14,7 @@
+  * limitations under the License.
+  */
+ #include <utils/Errors.h>
++#include <string.h>
+ 
+ namespace android {
+ 
+-- 
+2.25.1
+

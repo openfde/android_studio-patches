@@ -1,3 +1,12 @@
+From 88b48fbdc7ffc413939ee3fed563b8b7eb997296 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:34 +0800
+Subject: [PATCH] fix build fail
+
+---
+ platform/api/task_runner.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
 diff --git a/platform/api/task_runner.h b/platform/api/task_runner.h
 index 948eb08..3673141 100644
 --- a/platform/api/task_runner.h
@@ -21,3 +30,6 @@ index 948eb08..3673141 100644
    virtual ~TaskRunner() = default;
  
    // Takes any callable target (function, lambda-expression, std::bind result,
+-- 
+2.25.1
+

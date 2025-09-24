@@ -1,0 +1,54 @@
+From 07598e6e044e8ef06583cb81b7965b3f911a3f83 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 23 Sep 2025 19:28:27 +0800
+Subject: [PATCH] fix build fail
+
+---
+ zip_archive.cc | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/zip_archive.cc b/zip_archive.cc
+index e392a20..9c9a847 100644
+--- a/zip_archive.cc
++++ b/zip_archive.cc
+@@ -392,7 +392,7 @@ static ZipError MapCentralDirectory(const char* debug_file_name, ZipArchive* arc
+   });
+ 
+   if (auto result = FindCentralDirectoryInfo(debug_file_name, archive,
+-                                             file_length, scan_buffer, &cdInfo);
++                                             file_length, std::span<uint8_t>(scan_buffer.data(), scan_buffer.size()), &cdInfo);
+       result != kSuccess) {
+     return result;
+   }
+@@ -1370,7 +1370,7 @@ bool Reader::IsZeroCopy() const {
+ }  // namespace zip_archive
+ 
+ static std::span<uint8_t> bufferToSpan(zip_archive::Writer::Buffer buf) {
+-  return {buf.first, ssize_t(buf.second)};
++  return {buf.first, buf.second};
+ }
+ 
+ template <bool OnIncfs>
+@@ -1400,7 +1400,8 @@ static int32_t inflateImpl(const zip_archive::Reader& reader,
+   } else {
+     direct_writer = false;
+     write_buf.resize(static_cast<size_t>(std::min(min_write_buffer_size, kBufSize)));
+-    write_span = write_buf;
++    // write_span = write_buf;
++    write_span = std::span<uint8_t>(write_buf.data(), write_buf.size());
+   }
+ 
+   /*
+@@ -1539,7 +1540,8 @@ static int32_t CopyEntryToWriter(MappedZipFile& mapped_zip, const ZipEntry64* en
+     } else {
+       max_read_size = std::min(entry->uncompressed_length, kBufSize);
+       buf.resize((static_cast<size_t>(max_read_size)));
+-      write_span = buf;
++      // write_span = buf;
++      write_span = std::span<uint8_t>(buf.data(), buf.size());
+     }
+   } else {
+     max_read_size = entry->uncompressed_length;
+-- 
+2.25.1
+
