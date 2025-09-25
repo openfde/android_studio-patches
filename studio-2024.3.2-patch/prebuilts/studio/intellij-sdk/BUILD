@@ -28,6 +28,37 @@ jvm_import(
 )
 
 intellij_plugin_import(
+    name = "intellij.jvm.analysis.impl",
+    target_dir = "java",
+    exports = [":intellij.jvm-lib"],
+)
+intellij_plugin_import(
+    name = "intellij.java.vcs",
+    target_dir = "java",
+    exports = [":intellij.jvm-lib"],
+)
+intellij_plugin_import(
+    name = "intellij.java.featuresTrainer",
+    target_dir = "java",
+    exports = [":intellij.jvm-lib"],
+)
+intellij_plugin_import(
+    name = "intellij.java.structuralSearch",
+    target_dir = "java",
+    exports = [":intellij.jvm-lib"],
+)
+intellij_plugin_import(
+    name = "intellij.java.unscramble",
+    target_dir = "java",
+    exports = [":intellij.jvm-lib"],
+)
+
+jvm_import(
+    name = "intellij.jvm-lib",
+    jars = glob(["AI/linux/android-studio/plugins/java/lib/modules/*.jar"]),
+)
+
+intellij_plugin_import(
     name = "com.intellij.java-i18n",
     target_dir = "java-i18n",
     exports = [":com.intellij.java-i18n-lib"],

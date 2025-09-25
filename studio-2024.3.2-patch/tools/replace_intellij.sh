@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# 替换目录中所有文件里的 $SDK_PLATFORM$ 为 linux/android-studio
-# 用法: ./replace_sdk.sh [目标目录] (默认为当前目录)
-
 # 设置目标目录（默认为当前目录）
 TARGET_DIR="${1:-.}"
 
@@ -23,7 +20,43 @@ while IFS= read -r -d $'\0' file; do
     # 检查文件是否可读可写
     if [ -r "$file" ] && [ -w "$file" ]; then
         # 检查文件是否包含目标字符串
-	if grep -q '\@intellij\/\/:intellij.libraries.grpc.netty.shaded' "$file"; then
+        if grep -q '\@intellij\/\/:intellij.java.featuresTrainer' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:intellij.java.featuresTrainer/\/\/prebuilts\/studio\/intellij.java.featuresTrainer/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+        if grep -q '\@intellij\/\/:intellij.java.structuralSearch' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:intellij.java.structuralSearch/\/\/prebuilts\/studio\/intellij.java.structuralSearch/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+        if grep -q '\@intellij\/\/:intellij.java.unscramble' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:intellij.java.unscramble/\/\/prebuilts\/studio\/intellij-sdk:intellij.java.unscramble/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+        if grep -q '\@intellij\/\/:intellij.java.vcs' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:intellij.java.vcs/\/\/prebuilts\/studio\/intellij-sdk:intellij.java.vcs/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+        if grep -q '\@intellij\/\/:intellij.jvm.analysis.impl' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:intellij.jvm.analysis.impl/\/\/prebuilts\/studio\/intellij-sdk:intellij.jvm.analysis.impl/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+        if grep -q '\@intellij\/\/:com.jetbrains.performancePlugin' "$file"; then
+            # 执行替换操作
+            sed -i 's/\@intellij\/\/:com.jetbrains.performancePlugin/\/\/prebuilts\/studio\/intellij-sdk:com.jetbrains.performancePlugin/g' "$file"
+            ((REPLACE_COUNT++))
+            echo "已处理: $file"
+        fi
+	    if grep -q '\@intellij\/\/:intellij.libraries.grpc.netty.shaded' "$file"; then
             # 执行替换操作
             sed -i 's/\@intellij\/\/:intellij.libraries.grpc.netty.shaded/\/\/prebuilts\/studio\/intellij-sdk:intellij.libraries.grpc.netty.shaded/g' "$file"
             ((REPLACE_COUNT++))

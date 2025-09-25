@@ -74,8 +74,6 @@ build_python() {
         ln -sf python3.11-config python3-config
         
         # 设置环境变量
-        export PATH=$TOOLS_DIR/python3.11/bin:$PATH
-        export LD_LIBRARY_PATH=$TOOLS_DIR/python3.11/lib:$LD_LIBRARY_PATH
         echo "export PATH=$TOOLS_DIR/python3.11/bin:\$PATH" >> ~/.bashrc
         echo "export LD_LIBRARY_PATH=$TOOLS_DIR/python3.11/lib:\$LD_LIBRARY_PATH" >> ~/.bashrc
 
@@ -83,6 +81,9 @@ build_python() {
     else
         log_success "Python 3.11 已编译完成"
     fi
+    
+    export PATH=$TOOLS_DIR/python3.11/bin:$PATH
+    export LD_LIBRARY_PATH=$TOOLS_DIR/python3.11/lib:$LD_LIBRARY_PATH
 }
 
 # 下载 Android Studio patches
@@ -573,7 +574,7 @@ build_android_studio() {
         mv $STUDIO_DIR/prebuilts/studio/sdk/Sdk $STUDIO_DIR/prebuilts/studio/sdk/linux
 
         mkdir -p $STUDIO_DIR/prebuilts/studio/sdk/linux/build-tools/30.0.3/
-        cp $BUILD_BASE/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/sdk/linux/build-tools/30.0.3/aidl \
+        cp $TOOLS_DIR/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/sdk/linux/build-tools/30.0.3/aidl \
             $STUDIO_DIR/prebuilts/studio/sdk/linux/build-tools/30.0.3/
     fi
 
@@ -581,8 +582,8 @@ build_android_studio() {
         mkdir -p $STUDIO_DIR/prebuilts/studio/intellij-sdk/AI
         tools/adt/idea/studio/update_sdk.py --path tools/idea/out/studio/dist
 
-        cp $BUILD_BASE/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/intellij-sdk/BUILD \
-            $STUDIO_DIR/prebuilts/studio/intellij-sdk/AI
+        cp $TOOLS_DIR/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/intellij-sdk/BUILD \
+            $STUDIO_DIR/prebuilts/studio/intellij-sdk/
         
         if [ -f "$STUDIO_DIR/tools/replace_intellij.sh" ]; then
             ./tools/replace_intellij.sh
