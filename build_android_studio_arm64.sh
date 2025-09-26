@@ -11,6 +11,8 @@ export STUDIO_VERSION="2024.3.2"
 export TOOLS_DIR="$BUILD_BASE/build-tools"
 export STUDIO_DIR="$BUILD_BASE/studio-$STUDIO_VERSION"
 
+DEFAULT_BUILD_TOOL="Clang"
+
 # 颜色输出函数
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -492,25 +494,58 @@ prepare_toolchains() {
 
     # 复制 Clang 工具链
     cd "$STUDIO_DIR/prebuilts/clang/host/linux-x86"
-    if [ -d "$TOOLS_DIR/clang-r536225" ]; then
-        if [ ! -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/arm64.flag" ]; then
-            cp -rf $TOOLS_DIR/clang-r536225/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
-            cd $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib
-            rm libc++.modules.json
-            ln -s aarch64-unknown-linux-gnu/libc++.modules.json libc++.modules.json
-            rm libc++.so
-            ln -s aarch64-unknown-linux-gnu/libc++.so libc++.so
-            rm libc++.so.1
-            ln -s aarch64-unknown-linux-gnu/libc++.so.1 libc++.so.1
-            rm libc++.a
-            ln -s aarch64-unknown-linux-gnu/libc++.a libc++.a
-            rm libc++abi.a
-            ln -s aarch64-unknown-linux-gnu/libc++abi.a libc++abi.a
-            rm libunwind.so
-            ln -s aarch64-unknown-linux-gnu/libunwind.so libunwind.so
-            touch $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/arm64.flag
+    if [ "$DEFAULT_BUILD_TOOL" != "PhyCC" ];then
+        if [ -d "$TOOLS_DIR/clang-r536225" ]; then
+            if [ ! -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/clang_arm64.flag" ]; then
+                cp -rf $TOOLS_DIR/clang-r536225/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cd $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib
+                rm libc++.modules.json
+                ln -s aarch64-unknown-linux-gnu/libc++.modules.json libc++.modules.json
+                rm libc++.so
+                ln -s aarch64-unknown-linux-gnu/libc++.so libc++.so
+                rm libc++.so.1
+                ln -s aarch64-unknown-linux-gnu/libc++.so.1 libc++.so.1
+                rm libc++.a
+                ln -s aarch64-unknown-linux-gnu/libc++.a libc++.a
+                rm libc++abi.a
+                ln -s aarch64-unknown-linux-gnu/libc++abi.a libc++abi.a
+                rm libunwind.so
+                ln -s aarch64-unknown-linux-gnu/libunwind.so libunwind.so
+                if [ -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/phycc_arm64.flag" ];then
+                    rm $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/phycc_arm64.flag
+                fi
+                touch $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/clang_arm64.flag
 
-            log_success "替换 clang 完成"
+                log_success "替换 clang 完成"
+            fi
+        fi
+    else
+        if [ -d "$PHYCC_PATH" ]; then
+            if [ ! -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/phycc_arm64.flag" ]; then
+                cp -rf $PHYCC_PATH/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp -rf $TOOLS_DIR/clang-r536225/lib/libxml* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib/
+                cp -rf $TOOLS_DIR/clang-r536225/lib/libedit* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib/
+
+                cd $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib
+                rm libc++.modules.json
+                ln -s aarch64-unknown-linux-gnu/libc++.modules.json libc++.modules.json
+                rm libc++.so
+                ln -s aarch64-unknown-linux-gnu/libc++.so libc++.so
+                rm libc++.so.1
+                ln -s aarch64-unknown-linux-gnu/libc++.so.1 libc++.so.1
+                rm libc++.a
+                ln -s aarch64-unknown-linux-gnu/libc++.a libc++.a
+                rm libc++abi.a
+                ln -s aarch64-unknown-linux-gnu/libc++abi.a libc++abi.a
+                rm libunwind.so
+                ln -s aarch64-unknown-linux-gnu/libunwind.so libunwind.so
+                if [ -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/clang_arm64.flag" ];then
+                    rm $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/clang_arm64.flag
+                fi
+                touch $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/phycc_arm64.flag
+
+                log_success "替换 clang(phycc) 完成"
+            fi
         fi
     fi
     
@@ -643,6 +678,7 @@ main() {
     log_info "主目录: $BUILD_BASE"
     log_info "Build Tools 目录: $TOOLS_DIR"
     log_info "Android Studio 目录: $STUDIO_DIR"
+    log_info "Default build tool: $DEFAULT_BUILD_TOOL"
     
     # 创建目录
     mkdir -p "$TOOLS_DIR"
@@ -653,7 +689,9 @@ main() {
     download_studio_patch
     build_python
     build_cmake
-    build_clang
+    if [ "$DEFAULT_BUILD_TOOL" != "PhyCC" ];then
+        build_clang
+    fi
     build_libedit
     build_libxml2
     build_ndk
@@ -678,10 +716,12 @@ show_usage() {
     echo "选项:"
     echo "  -h, --help     显示此帮助信息"
     echo "  -p, --path     设置安装路径"
+    echo "  -b, --build    设置Clang编译器安装路径"
     echo ""
     echo "示例:"
     echo "  $0                      # 完整编译，默认路径为 $HOME/Studio"
     echo "  $0 -p /openfde/Studio   # 指定代码下载路径为 /openfde/Studio"
+    echo "  $0 -b /openfde/PhyCC    # 指定Clang编译器安装路径为 /openfde/PhyCC"
 }
 
 config_studio_path() {
@@ -691,8 +731,25 @@ config_studio_path() {
     export STUDIO_DIR="$BUILD_BASE/studio-$STUDIO_VERSION"
 }
 
+config_phycc_env() {
+    if [ ! -f "$PHYCC_PATH/bin/clang" ]; then
+        log_error "PhyCC: $PHYCC_PATH not exist!"
+        exit 0
+    fi
+
+    export PATH=$PHYCC_PATH/bin:$PATH
+    export LD_LIBRARY_PATH=$PHYCC_PATH/lib:$LD_LIBRARY_PATH
+    if ! clang --version 2>/dev/null | head -n1 | grep -q "PhyCC"; then
+        log_error "PhyCC 未安装成功: $PHYCC_PATH"
+        exit 0
+    fi
+
+    DEFAULT_BUILD_TOOL="PhyCC"
+}
+
 # 解析命令行参数
 NEW_BUILD_PATH=""
+PHYCC_PATH=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
@@ -702,6 +759,11 @@ while [[ $# -gt 0 ]]; do
         -p|--path)
             NEW_BUILD_PATH="$2"
             config_studio_path
+            break
+            ;;
+        -b|--build)
+            PHYCC_PATH="$2"
+            config_phycc_env
             break
             ;;
         *)
