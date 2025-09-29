@@ -465,6 +465,32 @@ apply_studio_patches() {
 prepare_toolchains() {
     log_info "准备 Studio 编译工具链..."
 
+    # 下载 ARM64 Jbr 21
+    cd "$STUDIO_DIR/prebuilts/studio/jdk/jbr-next"
+    if [ ! -f "linux/arm64.flag" ]; then
+        wget -O jbr21.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbr_ft-21.0.6-linux-aarch64-b895.109.tar.gz
+        tar -xzf jbr21.tar.gz
+        cp -rf jbr*/* linux/
+        rm jbr21.tar.gz
+        rm -rf jbr*
+        touch $STUDIO_DIR/prebuilts/studio/jdk/jbr-next/linux/arm64.flag
+
+        log_success "替换 jbr-next 完成"
+    fi
+
+    # 下载 ARM64 JbrSdk 21
+    cd "$STUDIO_DIR/prebuilts/studio/jdk/jbrjdk-next"
+    if [ ! -f "linux/arm64.flag" ]; then
+        wget -O jbrsdk21.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_ft-21.0.6-linux-aarch64-b895.109.tar.gz
+        tar -xzf jbrsdk21.tar.gz
+        cp -rf jbrsdk*/* linux/
+        rm jbrsdk21.tar.gz
+        rm -rf jbrsdk*
+        touch $STUDIO_DIR/prebuilts/studio/jdk/jbrjdk-next/linux/arm64.flag
+
+        log_success "替换 jbrjdk-next 完成"
+    fi
+
     # 下载 ARM64 JDK 17
     cd "$STUDIO_DIR/prebuilts/studio/jdk/jdk17"
     if [ ! -f "linux/arm64.flag" ]; then
@@ -498,6 +524,8 @@ prepare_toolchains() {
         if [ -d "$TOOLS_DIR/clang-r536225" ]; then
             if [ ! -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/clang_arm64.flag" ]; then
                 cp -rf $TOOLS_DIR/clang-r536225/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp $TOOLS_DIR/android_studio-patches/studio-2024.3.2-patch/build/bazel/clang_19.BUILD \
+                    $STUDIO_DIR/build/bazel/toolchains/cc/linux_clang/clang.BUILD
                 cd $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib
                 rm libc++.modules.json
                 ln -s aarch64-unknown-linux-gnu/libc++.modules.json libc++.modules.json
@@ -522,7 +550,15 @@ prepare_toolchains() {
     else
         if [ -d "$PHYCC_PATH" ]; then
             if [ ! -f "$STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/phycc_arm64.flag" ]; then
-                cp -rf $PHYCC_PATH/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp -rf $PHYCC_PATH/bin $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp -rf $PHYCC_PATH/lib $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp -rf $PHYCC_PATH/libexec $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                cp -rf $PHYCC_PATH/share $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+                # cp -rf $PHYCC_PATH/* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/
+
+                cp $TOOLS_DIR/android_studio-patches/studio-2024.3.2-patch/build/bazel/clang_17.BUILD \
+                    $STUDIO_DIR/build/bazel/toolchains/cc/linux_clang/clang.BUILD
+
                 cp -rf $TOOLS_DIR/clang-r536225/lib/libxml* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib/
                 cp -rf $TOOLS_DIR/clang-r536225/lib/libedit* $STUDIO_DIR/prebuilts/clang/host/linux-x86/clang-r536225/lib/
 
