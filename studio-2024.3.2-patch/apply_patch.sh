@@ -23,11 +23,25 @@ git am 000*
 rm $studio_path/tools/adt/idea/000*
 
 
+echo "git am for $studio_path/tools/analytics-library"
+cp $cur_dir/tools/analytics-library/000* $studio_path/tools/analytics-library/
+cd $studio_path/tools/analytics-library/
+git am 000*
+rm $studio_path/tools/analytics-library/000*
+
+
 echo "git am for $studio_path/tools/base"
 cp $cur_dir/tools/base/000* $studio_path/tools/base/
 cd $studio_path/tools/base/
 git am 000*
 rm $studio_path/tools/base/000*
+
+
+echo "git am for $studio_path/tools/data-binding"
+cp $cur_dir/tools/data-binding/000* $studio_path/tools/data-binding/
+cd $studio_path/tools/data-binding/
+git am 000*
+rm $studio_path/tools/data-binding/000*
 
 
 echo "git am for $studio_path/tools/idea"
@@ -42,6 +56,20 @@ cp $cur_dir/tools/studio/google/cloud/testing/000* $studio_path/tools/studio/goo
 cd $studio_path/tools/studio/google/cloud/testing/
 git am 000*
 rm $studio_path/tools/studio/google/cloud/testing/000*
+
+
+echo "git am for $studio_path/tools/studio/google/cloud/tools"
+cp $cur_dir/tools/studio/google/cloud/tools/000* $studio_path/tools/studio/google/cloud/tools/
+cd $studio_path/tools/studio/google/cloud/tools/
+git am 000*
+rm $studio_path/tools/studio/google/cloud/tools/000*
+
+
+echo "git am for $studio_path/tools/swing-testing"
+cp $cur_dir/tools/swing-testing/000* $studio_path/tools/swing-testing/
+cd $studio_path/tools/swing-testing/
+git am 000*
+rm $studio_path/tools/swing-testing/000*
 
 
 echo "git am for $studio_path/prebuilts/tools"

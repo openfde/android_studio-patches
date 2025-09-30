@@ -1,7 +1,7 @@
-From 491f27a6e19e1a23548d618beb63592e98a5e2d8 Mon Sep 17 00:00:00 2001
+From 3f9d7a1b14e7eee74f65ddf45630a1c5f0128ee0 Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Wed, 17 Sep 2025 14:37:53 +0800
-Subject: [PATCH 2/2] fix Unable to find a CC toolchain
+Subject: [PATCH 2/3] fix Unable to find a CC toolchain
 
 Change-Id: Ifaa4867da42aff93e2457a4ce8dc2bdf64a83f20
 ---
@@ -9,7 +9,7 @@ Change-Id: Ifaa4867da42aff93e2457a4ce8dc2bdf64a83f20
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/bazel/platforms/BUILD b/bazel/platforms/BUILD
-index c544e16e20..4dfac6518e 100644
+index c544e16e200..4dfac6518e6 100644
 --- a/bazel/platforms/BUILD
 +++ b/bazel/platforms/BUILD
 @@ -39,7 +39,7 @@ config_setting(
@@ -22,5 +22,5 @@ index c544e16e20..4dfac6518e 100644
          "@bazel_tools//tools/cpp:clang",
      ],
 -- 
-2.25.1
+2.34.1
 

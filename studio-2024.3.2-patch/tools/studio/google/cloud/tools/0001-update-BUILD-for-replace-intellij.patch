@@ -1,0 +1,73 @@
+From 8a6e5efed50e2b9569bd70c91da9bffeff8d46eb Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 30 Sep 2025 16:28:00 +0800
+Subject: [PATCH] update BUILD for replace @@intellij:
+
+Change-Id: Ib04d09b18f5a339d1d4aea8712cdb6c07a938c48
+---
+ android-studio-plugin/BUILD | 14 +++++++-------
+ google-login-plugin/BUILD   |  4 ++--
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/android-studio-plugin/BUILD b/android-studio-plugin/BUILD
+index 04c14be..de2af3f 100644
+--- a/android-studio-plugin/BUILD
++++ b/android-studio-plugin/BUILD
+@@ -19,8 +19,8 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
+-        "@intellij//:com.intellij.gradle",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.gradle",
+         "//tools/adt/idea/android:intellij.android.core",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/android-test-framework:intellij.android.testFramework[test]",
+@@ -34,9 +34,9 @@ iml_module(
+         "//tools/adt/idea/observable-ui:intellij.android.observable.ui",
+         "//tools/adt/idea/.idea/libraries:studio-analytics-proto",
+         "//tools/analytics-library/tracker:analytics-tracker",
+-        "@intellij//:org.jetbrains.kotlin",
+-        "@intellij//:org.intellij.groovy",
+-        "@intellij//:Git4Idea",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:org.intellij.groovy",
++        "//prebuilts/studio/intellij-sdk:Git4Idea",
+         "//tools/adt/idea/project-system-gradle:intellij.android.projectSystem.gradle",
+         "//tools/adt/idea/.idea/libraries:google-api-client",
+         "//tools/adt/idea/.idea/libraries:cloudresourcemanager",
+@@ -48,7 +48,7 @@ iml_module(
+         "//prebuilts/tools/common/m2:google-api-services-sourcerepo",
+         "//tools/adt/idea/android-common:intellij.android.common",
+         "//tools/base/flags:studio.android.sdktools.flags",
+-        "@intellij//:intellij.platform.vcs.impl",
+-        "@intellij//:intellij.platform.vcs.dvcs.impl",
++        "//prebuilts/studio/intellij-sdk:intellij.platform.vcs.impl",
++        "//prebuilts/studio/intellij-sdk:intellij.platform.vcs.dvcs.impl",
+     ],
+ )
+diff --git a/google-login-plugin/BUILD b/google-login-plugin/BUILD
+index 8372677..16dd4c1 100644
+--- a/google-login-plugin/BUILD
++++ b/google-login-plugin/BUILD
+@@ -22,7 +22,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+         "//prebuilts/tools/common/m2:javax-servlet",
+@@ -50,6 +50,6 @@ iml_module(
+         "//tools/adt/idea/observable:intellij.android.observable",
+         "//tools/adt/idea/observable-ui:intellij.android.observable.ui",
+         "//tools/adt/idea/.idea/libraries:mockito-kotlin[test]",
+-        "@intellij//:intellij.libraries.grpc",
++        "//prebuilts/studio/intellij-sdk:intellij.libraries.grpc",
+     ],
+ )
+-- 
+2.34.1
+

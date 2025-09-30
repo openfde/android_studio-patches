@@ -1,7 +1,7 @@
-From 3f2e5baefff6cf8a9e1b069b42cb192c1e3f3fa9 Mon Sep 17 00:00:00 2001
+From 6b77b93d1dfa8d51cf9142af7835227d385e5f18 Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Fri, 19 Sep 2025 10:49:17 +0800
-Subject: [PATCH 3/3] fix firebase-testing build failed
+Subject: [PATCH 2/3] fix firebase-testing build failed
 
 Change-Id: I1a54d0bb822fc8a0fc07e3b82c62507b57d511c8
 ---

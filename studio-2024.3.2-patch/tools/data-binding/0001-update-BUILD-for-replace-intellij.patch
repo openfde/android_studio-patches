@@ -1,0 +1,67 @@
+From f1115e050b71fd33cfe85454e654213511c1da74 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 30 Sep 2025 16:27:29 +0800
+Subject: [PATCH] update BUILD for replace @@intellij:
+
+Change-Id: Idd5a652ff4756193fd65ef0dd3187e2028daa417
+---
+ BUILD.bazel                  | 8 ++++----
+ compilationTests/BUILD.bazel | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/BUILD.bazel b/BUILD.bazel
+index 65cd8bd1..06c6b89a 100644
+--- a/BUILD.bazel
++++ b/BUILD.bazel
+@@ -25,7 +25,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//prebuilts/tools/common/m2:junit-4.12[test]",
+         "//prebuilts/tools/common/m2:hamcrest-core-1.3[test]",
+     ],
+@@ -41,7 +41,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//prebuilts/tools/common/m2:junit-4.12[test]",
+         "//prebuilts/tools/common/m2:hamcrest-core-1.3[test]",
+     ],
+@@ -140,7 +140,7 @@ iml_module(
+         "//tools/data-binding:compilerCommon.antlr_runtime.shaded",
+         "//tools/data-binding:compilerCommon.antlr.shaded",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/data-binding:studio.baseLibrary",
+         "//tools/data-binding:studio.baseLibrarySupport",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+@@ -272,7 +272,7 @@ iml_module(
+         "//tools/data-binding:compilerCommon.antlr_runtime.shaded",
+         "//tools/data-binding:compilerCommon.antlr.shaded",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+         "//tools/data-binding:studio.baseLibrary",
+diff --git a/compilationTests/BUILD.bazel b/compilationTests/BUILD.bazel
+index 3a4627b0..5f67a509 100644
+--- a/compilationTests/BUILD.bazel
++++ b/compilationTests/BUILD.bazel
+@@ -24,7 +24,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations[test]",
+         "//tools/data-binding:studio.compilerCommon[test]",
+-- 
+2.34.1
+

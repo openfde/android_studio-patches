@@ -655,10 +655,6 @@ build_android_studio() {
 
         cp $TOOLS_DIR/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/intellij-sdk/BUILD \
             $STUDIO_DIR/prebuilts/studio/intellij-sdk/
-        
-        if [ -f "$STUDIO_DIR/tools/replace_intellij.sh" ]; then
-            ./tools/replace_intellij.sh
-        fi
     fi
 
     tools/base/bazel/bazel build tools/adt/idea/android:artifacts

@@ -1,4 +1,4 @@
-From d376e8338f0dec73f3221afeb58340a9b95bae4c Mon Sep 17 00:00:00 2001
+From b7bdf98a47d52773484b5e2f2d07eba3cfea9421 Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Thu, 18 Sep 2025 16:58:54 +0800
 Subject: [PATCH 4/5] add build after mod
@@ -2132,5 +2132,5 @@ index dfea226ea5f..1a7d0c7b1f9 100644
  </module>
 \ No newline at end of file
 -- 
-2.25.1
+2.34.1
 

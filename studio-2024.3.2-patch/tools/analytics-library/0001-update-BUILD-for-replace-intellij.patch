@@ -1,0 +1,96 @@
+From a1ce0e4393d22ce016a755ee56972a5d276e1fba Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 30 Sep 2025 16:26:19 +0800
+Subject: [PATCH] update BUILD for replace @@intellij:
+
+Change-Id: I5cf2bceb482260c737d1b9884af28229d814da30
+---
+ crash/BUILD     | 2 +-
+ inspector/BUILD | 2 +-
+ publisher/BUILD | 2 +-
+ shared/BUILD    | 2 +-
+ testing/BUILD   | 2 +-
+ tracker/BUILD   | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/crash/BUILD b/crash/BUILD
+index e1668ec..c012579 100644
+--- a/crash/BUILD
++++ b/crash/BUILD
+@@ -16,7 +16,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/inspector/BUILD b/inspector/BUILD
+index fbc409e..f97a925 100644
+--- a/inspector/BUILD
++++ b/inspector/BUILD
+@@ -14,7 +14,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "//tools/analytics-library/shared:analytics-shared",
+diff --git a/publisher/BUILD b/publisher/BUILD
+index 91b2c12..ebadbe8 100644
+--- a/publisher/BUILD
++++ b/publisher/BUILD
+@@ -17,7 +17,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/shared/BUILD b/shared/BUILD
+index e27d4a0..f780dd7 100644
+--- a/shared/BUILD
++++ b/shared/BUILD
+@@ -16,7 +16,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/testing/BUILD b/testing/BUILD
+index ef7749b..1ad3253 100644
+--- a/testing/BUILD
++++ b/testing/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/tracker/BUILD b/tracker/BUILD
+index 7181ec4..0d031a4 100644
+--- a/tracker/BUILD
++++ b/tracker/BUILD
+@@ -16,7 +16,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+-- 
+2.34.1
+

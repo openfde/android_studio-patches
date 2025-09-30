@@ -1,4 +1,4 @@
-From d96f6f16cc27efeb6cad99cb77e05ff5fde89cdb Mon Sep 17 00:00:00 2001
+From 97dd5b62224519b5847edeaf934afe3860e27e93 Mon Sep 17 00:00:00 2001
 From: pngcui <pngcui1224@163.com>
 Date: Wed, 17 Sep 2025 14:40:36 +0800
 Subject: [PATCH 3/5] fix check intellij:*.jar fail
@@ -209,5 +209,5 @@ index 58eea97cab1..8d19a4888d5 100644
          }),
      )
 -- 
-2.25.1
+2.34.1
 

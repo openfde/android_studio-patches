@@ -1,0 +1,26 @@
+From 245c62345551c54bdb27bfbfef04c68625b5a339 Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 30 Sep 2025 16:28:27 +0800
+Subject: [PATCH] update BUILD for replace @@intellij:
+
+Change-Id: Ifb845d136f9c61a74da06540f6ca57db80ac6bc6
+---
+ fest-swing/BUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fest-swing/BUILD b/fest-swing/BUILD
+index 1c8afc7d..ec1cd5ea 100644
+--- a/fest-swing/BUILD
++++ b/fest-swing/BUILD
+@@ -12,7 +12,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/swing-testing/fest-swing/lib:fest-reflect-2.0-SNAPSHOT",
+         "//tools/swing-testing/fest-swing/lib:fest",
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+-- 
+2.34.1
+

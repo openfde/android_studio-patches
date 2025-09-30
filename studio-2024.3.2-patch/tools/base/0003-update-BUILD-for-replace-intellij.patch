@@ -1,0 +1,944 @@
+From f977a6593e08ed0a189db2b4505c27da777aea3c Mon Sep 17 00:00:00 2001
+From: pngcui <pngcui1224@163.com>
+Date: Tue, 30 Sep 2025 16:27:04 +0800
+Subject: [PATCH 3/3] update BUILD for replace @@intellij:
+
+Change-Id: I43f42841d244eefee56db7fa0b3c294761291edf
+---
+ adb-proxy/BUILD                            |  2 +-
+ adblib-ddmlibcompatibility/BUILD           |  2 +-
+ adblib-tools/BUILD                         |  2 +-
+ adblib/BUILD                               |  2 +-
+ annotations/BUILD                          |  2 +-
+ apkparser/BUILD                            |  2 +-
+ apkparser/analyzer/BUILD                   |  2 +-
+ bazel/avd/BUILD                            |  2 +-
+ build-analyzer/common/BUILD                |  2 +-
+ build-system/BUILD                         |  2 +-
+ build-system/builder-model/BUILD           |  4 ++--
+ build-system/builder-test-api/BUILD        |  2 +-
+ chunkio-processor/BUILD                    |  2 +-
+ chunkio/BUILD                              |  2 +-
+ common/BUILD                               |  6 +++---
+ ddmlib/BUILD                               |  4 ++--
+ debugger-tests/BUILD                       |  6 +++---
+ deploy/deployer/BUILD                      |  2 +-
+ device-provisioner/BUILD                   |  2 +-
+ device_validator/BUILD                     |  2 +-
+ draw9patch/BUILD                           |  2 +-
+ dynamic-layout-inspector/common/BUILD      |  2 +-
+ environment-services/BUILD                 |  2 +-
+ fakeadbserver/BUILD                        |  2 +-
+ flags/BUILD                                |  2 +-
+ jdwp-packet/BUILD                          |  2 +-
+ jdwp-scache/BUILD                          |  2 +-
+ jdwp-tracer/BUILD                          |  2 +-
+ kotlin-multiplatform-models/BUILD          |  4 ++--
+ layoutlib-api/BUILD                        |  2 +-
+ layoutlib-extensions/BUILD                 |  2 +-
+ leakcanarylib/BUILD                        |  2 +-
+ lint/BUILD                                 | 20 ++++++++++----------
+ lint/cli/BUILD                             |  2 +-
+ lint/libs/lint-tests/BUILD                 |  4 ++--
+ lint/libs/lint-typedef-remover/BUILD.bazel |  4 ++--
+ mlkit-common/BUILD                         |  2 +-
+ ninepatch/BUILD                            |  2 +-
+ perf-logger/BUILD                          |  2 +-
+ perflib/BUILD                              |  2 +-
+ pixelprobe/BUILD                           |  2 +-
+ process-monitor/BUILD                      |  2 +-
+ profgen/profgen/BUILD                      |  2 +-
+ repository/BUILD                           |  2 +-
+ resource-repository/BUILD                  |  2 +-
+ sdk-common/BUILD                           |  2 +-
+ sdk-common/gradle/BUILD                    |  2 +-
+ sdklib/BUILD                               |  2 +-
+ studio-grpc-testutils/BUILD                |  4 ++--
+ testutils/BUILD                            |  4 ++--
+ threading-agent-callback/BUILD             |  2 +-
+ threading-agent/BUILD                      |  2 +-
+ tracer/BUILD                               |  2 +-
+ usb-devices/BUILD                          |  2 +-
+ wizard/template-impl/BUILD                 |  2 +-
+ wizard/template-plugin/BUILD               |  2 +-
+ zipflinger/BUILD                           |  2 +-
+ 57 files changed, 77 insertions(+), 77 deletions(-)
+
+diff --git a/adb-proxy/BUILD b/adb-proxy/BUILD
+index 2f34949f69b..d1c1b12871a 100644
+--- a/adb-proxy/BUILD
++++ b/adb-proxy/BUILD
+@@ -19,7 +19,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/adb-proxy:adb_proxy_proto",
+         "//tools/base/adblib:studio.android.sdktools.adblib",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/adblib-ddmlibcompatibility/BUILD b/adblib-ddmlibcompatibility/BUILD
+index efd2039ecd4..5b93cb58a7e 100644
+--- a/adblib-ddmlibcompatibility/BUILD
++++ b/adblib-ddmlibcompatibility/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/fakeadbserver:studio.android.sdktools.fakeadbserver[test]",
+         "//tools/base/adblib:studio.android.sdktools.adblib",
+diff --git a/adblib-tools/BUILD b/adblib-tools/BUILD
+index d94c0ddfc0f..2921bb94cb2 100644
+--- a/adblib-tools/BUILD
++++ b/adblib-tools/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/fakeadbserver:studio.android.sdktools.fakeadbserver[test]",
+         "//tools/base/adblib:studio.android.sdktools.adblib",
+diff --git a/adblib/BUILD b/adblib/BUILD
+index fcf50a234db..1eb50deba8c 100644
+--- a/adblib/BUILD
++++ b/adblib/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+         "//tools/base/fakeadbserver:studio.android.sdktools.fakeadbserver[test]",
+diff --git a/annotations/BUILD b/annotations/BUILD
+index 71ccb7a1019..34d34235c33 100644
+--- a/annotations/BUILD
++++ b/annotations/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/apkparser/BUILD b/apkparser/BUILD
+index 3d95fdc02e3..32c3fb0900e 100644
+--- a/apkparser/BUILD
++++ b/apkparser/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/apkparser/analyzer/BUILD b/apkparser/analyzer/BUILD
+index 1df82a34f6f..0c460210fd0 100644
+--- a/apkparser/analyzer/BUILD
++++ b/apkparser/analyzer/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//prebuilts/tools/common/archive-patcher:explainer",
+diff --git a/bazel/avd/BUILD b/bazel/avd/BUILD
+index ca041926ae0..cef39d637a8 100644
+--- a/bazel/avd/BUILD
++++ b/bazel/avd/BUILD
+@@ -28,6 +28,6 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/build-analyzer/common/BUILD b/build-analyzer/common/BUILD
+index 16654e58ec5..8d0fbb9c68b 100644
+--- a/build-analyzer/common/BUILD
++++ b/build-analyzer/common/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//tools/base/sdk-common:studio.android.sdktools.sdk-common",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/build-system/BUILD b/build-system/BUILD
+index 627de96d73b..77098da6a84 100644
+--- a/build-system/BUILD
++++ b/build-system/BUILD
+@@ -19,7 +19,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/sdklib:studio.android.sdktools.sdklib",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+diff --git a/build-system/builder-model/BUILD b/build-system/builder-model/BUILD
+index 27fe289d330..39b4f3087df 100644
+--- a/build-system/builder-model/BUILD
++++ b/build-system/builder-model/BUILD
+@@ -25,7 +25,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+     ],
+ )
+@@ -101,7 +101,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations[test]",
+         "//tools/base/build-system/builder-model:studio.android.sdktools.builder-model[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+diff --git a/build-system/builder-test-api/BUILD b/build-system/builder-test-api/BUILD
+index c36cfc5c105..2d018b1b594 100644
+--- a/build-system/builder-test-api/BUILD
++++ b/build-system/builder-test-api/BUILD
+@@ -16,7 +16,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/ddmlib:studio.android.sdktools.ddmlib",
+     ],
+ )
+diff --git a/chunkio-processor/BUILD b/chunkio-processor/BUILD
+index b5105019b10..04963a9cd08 100644
+--- a/chunkio-processor/BUILD
++++ b/chunkio-processor/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/chunkio:studio.android.sdktools.chunkio",
+     ],
+ )
+diff --git a/chunkio/BUILD b/chunkio/BUILD
+index 4b3b2dd58b2..3b6934b3946 100644
+--- a/chunkio/BUILD
++++ b/chunkio/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/common/BUILD b/common/BUILD
+index 091e30ed4e6..d3e2da30f87 100644
+--- a/common/BUILD
++++ b/common/BUILD
+@@ -42,7 +42,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+     ],
+ )
+@@ -142,7 +142,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+@@ -183,7 +183,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/common:studio.android.sdktools.common",
+     ],
+diff --git a/ddmlib/BUILD b/ddmlib/BUILD
+index 891cfe58eb8..8990ba4b590 100644
+--- a/ddmlib/BUILD
++++ b/ddmlib/BUILD
+@@ -25,7 +25,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//tools/adt/idea/.idea/libraries:kxml2",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+@@ -243,6 +243,6 @@ iml_module(
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "//tools/base/ddmlib:studio.android.sdktools.ddmlib[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/debugger-tests/BUILD b/debugger-tests/BUILD
+index 17fd597833a..e295df0750d 100644
+--- a/debugger-tests/BUILD
++++ b/debugger-tests/BUILD
+@@ -14,7 +14,7 @@ kotlin_library(
+     tags = tags,
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "@maven//:org.jetbrains.kotlinx.kotlinx-cli-jvm",
+     ],
+ )
+@@ -132,8 +132,8 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/as-driver:as-driver.utils[test]",
+         "//tools/adt/idea/.idea/libraries:jetbrains.kotlinx.coroutines.test[test]",
+diff --git a/deploy/deployer/BUILD b/deploy/deployer/BUILD
+index 1a1de7f13d0..7f1b7496e55 100644
+--- a/deploy/deployer/BUILD
++++ b/deploy/deployer/BUILD
+@@ -29,7 +29,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//tools/base/ddmlib:studio.android.sdktools.ddmlib",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/device-provisioner/BUILD b/device-provisioner/BUILD
+index c74ccbd1b34..adb87a9f63a 100644
+--- a/device-provisioner/BUILD
++++ b/device-provisioner/BUILD
+@@ -10,7 +10,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/adblib:studio.android.sdktools.adblib",
+         "//tools/base/adblib-tools:studio.android.sdktools.adblib.tools",
+         "//tools/base/sdklib:studio.android.sdktools.sdklib",
+diff --git a/device_validator/BUILD b/device_validator/BUILD
+index 625e0a80434..61ffbd6f4ca 100644
+--- a/device_validator/BUILD
++++ b/device_validator/BUILD
+@@ -15,7 +15,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/common:studio.android.sdktools.common",
+     ],
+ )
+diff --git a/draw9patch/BUILD b/draw9patch/BUILD
+index 92b71711449..65cbb522ec4 100644
+--- a/draw9patch/BUILD
++++ b/draw9patch/BUILD
+@@ -19,7 +19,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/dynamic-layout-inspector/common/BUILD b/dynamic-layout-inspector/common/BUILD
+index 69c56fc8aa0..42a56c0aba3 100644
+--- a/dynamic-layout-inspector/common/BUILD
++++ b/dynamic-layout-inspector/common/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:studio-proto",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//prebuilts/tools/common/m2:junit-4.12[test]",
+diff --git a/environment-services/BUILD b/environment-services/BUILD
+index ae1adbd6f99..2e138089008 100644
+--- a/environment-services/BUILD
++++ b/environment-services/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/fakeadbserver/BUILD b/fakeadbserver/BUILD
+index 35a91aeb368..c8a6a1b80c8 100644
+--- a/fakeadbserver/BUILD
++++ b/fakeadbserver/BUILD
+@@ -17,7 +17,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/common:studio.android.sdktools.common[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+diff --git a/flags/BUILD b/flags/BUILD
+index 921bae4f6a4..ed4e81bd9c5 100644
+--- a/flags/BUILD
++++ b/flags/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/jdwp-packet/BUILD b/jdwp-packet/BUILD
+index aa560007221..e8d7e8500dc 100644
+--- a/jdwp-packet/BUILD
++++ b/jdwp-packet/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+     ],
+ )
+diff --git a/jdwp-scache/BUILD b/jdwp-scache/BUILD
+index 3cfad1c3e5c..51911cfa829 100644
+--- a/jdwp-scache/BUILD
++++ b/jdwp-scache/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/jdwp-packet:studio.android.sdktools.jdwppacket",
+     ],
+diff --git a/jdwp-tracer/BUILD b/jdwp-tracer/BUILD
+index 85d0f8acbdc..0e8b32b4185 100644
+--- a/jdwp-tracer/BUILD
++++ b/jdwp-tracer/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/jdwp-packet:studio.android.sdktools.jdwppacket",
+     ],
+diff --git a/kotlin-multiplatform-models/BUILD b/kotlin-multiplatform-models/BUILD
+index d2c2c5f3615..422988023b6 100644
+--- a/kotlin-multiplatform-models/BUILD
++++ b/kotlin-multiplatform-models/BUILD
+@@ -33,9 +33,9 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:studio-proto",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "//tools/adt/idea/.idea/libraries:kotlin-multiplatform-android-models-proto",
+     ],
+ )
+diff --git a/layoutlib-api/BUILD b/layoutlib-api/BUILD
+index a66ba5c4e6e..a4141784455 100644
+--- a/layoutlib-api/BUILD
++++ b/layoutlib-api/BUILD
+@@ -21,7 +21,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:kxml2",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+     ],
+diff --git a/layoutlib-extensions/BUILD b/layoutlib-extensions/BUILD
+index 08948375f0e..a40de7fd277 100644
+--- a/layoutlib-extensions/BUILD
++++ b/layoutlib-extensions/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/leakcanarylib/BUILD b/leakcanarylib/BUILD
+index 2e665d22f74..d92c790b95e 100644
+--- a/leakcanarylib/BUILD
++++ b/leakcanarylib/BUILD
+@@ -9,6 +9,6 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/lint/BUILD b/lint/BUILD
+index 1530cfdf54a..46ef2c40e8a 100644
+--- a/lint/BUILD
++++ b/lint/BUILD
+@@ -29,7 +29,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//tools/base/sdk-common:studio.android.sdktools.sdk-common",
+@@ -90,8 +90,8 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:asm-tools",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/lint:studio.android.sdktools.lint-model",
+         "//tools/base/common:studio.android.sdktools.common",
+@@ -169,8 +169,8 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "//tools/base/lint:studio.android.sdktools.lint-api",
+         "//tools/base/lint:liblint-checks-proto",
+     ],
+@@ -359,9 +359,9 @@ iml_module(
+     deps = [
+         "//tools/base/lint:studio.android.sdktools.lint-api",
+         "//tools/base/lint:studio.android.sdktools.lint-checks",
+-        "@intellij//:org.jetbrains.kotlin",
++        "//prebuilts/studio/intellij-sdk:org.jetbrains.kotlin",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+@@ -383,7 +383,7 @@ iml_module(
+         "//tools/base/lint/libs/lint-tests:studio.android.sdktools.lint.testinfrastructure[test]",
+         "//tools/base/lint:studio.android.sdktools.lint.studio-checks[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+@@ -403,7 +403,7 @@ iml_module(
+         "//tools/base/lint:studio.android.sdktools.lint-checks",
+         "//tools/base/lint/libs/lint-typedef-remover:studio.android.sdktools.lint.typedef-remover",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+@@ -428,7 +428,7 @@ iml_module(
+         "//tools/base/lint/libs/lint-tests:studio.android.sdktools.lint.testinfrastructure[test]",
+         "//tools/base/common:studio.android.sdktools.common[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+     ],
+ )
+diff --git a/lint/cli/BUILD b/lint/cli/BUILD
+index 458406336c1..8190ff1db4c 100644
+--- a/lint/cli/BUILD
++++ b/lint/cli/BUILD
+@@ -93,7 +93,7 @@ iml_module(
+         "//tools/base/sdk-common:studio.android.sdktools.sdk-common",
+         "//tools/base/layoutlib-api:studio.android.sdktools.layoutlib-api",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:agp-version",
+         "//tools/adt/idea/gradle-declarative-lang:intellij.android.gradle.declarative.lang",
+     ],
+diff --git a/lint/libs/lint-tests/BUILD b/lint/libs/lint-tests/BUILD
+index f5aaa796a84..ae4cd2bd92b 100644
+--- a/lint/libs/lint-tests/BUILD
++++ b/lint/libs/lint-tests/BUILD
+@@ -64,7 +64,7 @@ iml_module(
+         "//tools/base/lint/cli:studio.android.sdktools.lint.cli",
+         "//tools/adt/idea/.idea/libraries:junit4",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+@@ -98,7 +98,7 @@ iml_module(
+         "//tools/base/common:studio.android.sdktools.common.testfixtures[test]",
+         "//tools/base/lint:studio.android.sdktools.lint-checks[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/lint/libs/lint-tests:liblint-checks-proto",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+         "//tools/adt/idea/.idea/libraries:agp-version[test]",
+diff --git a/lint/libs/lint-typedef-remover/BUILD.bazel b/lint/libs/lint-typedef-remover/BUILD.bazel
+index 9267d73a9f9..130d2c08b17 100644
+--- a/lint/libs/lint-typedef-remover/BUILD.bazel
++++ b/lint/libs/lint-typedef-remover/BUILD.bazel
+@@ -57,7 +57,7 @@ iml_module(
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/common:studio.android.sdktools.common",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+@@ -74,6 +74,6 @@ iml_module(
+         "//tools/base/lint/libs/lint-typedef-remover:studio.android.sdktools.lint.typedef-remover[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/mlkit-common/BUILD b/mlkit-common/BUILD
+index 5ea8b83da9a..c23a68faa87 100644
+--- a/mlkit-common/BUILD
++++ b/mlkit-common/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//prebuilts/tools/common/m2:flatbuffers-java",
+         "//prebuilts/tools/common/m2:tensorflow-lite-metadata",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/ninepatch/BUILD b/ninepatch/BUILD
+index 444e2f29a6f..9ee4f040267 100644
+--- a/ninepatch/BUILD
++++ b/ninepatch/BUILD
+@@ -18,7 +18,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+ 
+diff --git a/perf-logger/BUILD b/perf-logger/BUILD
+index bed02738a3d..186b4a5cf8b 100644
+--- a/perf-logger/BUILD
++++ b/perf-logger/BUILD
+@@ -12,7 +12,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+diff --git a/perflib/BUILD b/perflib/BUILD
+index 1d0086a71ee..238787369e6 100644
+--- a/perflib/BUILD
++++ b/perflib/BUILD
+@@ -12,7 +12,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/ddmlib:studio.android.sdktools.ddmlib",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+diff --git a/pixelprobe/BUILD b/pixelprobe/BUILD
+index 4bdfa45396f..70a080d9338 100644
+--- a/pixelprobe/BUILD
++++ b/pixelprobe/BUILD
+@@ -23,7 +23,7 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/chunkio:studio.android.sdktools.chunkio",
+     ],
+ )
+diff --git a/process-monitor/BUILD b/process-monitor/BUILD
+index e2d828f5445..272820ff0ca 100644
+--- a/process-monitor/BUILD
++++ b/process-monitor/BUILD
+@@ -14,7 +14,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/adblib:studio.android.sdktools.adblib",
+         "//tools/base/adblib-tools:studio.android.sdktools.adblib.tools",
+         "//tools/base/device-provisioner:studio.android.sdktools.device-provisioner",
+diff --git a/profgen/profgen/BUILD b/profgen/profgen/BUILD
+index d203dcdfbfc..5ef8f1f7fe2 100644
+--- a/profgen/profgen/BUILD
++++ b/profgen/profgen/BUILD
+@@ -52,6 +52,6 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:asm-tools",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/repository/BUILD b/repository/BUILD
+index 7ba33f97bbd..8e121967622 100644
+--- a/repository/BUILD
++++ b/repository/BUILD
+@@ -32,7 +32,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/base/common:studio.android.sdktools.common",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/resource-repository/BUILD b/resource-repository/BUILD
+index deeb35a5e47..64cad35bb64 100644
+--- a/resource-repository/BUILD
++++ b/resource-repository/BUILD
+@@ -38,7 +38,7 @@ iml_module(
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+         "//tools/adt/idea/.idea/libraries:aapt-proto",
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "//tools/base/environment-services:studio.intellij.android.environment-services",
+     ],
+diff --git a/sdk-common/BUILD b/sdk-common/BUILD
+index 42e23c165ef..d84a2b2d577 100644
+--- a/sdk-common/BUILD
++++ b/sdk-common/BUILD
+@@ -29,7 +29,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/sdk-common:aia-proto",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+diff --git a/sdk-common/gradle/BUILD b/sdk-common/gradle/BUILD
+index 5db278233a9..b589f5fd4d4 100644
+--- a/sdk-common/gradle/BUILD
++++ b/sdk-common/gradle/BUILD
+@@ -12,7 +12,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+     ],
+diff --git a/sdklib/BUILD b/sdklib/BUILD
+index 09b9490887e..b6887b98853 100644
+--- a/sdklib/BUILD
++++ b/sdklib/BUILD
+@@ -40,7 +40,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "//tools/adt/idea/.idea/libraries:agp-version",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "@intellij//:intellij-sdk",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:guava-testlib[test]",
+diff --git a/studio-grpc-testutils/BUILD b/studio-grpc-testutils/BUILD
+index 4118d8516c4..5997007c430 100644
+--- a/studio-grpc-testutils/BUILD
++++ b/studio-grpc-testutils/BUILD
+@@ -24,9 +24,9 @@ iml_module(
+     deps = [
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/android-test-framework:intellij.android.testFramework[test]",
+-        "@intellij//:intellij.libraries.grpc",
++        "//prebuilts/studio/intellij-sdk:intellij.libraries.grpc",
+         "//prebuilts/tools/common/m2:grpc-inprocess-1.69.1",
+     ],
+ )
+diff --git a/testutils/BUILD b/testutils/BUILD
+index 3200bd6e356..336b2594e40 100644
+--- a/testutils/BUILD
++++ b/testutils/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/common:studio.android.sdktools.common[test]",
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+@@ -35,7 +35,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:kotlin-test[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+diff --git a/threading-agent-callback/BUILD b/threading-agent-callback/BUILD
+index 3803c19031b..f447979bac0 100644
+--- a/threading-agent-callback/BUILD
++++ b/threading-agent-callback/BUILD
+@@ -25,6 +25,6 @@ iml_module(
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/threading-agent/BUILD b/threading-agent/BUILD
+index 3b67e0a6e86..f58c2539c64 100644
+--- a/threading-agent/BUILD
++++ b/threading-agent/BUILD
+@@ -57,7 +57,7 @@ iml_module(
+         "//tools/adt/idea/.idea/libraries:asm-tools",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "@intellij//:intellij-sdk[test]",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "//tools/adt/idea/.idea/libraries:mockito[test]",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+diff --git a/tracer/BUILD b/tracer/BUILD
+index 85f9c75250b..5f57a66c6ac 100644
+--- a/tracer/BUILD
++++ b/tracer/BUILD
+@@ -69,6 +69,6 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+     ],
+ )
+diff --git a/usb-devices/BUILD b/usb-devices/BUILD
+index 3de8217db37..ba75e11f0c7 100644
+--- a/usb-devices/BUILD
++++ b/usb-devices/BUILD
+@@ -13,7 +13,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+     ],
+diff --git a/wizard/template-impl/BUILD b/wizard/template-impl/BUILD
+index ba1af7a285b..991f0373846 100644
+--- a/wizard/template-impl/BUILD
++++ b/wizard/template-impl/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/wizard/template-plugin:studio.intellij.android.wizardTemplate.plugin",
+     ],
+ )
+diff --git a/wizard/template-plugin/BUILD b/wizard/template-plugin/BUILD
+index ea52b88d54e..f92e342a8bf 100644
+--- a/wizard/template-plugin/BUILD
++++ b/wizard/template-plugin/BUILD
+@@ -11,7 +11,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/adt/idea/.idea/libraries:truth[test]",
+         "//tools/base/sdk-common:studio.android.sdktools.sdk-common",
+diff --git a/zipflinger/BUILD b/zipflinger/BUILD
+index f8a6e7ccfad..747b7cacf05 100644
+--- a/zipflinger/BUILD
++++ b/zipflinger/BUILD
+@@ -212,7 +212,7 @@ iml_module(
+     # do not sort: must match IML order
+     deps = [
+         "@intellij//:intellij-sdk",
+-        "@intellij//:com.intellij.java",
++        "//prebuilts/studio/intellij-sdk:com.intellij.java",
+         "//tools/base/annotations:studio.android.sdktools.android-annotations",
+         "//tools/adt/idea/.idea/libraries:junit4[test]",
+         "//tools/base/testutils:studio.android.sdktools.testutils[test]",
+-- 
+2.34.1
+

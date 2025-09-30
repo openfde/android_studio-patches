@@ -7,7 +7,7 @@ set -e
 
 # 配置变量
 export STUDIO_VERSION="2024.3.2"
-export STUDIO_DIR="$pwd"
+export STUDIO_DIR=$(pwd)
 
 # 颜色输出函数
 RED='\033[0;31m'
@@ -78,10 +78,6 @@ build_android_studio() {
 
         cp $STUDIO_DIR/android_studio-patches/studio-2024.3.2-patch/prebuilts/studio/intellij-sdk/BUILD \
             $STUDIO_DIR/prebuilts/studio/intellij-sdk/
-        
-        if [ -f "$STUDIO_DIR/tools/replace_intellij.sh" ]; then
-            ./tools/replace_intellij.sh
-        fi
     fi
 
     tools/base/bazel/bazel build tools/adt/idea/android:artifacts
@@ -99,7 +95,7 @@ main() {
     log_info "Android Studio 目录: $STUDIO_DIR"
 
     # 执行各个步骤
-    # check_environment
+    check_environment
 
     apply_studio_patches
 
