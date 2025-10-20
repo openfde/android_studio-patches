@@ -274,7 +274,7 @@ copy_ndk_to_sdk() {
     cd "$TOOLS_DIR"
     if [ ! -d "Sdk" ]; then
         log_info "下载 Sdk..."
-        git clone https://gitee.com/pngcui/studio_sdk.git
+        git clone https://github.com/openfde/studio_sdk.git
         mv studio_sdk Sdk
         log_success "Sdk 下载完成"
     fi
@@ -468,7 +468,7 @@ prepare_toolchains() {
     # 下载 ARM64 Jbr 21
     cd "$STUDIO_DIR/prebuilts/studio/jdk/jbr-next"
     if [ ! -f "linux/arm64.flag" ]; then
-        wget -O jbr21.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbr_ft-21.0.6-linux-aarch64-b895.109.tar.gz
+        wget -O jbr21.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_ft-21.0.6-linux-aarch64-b895.109.tar.gz
         tar -xzf jbr21.tar.gz
         cp -rf jbr*/* linux/
         rm jbr21.tar.gz
@@ -478,7 +478,6 @@ prepare_toolchains() {
         log_success "替换 jbr-next 完成"
     fi
 
-    # 下载 ARM64 JbrSdk 21
     cd "$STUDIO_DIR/prebuilts/studio/jdk/jbrjdk-next"
     if [ ! -f "linux/arm64.flag" ]; then
         wget -O jbrsdk21.tar.gz https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_ft-21.0.6-linux-aarch64-b895.109.tar.gz
