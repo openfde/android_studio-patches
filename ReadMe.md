@@ -13,9 +13,10 @@
 
 6.build_android_studio_arm64.sh 为从0开始下载代码与编译android studio的一键编译脚本
 
-7.build.sh 为下载studio for arm64代码后的一键编译脚本 （repo init -u https://github.com/openfde/studio-manifests -b studio-2024.3.2）
+7.build.sh 为下载studio for arm64代码后的一键编译脚本 （repo init -u https://github.com/openfde/studio-manifests -b studio-2024.3.2 --git-lfs）
 
 8.详细编译步骤请参考：https://openfde.atlassian.net/wiki/spaces/OpenFDE/pages/559415300/Android+Stuido+arm64
 
 9.一键编译Android Studio的编译方法请参考：https://openfde.atlassian.net/wiki/spaces/OpenFDE/pages/594083850/Android+Studio+for+linux+arm64
 
+10.目前Android Studio for Linux Arm64版本已在飞腾提供的腾锐D3000/FT2000平台上完成全面功能测试，非常感谢飞腾公司提供的相关支持。
